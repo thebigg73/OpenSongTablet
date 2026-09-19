@@ -52,6 +52,43 @@
             app:myFabSize="mini"
             android:src="@drawable/save" />
 
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/prevPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:contentDescription="@string/save"
+            app:makeFlat="true"
+            app:backgroundTint="@color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:myFabSize="mini"
+            android:visibility="gone"
+            android:src="@drawable/arrow_left" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/currentPage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:text="1/3" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/nextPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:contentDescription="@string/save"
+            app:makeFlat="true"
+            app:backgroundTint="@color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:myFabSize="mini"
+            android:visibility="gone"
+            android:src="@drawable/arrow_right" />
+
     </LinearLayout>
 
     <LinearLayout

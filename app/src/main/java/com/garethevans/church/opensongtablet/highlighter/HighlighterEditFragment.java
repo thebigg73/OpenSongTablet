@@ -127,6 +127,8 @@ public class HighlighterEditFragment extends Fragment {
         mainActivityInterface.getDrawNotes().resetVars();
         mainActivityInterface.getDrawNotes().setHighlighterEditFrag(this);
 
+        myView.draggableToolbox.setHighlighterEditFragment(this);
+
         setToolPreferences();
 
         // Set the drawNotes and imageView to be the same height as the image
@@ -174,7 +176,12 @@ public class HighlighterEditFragment extends Fragment {
         checkUndos();
         checkRedos();
 
-        mainActivityInterface.getMainHandler().postDelayed(() -> myView.draggableToolbox.setColorChoosers(),500);
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            myView.draggableToolbox.setColorChoosers();
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                myView.draggableToolbox.setPDF(true,mainActivityInterface.getSong().getPdfPageCount(),mainActivityInterface.getSong().getPdfPageCurrent()+1);
+            }
+        },500);
     }
 
     private void getScreenshot() {
@@ -467,6 +474,20 @@ public class HighlighterEditFragment extends Fragment {
         }
         setColors();
         mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize, currentColor);
+    }
+
+    public void changePage(int newPage) {
+        Log.d(TAG,"changePage("+newPage+")");
+        // Only works if the song is a PDF and the newPage is valid
+        // This page number starts at 1, so subtract 1 to computer count
+        newPage = newPage - 1;
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+            mainActivityInterface.getSong().getPdfPageCount()>newPage &&
+            newPage>=0) {
+            mainActivityInterface.getSong().setPdfPageCurrent(newPage);
+            setupViews();
+            myView.draggableToolbox.setPDF(true,mainActivityInterface.getSong().getPdfPageCount(),newPage+1);
+        }
     }
 
     private void saveFile() {

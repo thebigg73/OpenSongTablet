@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.Slider;
@@ -30,7 +32,9 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     private float dX, dY;
     private LinearLayout toolSettings, colorsLayout;
     private MyFloatingActionButton currentTool, saveButton, penFAB, highlighterFAB, eraserFAB,
-            undoFAB, redoFAB, deleteFAB, blackFAB, whiteFAB, yellowFAB, redFAB, greenFAB, blueFAB;
+            undoFAB, redoFAB, deleteFAB, blackFAB, whiteFAB, yellowFAB, redFAB, greenFAB, blueFAB,
+            prevPage, nextPage;
+    private MyMaterialSimpleTextView currentPage;
     private ImageView dragIcon;
     private MyMaterialSlider sizeSlider;
     private Drawable penDrawable, highlighterDrawable, eraserDrawable;
@@ -40,6 +44,9 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         initialise(context);
     }
     private Palette palette;
+    private boolean isPDF = false;
+    private int pdfPages = 0, pdfCurrentPage = 0;
+    private HighlighterEditFragment highlighterEditFragment = null;
 
     public HighlighterToolBox(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -61,6 +68,9 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         toolSettings.setBackgroundColor(palette.surface);
         currentTool = findViewById(R.id.currentTool);
         saveButton = findViewById(R.id.saveButton);
+        prevPage = findViewById(R.id.prevPage);
+        nextPage = findViewById(R.id.nextPage);
+        currentPage = findViewById(R.id.currentPage);
         penFAB = findViewById(R.id.penFAB);
         highlighterFAB = findViewById(R.id.highlighterFAB);
         eraserFAB = findViewById(R.id.eraserFAB);
@@ -81,6 +91,34 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
         setListeners();
     }
+
+    public void setHighlighterEditFragment(HighlighterEditFragment highlighterEditFragment) {
+        this.highlighterEditFragment = highlighterEditFragment;
+    }
+
+    public void setPDF(boolean isPDF, int pdfPages, int pdfCurrentPage) {
+        this.isPDF = isPDF;
+        this.pdfPages = pdfPages;
+        this.pdfCurrentPage = pdfCurrentPage;
+        if (isPDF) {
+            String pageText = pdfCurrentPage + "/" + pdfPages;
+            currentPage.setText(pageText);
+            currentPage.setVisibility(View.VISIBLE);
+            prevPage.setEnabled(pdfCurrentPage>1);
+            nextPage.setEnabled(pdfCurrentPage<pdfPages);
+        } else {
+            currentPage.setVisibility(View.GONE);
+            prevPage.setVisibility(View.GONE);
+            nextPage.setVisibility(View.GONE);
+        }
+        if (isPDF && pdfPages>1) {
+            prevPage.setVisibility(View.VISIBLE);
+            nextPage.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
 
     private void setDrawables(Context context) {
         penDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.pen,context.getTheme());
@@ -130,6 +168,18 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         currentTool.setOnClickListener(view -> toggleSettings());
         sizeSlider.setLabelFormatter(value -> (int)value + "pt");
         sizeSlider.addOnChangeListener((slider, value, fromUser) -> sizeSlider.setHint((int)value + "pt"));
+        prevPage.setOnClickListener(view -> {
+            Log.d(TAG,"prevPage clicked.  highlighterEditFragment:"+highlighterEditFragment);
+            if (highlighterEditFragment!=null) {
+                highlighterEditFragment.changePage(pdfCurrentPage-1);
+            }
+        });
+        nextPage.setOnClickListener(view -> {
+            Log.d(TAG,"nextPage clicked.  highlighterEditFragment:"+highlighterEditFragment);
+            if (highlighterEditFragment!=null) {
+                highlighterEditFragment.changePage(pdfCurrentPage+1);
+            }
+        });
     }
 
     public void checkShowcase(Context c, MainActivityInterface mainActivityInterface) {
