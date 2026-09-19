@@ -131,12 +131,15 @@ public class ABCPopup {
         Drawable closeIcon = ContextCompat.getDrawable(c, R.drawable.close);
         if (closeIcon != null) {
             closeIcon = DrawableCompat.wrap(closeIcon).mutate();          // 🔑 mutate to avoid affecting other instances
-            closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN);
+            closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor(), PorterDuff.Mode.SRC_IN);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             closeButton.makeFlat();
        }
         closeButton.setImageDrawable(closeIcon);
+        // 🔑 CRUCIAL: Prevent the FAB from overriding your icon's color filter with its own theme tint
+        closeButton.setImageTintList(null);
+
         //closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
         closeButton.setBackgroundTintList(new ColorStateList(
                 new int[][]{new int[0]},

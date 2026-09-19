@@ -129,6 +129,10 @@ public class StickyPopUp {
         }
 
         closeButton.setImageDrawable(closeIcon);
+
+        // 🔑 CRUCIAL: Prevent the FAB from overriding your icon's color filter with its own theme tint
+        closeButton.setImageTintList(null);
+
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         //closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
         closeButton.setBackgroundTintList(new ColorStateList(
