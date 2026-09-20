@@ -41,7 +41,7 @@ public class DrumSequencerFragment extends Fragment {
     private Drawable start, stop;
     private String drummer_string="", drummer_website="",
             drummer_main="", drummer_main_fill="", drummer_variation="", drummer_variation_fill="",
-            drum_kit_acoustic="", drum_kit_percussion="";
+            drum_kit_acoustic="", drum_kit_percussion="", drummer_studio="";
     private final String[] timeSigs = new String[] {"3/4","4/4","5/4","6/8"};
     private String filename = "";
     // Add a flag to prevent listeners from firing during programmatic setup
@@ -58,17 +58,45 @@ public class DrumSequencerFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Ensure the active map and adapter pull the latest updated pattern data when returning to the fragment
+        if (mainActivityInterface != null && mainActivityInterface.getDrumViewModel() != null) {
+            mainActivityInterface.getDrumViewModel().getDrummer().updateActiveMap();
+            if (adapter != null) {
+                adapter.refreshInstrumentCache();
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = SettingsDrumSequencerBinding.inflate(inflater, container, false);
 
         // Do everything below on a nonUI thread wherever possible
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             mainActivityInterface.getDrumViewModel().getDrummer().setSequencerMode(false);
-            mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+
+            // 💡 FIX: Check if we have an active pattern via getDrumPatternJson() or if the song has a drummer file assigned
+            boolean hasActivePattern = mainActivityInterface.getDrumViewModel().getDrumPatternJson() != null;
+            boolean hasSongDrummer = !mainActivityInterface.getDrumViewModel().getTempDrumsReceived() &&
+                    mainActivityInterface.getSong() != null &&
+                    mainActivityInterface.getSong().getDrummer() != null &&
+                    !mainActivityInterface.getSong().getDrummer().isEmpty() &&
+                    !mainActivityInterface.getSong().getDrummer().equals(".json");
+            if (!hasActivePattern && !hasSongDrummer) {
+                mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+            } else {
+                // Otherwise, just ensure the engine and timer are synced to the existing/loaded pattern
+                mainActivityInterface.getDrumViewModel().updateDrummerAndTimer();
+            }
+
             mainActivityInterface.getDrumViewModel().getDrummer().setSequencerMode(true);
-            String patternName = mainActivityInterface.getDrumViewModel().getDrumPatternJson().getName();
-            if (patternName!=null && !patternName.isEmpty()) {
-                filename = patternName;
+
+            DrumPatternJson activePattern = mainActivityInterface.getDrumViewModel().getDrumPatternJson();
+            if (activePattern != null && activePattern.getName() != null && !activePattern.getName().isEmpty()) {
+                filename = activePattern.getName();
             } else {
                 filename = mainActivityInterface.getSong().getFilename();
             }
@@ -115,10 +143,9 @@ public class DrumSequencerFragment extends Fragment {
             drummer_variation_fill = getString(R.string.drummer_variation_fill);
             drum_kit_acoustic = getString(R.string.drum_kit_acoustic);
             drum_kit_percussion = getString(R.string.drum_kit_percussion);
+            drummer_studio = getString(R.string.deeplink_drummer_studio);
         }
     }
-
-
 
     private void setupViews() {
         ArrayList<String> tempos = new ArrayList<>();
@@ -137,6 +164,9 @@ public class DrumSequencerFragment extends Fragment {
 
         if (getContext()!=null) {
             if (myView!=null) {
+                // 💡 Set flag to prevent text watchers from triggering resets while loading initial views
+                isRefreshingUI = true;
+
                 ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.tempo,R.layout.view_exposed_dropdown_item,tempos);
                 ExposedDropDownArrayAdapter timeSigAdapter = new ExposedDropDownArrayAdapter(getContext(),
@@ -144,35 +174,54 @@ public class DrumSequencerFragment extends Fragment {
                 ExposedDropDownArrayAdapter drummerPartAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.drummerPart, R.layout.view_exposed_dropdown_item, drummerParts);
                 ExposedDropDownArrayAdapter drumKitAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                    myView.drummerKit, R.layout.view_exposed_dropdown_item,drummerKits);
+                        myView.drummerKit, R.layout.view_exposed_dropdown_item,drummerKits);
+
                 myView.tempo.postDelayed(() -> {
                     myView.tempo.setAdapter(tempoAdapter);
                     myView.tempo.setText(String.valueOf(DrumCalculations.getFixedTempo(mainActivityInterface.getSong().getTempo(), true)),false);
                 },100);
+
                 myView.timeSignature.postDelayed(() -> {
                     myView.timeSignature.setAdapter(timeSigAdapter);
-                    myView.timeSignature.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getSong().getTimesig(), true),false);
+
+                    // 💡 Check if ViewModel already has a valid pattern loaded (e.g. from studio)
+                    DrumPatternJson activePattern = mainActivityInterface.getDrumViewModel().getDrumPatternJson();
+                    String timeSigText;
+                    if (activePattern != null && activePattern.getBeats() > 0) {
+                        timeSigText = activePattern.getBeats() + "/" + activePattern.getDivisions();
+                    } else {
+                        timeSigText = DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getSong().getTimesig(), true);
+                    }
+
+                    myView.timeSignature.setText(timeSigText, false);
+                    isRefreshingUI = false; // Re-enable listeners after initial setup
                 },100);
+
                 myView.drummerPart.postDelayed(() -> {
                     myView.drummerPart.setAdapter(drummerPartAdapter);
 
-                    // CHANGE THIS: Don't just use 'drummer_main'
                     DrumSection active = mainActivityInterface.getDrumViewModel().getActiveSection().getValue();
                     if (active != null) {
-                        // Map the enum back to your translated string list
                         myView.drummerPart.setText(getTranslationForSection(active),false);
                     } else {
                         myView.drummerPart.setText(drummer_main,false);
                     }
                 }, 100);
+
                 myView.drummerKit.postDelayed(() -> {
                     myView.drummerKit.setAdapter(drumKitAdapter);
                     myView.drummerKit.setText(mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleFromXML(
                             mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyle()));
                 },100);
 
-                myView.filename.post(() -> myView.filename.setText(filename));
-
+                myView.filename.post(() -> {
+                    DrumPatternJson activePattern = mainActivityInterface.getDrumViewModel().getDrumPatternJson();
+                    if (activePattern != null && activePattern.getName() != null && !activePattern.getName().isEmpty()) {
+                        myView.filename.setText(activePattern.getName());
+                    } else {
+                        myView.filename.setText(filename);
+                    }
+                });
             }
         }
     }
@@ -424,35 +473,52 @@ public class DrumSequencerFragment extends Fragment {
 
     private void setupListeners() {
         myView.playStop.post(() -> myView.playStop.setOnClickListener(view -> {
-                mainActivityInterface.getDrumViewModel().toggleDrummer();
-                myView.playStop.setImageDrawable(mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning() ? stop : start);
-            }));
-            myView.resetToDefault.post(() -> myView.resetToDefault.setOnClickListener(view -> resetDrums(true, true)));
-            myView.clear.post(() -> myView.clear.setOnClickListener(view -> resetDrums(true, false)));
-            myView.filename.post(() -> myView.filename.addTextChangedListener(new MyTextWatcher("name")));
-            myView.timeSignature.post(() -> myView.timeSignature.addTextChangedListener(new MyTextWatcher("timesig")));
-            myView.tempo.post(() -> myView.tempo.addTextChangedListener(new MyTextWatcher("tempo")));
-            myView.load.post(() -> myView.load.setOnClickListener(view -> {
-                String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
-                String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
-                DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "load", filename, timeSig,null);
-                bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
-            }));
-            myView.save.post(() -> myView.save.setOnClickListener(view -> {
-                String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
-                String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
-                DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "save", filename, timeSig,null);
-                bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
-            }));
-            myView.assign.post(() -> myView.assign.setOnClickListener(view -> {
-                String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
-                String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
-                String drummerKit = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleForSongXML(myView.drummerKit.getText().toString());
-                DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "assign", filename, timeSig, drummerKit);
-                bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
-            }));
-            myView.drummerPart.post(() -> myView.drummerPart.addTextChangedListener(new MyTextWatcher("drummerPart")));
-            myView.drummerKit.post(() -> myView.drummerKit.addTextChangedListener(new MyTextWatcher("drummerKit")));
+            mainActivityInterface.getDrumViewModel().toggleDrummer();
+            myView.playStop.setImageDrawable(mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning() ? stop : start);
+        }));
+        myView.resetToDefault.post(() -> myView.resetToDefault.setOnClickListener(view -> resetDrums(true, true)));
+        myView.clear.post(() -> myView.clear.setOnClickListener(view -> resetDrums(true, false)));
+        myView.filename.post(() -> myView.filename.addTextChangedListener(new MyTextWatcher("name")));
+        myView.timeSignature.post(() -> myView.timeSignature.addTextChangedListener(new MyTextWatcher("timesig")));
+        myView.tempo.post(() -> myView.tempo.addTextChangedListener(new MyTextWatcher("tempo")));
+        myView.load.post(() -> myView.load.setOnClickListener(view -> {
+            String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
+            String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
+            DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "load", filename, timeSig, null);
+            bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
+        }));
+        myView.save.post(() -> myView.save.setOnClickListener(view -> {
+            String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
+            String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
+            DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "save", filename, timeSig, null);
+            bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
+        }));
+        myView.assign.post(() -> myView.assign.setOnClickListener(view -> {
+            String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
+            String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
+            String drummerKit = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleForSongXML(myView.drummerKit.getText().toString());
+            DrummerFileBottomSheet bottomSheet = new DrummerFileBottomSheet(this, "assign", filename, timeSig, drummerKit);
+            bottomSheet.show(mainActivityInterface.getMyFragmentManager(), "DrummerFileBottomSheet");
+        }));
+        myView.webBrowser.post(() -> myView.webBrowser.setOnClickListener(view -> {
+            String filename = myView.filename.getText() == null ? null : myView.filename.getText().toString();
+            String timeSig = myView.timeSignature.getText() == null ? null : myView.timeSignature.getText().toString();
+            int tempo = myView.timeSignature.getText() == null ? 120 : DrumCalculations.getFixedTempo(myView.timeSignature.getText().toString(),true);
+            String drummerKit = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleForSongXML(myView.drummerKit.getText().toString());
+            String author = mainActivityInterface.getDrumViewModel().getTempDrumAuthor();
+            if (author==null || author.isEmpty()) {
+                author = "OpenSongApp";
+            }
+            mainActivityInterface.getDrumViewModel().setTempDrumFileName(filename);
+            mainActivityInterface.getDrumViewModel().setTempDrumAuthor(author);
+            mainActivityInterface.getDrumViewModel().setTempDrumTimeSig(timeSig);
+            mainActivityInterface.getDrumViewModel().setTempDrumTempo(tempo);
+            mainActivityInterface.getDrumViewModel().setTempDrumKit(drummerKit);
+            mainActivityInterface.getDrummer().setSequencerMode(false);
+            mainActivityInterface.navigateToFragment(drummer_studio, -1);
+        }));
+        myView.drummerPart.post(() -> myView.drummerPart.addTextChangedListener(new MyTextWatcher("drummerPart")));
+        myView.drummerKit.post(() -> myView.drummerKit.addTextChangedListener(new MyTextWatcher("drummerKit")));
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -488,6 +554,8 @@ public class DrumSequencerFragment extends Fragment {
             switch (what) {
                 case "timesig":
                     if (isRefreshingUI) return;
+                    // 💡 If the user isn't actively focused on editing this field, ignore programmatic changes!
+                    if (myView.timeSignature != null && !myView.timeSignature.isFocused()) return;
 
                     if (timeSig != null) {
                         // 1. Update the Model
@@ -509,6 +577,8 @@ public class DrumSequencerFragment extends Fragment {
                     break;
 
                 case "tempo":
+                    if (myView.tempo != null && !myView.tempo.isFocused()) return;
+
                     if (myView.tempo.isFocused()) {
                         mainActivityInterface.getDrumViewModel().stopDrummer();
                         resetDrums(false, false);
@@ -558,9 +628,19 @@ public class DrumSequencerFragment extends Fragment {
     public void updateViews() {
         DrumPatternJson drumPatternJson = mainActivityInterface.getDrumViewModel().getDrumPatternJson();
         mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
+            if (myView != null && drumPatternJson != null) {
+                isRefreshingUI = true; // 🛡️ Prevent TextWatcher from triggering a reset
+
                 myView.filename.setText(drumPatternJson.getName());
-                myView.timeSignature.setText(drumPatternJson.getBeats() + "/" + drumPatternJson.getDivisions(),false);
+                myView.timeSignature.setText(drumPatternJson.getBeats() + "/" + drumPatternJson.getDivisions(), false);
+
+                isRefreshingUI = false; // ✅ Safe to listen to user input again
+
+                // 💡 Force adapter to pull the newly loaded pattern's active map
+                if (adapter != null) {
+                    mainActivityInterface.getDrumViewModel().getDrummer().updateActiveMap();
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -578,6 +658,7 @@ public class DrumSequencerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainActivityInterface.getDrumViewModel().getDrummer().setSequencerMode(true);
+        mainActivityInterface.getDrumViewModel().getDrummer().setSequencerMode(false);
     }
+
 }

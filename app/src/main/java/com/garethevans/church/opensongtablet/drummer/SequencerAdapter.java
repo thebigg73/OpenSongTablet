@@ -157,10 +157,11 @@ public class SequencerAdapter extends RecyclerView.Adapter<DrumViewGridHolder> {
                         }
 
                         trackData[stepIndex] = nextVelo; // The change is made in the object
-
-                        // 3. PUSH the change back to the ViewModel
-                        // This notifies the system that "The Pattern has changed!"
-                        mainActivityInterface.getDrumViewModel().getCurrentPattern().setValue(pattern);
+                        // Push change back to ViewModel and ensure the Drummer engine updates its active map instantly
+                        mainActivityInterface.getDrumViewModel().setDrumPatternJson(pattern);
+                        if (mainActivityInterface.getDrumViewModel().getDrummer() != null) {
+                            mainActivityInterface.getDrumViewModel().getDrummer().updateActiveMap();
+                        }
 
                         // Play the note!
                         if (nextVelo > 0) {

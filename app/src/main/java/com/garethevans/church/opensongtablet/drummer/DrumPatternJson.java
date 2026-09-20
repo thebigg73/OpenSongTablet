@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrumPatternJson {
-    private String name;
+    private String name, author;
     private int beats;
     private int divisions;
     // Key: Drum Name (e.g. "Kick"), Value: array of 16th note triggers
@@ -60,6 +60,12 @@ public class DrumPatternJson {
     }
     public String getName() {
         return name;
+    }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    public String getAuthor() {
+        return author;
     }
     public void setBeats(int beats) {
         this.beats = beats;

@@ -169,7 +169,6 @@ public class DrumViewModel extends ViewModel {
         thisStepsPerPulse = DrumCalculations.getStepsPerPulse(thisDivisions);
         thisStepsPerBar = DrumCalculations.getTotalStepsInBar(thisBeats, thisDivisions);
 
-
         // Make sure the visual metronome has the correct number of beats
         mainActivityInterface.getToolbar().setUpMetronomeBar(thisBeats);
 
@@ -379,13 +378,22 @@ public class DrumViewModel extends ViewModel {
         stopTimerEngine();
     }
 
-    // Drummer control
     public void startDrummer() {
         Log.d(TAG,"startDrummer()");
-        prepareSongValues(mainActivityInterface.getSong());
 
         if (drummer != null) {
-            drummer.setPattern(getDrumPatternJson()); // Ensure this method exists and sets the internal pattern
+            DrumPatternJson p = getDrumPatternJson();
+            drummer.setPattern(p);
+        }
+
+        // 💡 CRITICAL: Only prepare song values if we are NOT in sequencer mode!
+        // In the sequencer, we want to play whatever pattern is currently live in memory.
+        if (drummer == null || !drummer.getSequencerMode()) {
+            prepareSongValues(mainActivityInterface.getSong());
+        }
+
+        if (drummer != null) {
+            drummer.setPattern(getDrumPatternJson());
         }
 
         if (drummer != null) {
@@ -473,19 +481,28 @@ public class DrumViewModel extends ViewModel {
         updateDrummerAndTimer();
     }
 
-
     public DrumPatternJson getDrumPatternJson() {
-        // Build the default pattern if it doesn't exist yet
+        // 💡 If backing field is null, but the drummer engine already has a pattern, rescue it!
+        if (drumPatternJson == null && drummer != null && drummer.getPattern() != null) {
+            drumPatternJson = drummer.getPattern();
+        }
+
         if (drumPatternJson == null && thisBeats > 0) {
+            // 💡 ONLY load from the song file if we DO NOT have temporary web drums pending!
+            if (!tempDrumsReceived && mainActivityInterface.getSong() != null && mainActivityInterface.getSong().getDrummer() != null && !mainActivityInterface.getSong().getDrummer().isEmpty() && !mainActivityInterface.getSong().getDrummer().equals(".json")) {
+                Uri drummerUri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", mainActivityInterface.getSong().getDrummer());
+                if (mainActivityInterface.getStorageAccess().uriExists(drummerUri)) {
+                    drummer.loadDrummerFile(mainActivityInterface.getSong().getDrummer());
+                    return drumPatternJson;
+                }
+            }
+
             drumPatternJson = new DrumPatternJson(drumSoundManager.getKit().getDrumParts(), thisStepsPerBar, thisBeats, thisDivisions);
             DrumPatternBuilder.buildStandardPattern(drumPatternJson, thisBeats, thisDivisions, thisStepsPerPulse);
         }
         return drumPatternJson;
     }
-    public void setDrumPatternJson(DrumPatternJson drumPatternJson) {
-        this.drumPatternJson = drumPatternJson;
-        setCurrentPattern(drumPatternJson);
-    }
+
     public LiveData<Integer> getCurrentStep() {
         return currentStep;
     }
@@ -503,10 +520,70 @@ public class DrumViewModel extends ViewModel {
     public MutableLiveData<DrumPatternJson> getCurrentPattern() {
         return currentPattern;
     }
+
     public void setCurrentPattern(DrumPatternJson pattern) {
+        if (pattern == null) {
+            Log.e(TAG, "🚨 STACKTRACE: setCurrentPattern(null) was called!", new Exception());
+        }
         currentPattern.postValue(pattern);
+        this.drumPatternJson = pattern;
+        if (drummer != null) {
+            drummer.setPattern(pattern);
+            drummer.updateActiveMap();
+        }
     }
 
+    public void setDrumPatternJson(DrumPatternJson drumPatternJson) {
+        if (drumPatternJson == null) {
+            Log.e(TAG, "🚨 STACKTRACE: setDrumPatternJson(null) was called!", new Exception());
+        }
+        this.drumPatternJson = drumPatternJson;
+        setCurrentPattern(drumPatternJson);
+    }
+
+    // The variables used for the Drum Studio editor web page (to send and return values)
+    private String tempDrumFileName = "";
+    private String tempDrumTimeSig = "";
+    private int tempDrumTempo = 0;
+    private String tempDrumAuthor = "";
+    private String tempDrumKit = "";
+    private boolean tempDrumsReceived = false;
+    public void setTempDrumFileName(String tempDrumFileName) {
+        this.tempDrumFileName = tempDrumFileName;
+    }
+    public void setTempDrumTimeSig(String tempDrumTimeSig) {
+        this.tempDrumTimeSig = tempDrumTimeSig;
+    }
+    public void setTempDrumTempo(int tempDrumTempo) {
+        this.tempDrumTempo = tempDrumTempo;
+    }
+    public void setTempDrumAuthor(String tempDrumAuthor) {
+        this.tempDrumAuthor = tempDrumAuthor;
+    }
+    public void setTempDrumKit(String tempDrumKit) {
+        this.tempDrumKit = tempDrumKit;
+    }
+    public void setTempDrumsReceived(boolean tempDrumsReceived) {
+        this.tempDrumsReceived = tempDrumsReceived;
+    }
+    public String getTempDrumFileName() {
+        return tempDrumFileName;
+    }
+    public String getTempDrumTimeSig() {
+        return tempDrumTimeSig;
+    }
+    public int getTempDrumTempo() {
+        return tempDrumTempo;
+    }
+    public boolean getTempDrumsReceived() {
+        return tempDrumsReceived;
+    }
+    public String getTempDrumAuthor() {
+        return tempDrumAuthor;
+    }
+    public String getTempDrumKit() {
+        return tempDrumKit;
+    }
 
     // The timer engine control - use for all!
     // Ensure the engine starts/stops based on all active components

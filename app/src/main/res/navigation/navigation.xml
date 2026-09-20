@@ -1096,6 +1096,18 @@
             <deepLink
                 android:id="@+id/deepLinkDrumSequencer"
                 app:uri="@string/deeplink_drummer_settings" />
+                <action
+                    android:id="@+id/action_drummerSettings_to_drummerStudio"
+                    app:destination="@id/drummerStudio" />
+            </fragment>
+            <fragment
+                android:id="@+id/drummerStudio"
+                android:name="com.garethevans.church.opensongtablet.drummer.DrumStudioFragment"
+                android:label="DrummerStudio"
+                tools:layout="@layout/settings_drum_studio">
+                <deepLink
+                    android:id="@+id/deepLinkDrumStudio"
+                    app:uri="@string/deeplink_drummer_studio" />
             </fragment>
         </navigation>
         <fragment
@@ -1122,7 +1134,8 @@
                 android:id="@+id/midiFragment"
                 android:name="com.garethevans.church.opensongtablet.midi.MidiFragment"
                 android:label="settings_midi"
-                tools:layout="@layout/settings_midi">
+                tools:layout="@layout/settings_midi"
+                tools:targetApi="23">
                 <deepLink
                     android:id="@+id/deepLinkMidi"
                     app:uri="@string/deeplink_midi" />

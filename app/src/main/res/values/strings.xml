@@ -423,6 +423,7 @@
     <string name="deeplink_display" translatable="false">https://www.opensongapp.com/?p=display</string>
     <string name="deeplink_display_extra" translatable="false">https://www.opensongapp.com/?p=settings/display/extra</string>
     <string name="deeplink_drummer_settings" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummersettings</string>
+    <string name="deeplink_drummer_studio" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummerstudio</string>
     <string name="deeplink_edit" translatable="false">https://www.opensongapp.com/?p=settings/edit</string>
     <string name="deeplink_export" translatable="false">https://www.opensongapp.com/?p=settings/actions/export</string>
     <string name="deeplink_fonts" translatable="false">https://www.opensongapp.com/?p=settings/display/fonts</string>
@@ -497,7 +498,7 @@
     <string name="drawing">Drawing</string>
     <string name="drum">Drum</string>
     <string name="drum_crash">Crash</string>
-    <string name="drum_hat_closed">HiHat Closed</string>
+    <string name="drum_hat_closed">HiHat closed</string>
     <string name="drum_hat_open">HiHat open</string>
     <string name="drum_kick">Kick</string>
     <string name="drum_kit">Drum kit</string>

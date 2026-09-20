@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class DrummerFileBottomSheet extends BottomSheetCommon {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "DrummerFileBS";
     private DrumSequencerFragment drumSequencerFragment;
     private MainActivityInterface mainActivityInterface;
@@ -140,11 +141,19 @@ public class DrummerFileBottomSheet extends BottomSheetCommon {
         } else {
             String filenameToLoad = mainActivityInterface.getDrumViewModel().getDrummer().
                     getFilenameFromNiceName(myView.loadFile.getText().toString());
-            Log.d(TAG,"filenameToLoad:"+filenameToLoad);
+
+            // 1. Load the file into ViewModel and Drummer engine
             mainActivityInterface.getDrumViewModel().getDrummer().loadDrummerFile(filenameToLoad);
-            mainActivityInterface.getDrumViewModel().getDrummer().updateActiveMap();
+
+            // 2. Ensure timing and engine maps are fully re-synced
             mainActivityInterface.getDrumViewModel().updateDrummerAndTimer();
-            drumSequencerFragment.updateViews();
+            mainActivityInterface.getDrumViewModel().getDrummer().updateActiveMap();
+
+            // 3. 💡 CRITICAL: Force the sequencer fragment's adapter to refresh its view bounds and data
+            if (drumSequencerFragment != null) {
+                drumSequencerFragment.updateViews();
+            }
+
             dismiss();
         }
     }

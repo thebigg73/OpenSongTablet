@@ -32,6 +32,9 @@ public class DrumPatternBuilder {
             java.util.Arrays.fill(track, 0);
         }
 
+        // Default author
+        pattern.setAuthor("OpenSongApp");
+
         // Make sure all values are positive
         if (beats>-1 && divisions>-1) {
             // 1. Build Base Patterns

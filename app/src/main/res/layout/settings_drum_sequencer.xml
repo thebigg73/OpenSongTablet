@@ -115,6 +115,14 @@
                 app:myFabSize="mini"
                 android:padding="8dp"
                 android:src="@drawable/song_add" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                android:id="@+id/webBrowser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:myFabSize="mini"
+                android:padding="8dp"
+                android:src="@drawable/web" />
         </LinearLayout>
     </HorizontalScrollView>
 

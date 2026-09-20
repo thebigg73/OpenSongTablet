@@ -58,6 +58,10 @@ public class Drummer {
 
     public void setPattern(DrumPatternJson pattern) {
         this.currentPattern = pattern;
+        updateActiveMap();
+    }
+    public DrumPatternJson getPattern() {
+        return currentPattern;
     }
 
     private void handleCountIn(int stepInBar, int stepsPerBar, int stepsPerPulse) {
@@ -171,7 +175,6 @@ public class Drummer {
         if (activeMap == null) return;
 
         String cajonPrefix = getCajonPrefixIfNeeded();
-
         for (Map.Entry<String, int[]> entry : activeMap.entrySet()) {
             int velocity = entry.getValue()[stepInBar];
             if (velocity > 0) {
@@ -305,32 +308,33 @@ public class Drummer {
     public void loadDrummerFile(String filename) {
         if (filename!=null && !filename.isEmpty() && !filename.equals(".json")) {
             try {
-                // Get the original bpm as this isn't saved in the drummer file
                 int bpm = mainActivityInterface.getDrumViewModel().getThisBpm();
-
-                // 1. Get the URI for the file
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", filename);
-
-                // 2. Read the JSON string from the stream
                 String jsonString = mainActivityInterface.getStorageAccess().readTextFileToString(
                         mainActivityInterface.getStorageAccess().getInputStream(uri));
 
                 if (jsonString != null && !jsonString.isEmpty()) {
-                    // 3. Deserialize using the global Gson instance
                     DrumPatternJson pattern = MainActivity.gson.fromJson(jsonString, DrumPatternJson.class);
 
-                    // 4. Update the ViewModel
+                    // 1. Update ViewModel
                     mainActivityInterface.getDrumViewModel().setDrumPatternJson(pattern);
                     mainActivityInterface.getDrumViewModel().setCurrentPattern(pattern);
+
+                    // 2. Explicitly bind pattern to Drummer engine instance
+                    this.setPattern(pattern);
+
+                    // 3. Update timing values
                     mainActivityInterface.getDrumViewModel().updateAllTimingValues(pattern.getBeats(), pattern.getDivisions(), bpm);
 
                     mainActivityInterface.getDrumViewModel().stopDrummer();
-                    updateActiveMap();
+
+                    // 4. 💡 FORCE clear and re-bind active section map to the new pattern instance
+                    this.activeSection = DrumSection.MAIN; // Reset to main or current section
+                    updateActiveMap(); // This forces activeMap = currentPattern.getMainPattern() of the NEW object
 
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error loading custom drum pattern: " + filename, e);
-                // Fallback to default if loading fails
                 mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
             }
         }
