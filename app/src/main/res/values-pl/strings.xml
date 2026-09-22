@@ -186,6 +186,8 @@
     <string name="capo_fret">Próg kapo</string>
     <string name="capo_hide">Automatycznie ukryj kapo</string>
     <string name="capo_style">Próg kapo jako numer</string>
+    <string name="capture_device_audio">Przechwytywanie dźwięku z urządzenia</string>
+    <string name="capture_device_audio_full_info">Analizuje dźwięk urządzenia lokalnie w czasie rzeczywistym. Dźwięk nie jest nagrywany ani przechowywany.</string>
     <string name="cast_info_string">OpenSongApp używa duplikowania ekranu do wyświetlania na drugim ekranie. Jeśli aplikacja nie może otworzyć strony ustawień przesyłania pokazującej dostępne urządzenia, musisz ręcznie rozpocząć dublowanie ekranu na urządzeniu przed uruchomieniem OpenSongApp. Aplikacja użyje podłączonego ekranu</string>
     <string name="category">Kategoria</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Wybierz tło wideo 2</string>
     <string name="chord_capo_display">Jeśli piosenka ma akordy kapo, które akordy powinny być pokazane?</string>
     <string name="chord_color">Czcionka akordów</string>
+    <string name="chord_detection">Wykrywanie akordów</string>
+    <string name="chord_detection_info">Zezwól aplikacji na wyświetlanie nazwy dowolnego akordu, który usłyszy</string>
     <string name="chord_display">Styl wyświetlania akordów</string>
     <string name="chord_fingering">Palcowanie akordów</string>
     <string name="chord_fingering_inline">Pokaż palcowanie akordów w utworze</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Ustawienia autoskalowania i skalowanie sekcji</string>
     <string name="score">Wynik</string>
     <string name="screen">Ekran</string>
+    <string name="screen_recorder">Rejestrator ekranu</string>
+    <string name="screen_recorder_disclosure">Aby skorzystać z tej funkcji, musisz zezwolić aplikacji OpenSongApp na nagrywanie całego ekranu.</string>
+    <string name="screen_recorder_info">Ta funkcja nagra cały Twój ekran i umożliwi Ci udostępnienie filmu ilustrującego problem, który napotykasz</string>
+    <string name="screen_recorder_started">Uruchomiono rejestrator ekranu</string>
     <string name="screenshot">Zrzut ekranu</string>
     <string name="screenshot_info">Zrzut ekranu przedstawiający wygląd utworu na Twoim urządzeniu (w zależności od motywu aplikacji)</string>
     <string name="scripture">Pismo</string>

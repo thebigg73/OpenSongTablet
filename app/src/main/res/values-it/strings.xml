@@ -186,6 +186,8 @@
     <string name="capo_fret">Posizione del capotasto</string>
     <string name="capo_hide">Nascondi automaticamente il capotasto</string>
     <string name="capo_style">Posizione del capotasto come numero</string>
+    <string name="capture_device_audio">Acquisizione audio del dispositivo</string>
+    <string name="capture_device_audio_full_info">Analizza l\'audio del dispositivo localmente e in tempo reale. Nessun audio viene registrato o memorizzato.</string>
     <string name="cast_info_string">Visualizzare OpenSongApp su un secondo schermo utilizzando il mirroring. Se l\'app non è in grado di aprire la pagina delle impostazioni di trasmissione che mostra i dispositivi disponibili, sarà necessario avviare manualmente il mirroring dello schermo sul dispositivo prima di eseguire OpenSongApp. L\'app utilizzerà quindi lo schermo connesso</string>
     <string name="category">Categoria</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Scegliere il video di sfondo 2</string>
     <string name="chord_capo_display">Se in un brano viene usato il capotasto, quali accordi dovrebbero essere visualizzati?</string>
     <string name="chord_color">Colore di visualizzazione degli accordi</string>
+    <string name="chord_detection">Rilevamento accordi</string>
+    <string name="chord_detection_info">Consenti all\'app di mostrarti il ​​nome di qualsiasi accordo che riesce a sentire.</string>
     <string name="chord_display">Stile di visualizzazione degli accordi</string>
     <string name="chord_fingering">Diteggiatura degli accordi</string>
     <string name="chord_fingering_inline">Mostra le diteggiature degli accordi nel brano</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Impostazioni per il ridimensionamento automatico e ridimensionamento delle sezioni</string>
     <string name="score">Punto</string>
     <string name="screen">Schermo</string>
+    <string name="screen_recorder">Registratore dello schermo</string>
+    <string name="screen_recorder_disclosure">Per utilizzare questa funzione, è necessario consentire a OpenSongApp di registrare l\'intero schermo.</string>
+    <string name="screen_recorder_info">Questa funzione registrerà l\'intero schermo e ti permetterà di condividere un video per illustrare un problema che stai riscontrando.</string>
+    <string name="screen_recorder_started">Avviata la registrazione dello schermo</string>
     <string name="screenshot">Immagine dello schermo</string>
     <string name="screenshot_info">Una fotografia di come appare il brano sul tuo dispositivo (in base al tema dell\'app)</string>
     <string name="scripture">Sacre scritture</string>

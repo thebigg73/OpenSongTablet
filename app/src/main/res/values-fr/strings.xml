@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo frette</string>
     <string name="capo_hide">Masquer automatiquement le capodastre</string>
     <string name="capo_style">Capo fret en chiffres</string>
+    <string name="capture_device_audio">périphérique de capture audio</string>
+    <string name="capture_device_audio_full_info">Analyse localement et en temps réel le flux audio de l\'appareil. Aucun enregistrement ni stockage audio n\'est effectué.</string>
     <string name="cast_info_string">OpenSongApp utilise la mise en miroir d’écran pour afficher sur un deuxième écran. Si l’application ne parvient pas à ouvrir votre page de paramètres de diffusion affichant les appareils disponibles, vous devrez démarrer manuellement la mise en miroir de l’écran sur votre appareil avant d’exécuter OpenSongApp. L’application utilisera alors l’écran connecté</string>
     <string name="category">Catégorie</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Choisissez l\'arrière plan vidéo 2</string>
     <string name="chord_capo_display">Si une chanson a des accords de capodastre, quels accords doivent être affichés ?</string>
     <string name="chord_color">Police des accords</string>
+    <string name="chord_detection">Détection d\'accords</string>
+    <string name="chord_detection_info">Autorisez l\'application à vous afficher le nom de chaque accord qu\'elle peut entendre.</string>
     <string name="chord_display">Style d\'affichage des accords</string>
     <string name="chord_fingering">Doigté d\'accord</string>
     <string name="chord_fingering_inline">Afficher les doigtés d\'accords dans la chanson</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Paramètres de mise à l\'échelle automatique et mise à l\'échelle de la section</string>
     <string name="score">Score</string>
     <string name="screen">Écran</string>
+    <string name="screen_recorder">Enregistreur d\'écran</string>
+    <string name="screen_recorder_disclosure">Pour utiliser cette fonctionnalité, vous devrez autoriser OpenSongApp à accéder à l\'enregistrement de votre écran entier.</string>
+    <string name="screen_recorder_info">Cela enregistrera l\'intégralité de votre écran et vous permettra de partager une vidéo pour illustrer un problème que vous rencontrez.</string>
+    <string name="screen_recorder_started">L\'enregistreur d\'écran a démarré.</string>
     <string name="screenshot">Capture d’écran</string>
     <string name="screenshot_info">Une capture d\'écran de la façon dont la chanson apparaît sur votre appareil (en fonction du thème de votre application)</string>
     <string name="scripture">Texte sacré</string>

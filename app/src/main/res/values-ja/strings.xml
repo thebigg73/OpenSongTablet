@@ -186,6 +186,8 @@
     <string name="capo_fret">カポフレット</string>
     <string name="capo_hide">カポを自動非表示</string>
     <string name="capo_style">カポは数字でフレットする</string>
+    <string name="capture_device_audio">キャプチャデバイスの音声</string>
+    <string name="capture_device_audio_full_info">デバイスの音声をリアルタイムでローカルに分析します。音声は録音または保存されません。</string>
     <string name="cast_info_string">画面ミラーリングを使用してセカンドスクリーンに表示するOpenSongApp。アプリがキャスト設定ページを開くことができず、使用可能なデバイスを表示できない場合は、OpenSongAppを実行する前に、デバイスで画面ミラーリングを手動で開始する必要があります。その後、アプリは接続された画面を使用します</string>
     <string name="category">カテゴリー</string>
     <string name="cavaquinho">カバキーニョ</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">背景ビデオ2を選択してください</string>
     <string name="chord_capo_display">曲にカポコードがある場合、どのコードを表示する必要がありますか？</string>
     <string name="chord_color">和音フォント</string>
+    <string name="chord_detection">コード検出</string>
+    <string name="chord_detection_info">アプリが聞き取ったコードの名前を表示することを許可してください。</string>
     <string name="chord_display">コード表示スタイル</string>
     <string name="chord_fingering">コード運指</string>
     <string name="chord_fingering_inline">曲内のコードの運指を表示する</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">自動スケーリング設定とセクションスケーリング</string>
     <string name="score">スコア</string>
     <string name="screen">画面</string>
+    <string name="screen_recorder">スクリーンレコーダー</string>
+    <string name="screen_recorder_disclosure">この機能を使用するには、OpenSongAppが画面全体を録画できるようにアクセス権限を与える必要があります。</string>
+    <string name="screen_recorder_info">これにより画面全体が録画され、発生している問題を説明するビデオを共有できるようになります。</string>
+    <string name="screen_recorder_started">スクリーンレコーダーが開始されました</string>
     <string name="screenshot">スクリーンショット</string>
     <string name="screenshot_info">曲がデバイス上でどのように表示されるかを示すスクリーンショット (アプリのテーマに基づく)</string>
     <string name="scripture">聖書</string>

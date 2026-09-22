@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo traste</string>
     <string name="capo_hide">Ocultar automaticamente</string>
     <string name="capo_style">Capo fret como numeral</string>
+    <string name="capture_device_audio">Áudio do dispositivo de captura</string>
+    <string name="capture_device_audio_full_info">Analisa o áudio do dispositivo localmente em tempo real. Nenhum áudio é gravado ou armazenado.</string>
     <string name="cast_info_string">OpenSongApp używa kopii lustrzanej ekranu do wyświetlania na drugim ekranie. Jeśli aplikacja nie może otworzyć strony ustawień przesyłania pokazującej dostępne urządzenia, musisz ręcznie rozpocząć dublowanie ekranu na urządzeniu przed uruchomieniem OpenSongApp. Aplikacja użyje podłączonego ekranu</string>
     <string name="category">Categoria</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Escolha o fundo de vídeo 2</string>
     <string name="chord_capo_display">Se uma música tem acordes de capo, quais acordes devem ser mostrados?</string>
     <string name="chord_color">Fonte Chords</string>
+    <string name="chord_detection">Detecção de acordes</string>
+    <string name="chord_detection_info">Permita que o aplicativo mostre o nome de qualquer acorde que ele consiga ouvir.</string>
     <string name="chord_display">Estilo de exibição de acordes</string>
     <string name="chord_fingering">Dedilhado de acordes</string>
     <string name="chord_fingering_inline">Mostrar dedilhados de acordes na música</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Configurações de dimensionamento automático e dimensionamento de seção</string>
     <string name="score">Pontuação</string>
     <string name="screen">Tela</string>
+    <string name="screen_recorder">Gravador de tela</string>
+    <string name="screen_recorder_disclosure">Para usar esse recurso, você precisará permitir que o OpenSongApp grave sua tela inteira.</string>
+    <string name="screen_recorder_info">Isso gravará toda a sua tela e permitirá que você compartilhe um vídeo para ilustrar um problema que esteja enfrentando.</string>
+    <string name="screen_recorder_started">O gravador de tela foi iniciado.</string>
     <string name="screenshot">Captura de tela</string>
     <string name="screenshot_info">Uma captura de tela de como a música aparece no seu dispositivo (com base no tema do seu aplicativo)</string>
     <string name="scripture">Bíblia</string>

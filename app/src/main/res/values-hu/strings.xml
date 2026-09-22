@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo bosszankodik</string>
     <string name="capo_hide">Capo automatikus elrejtése</string>
     <string name="capo_style">Capo megdöbbenés számmal</string>
+    <string name="capture_device_audio">Eszközhang rögzítése</string>
+    <string name="capture_device_audio_full_info">Valós időben elemzi az eszköz hangját helyben. Nem rögzít és nem tárol hangot.</string>
     <string name="cast_info_string">OpenSongApp képernyőtükrözést használ egy második képernyőn való megjelenítéshez. Ha az alkalmazás nem tudja megnyitni az elérhető eszközöket megjelenítő átküldési beállítások oldalt, akkor az OpenSongApp futtatása előtt manuálisan kell elindítania a képernyőtükrözést az eszközön. Az alkalmazás ezután a csatlakoztatott képernyőt használja</string>
     <string name="category">Kategória</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Válassza ki a háttér video 2</string>
     <string name="chord_capo_display">Ha egy dalnak vannak capo akkordjai, melyik akkordokat kell megjeleníteni?</string>
     <string name="chord_color">Chords font</string>
+    <string name="chord_detection">Akkordészlelés</string>
+    <string name="chord_detection_info">Engedélyezd az alkalmazásnak, hogy megmutassa az általa hallott akkordok nevét</string>
     <string name="chord_display">Akkord megjelenítési stílusa</string>
     <string name="chord_fingering">Akkordfogás</string>
     <string name="chord_fingering_inline">Mutasd meg az akkordfogásokat a dalban</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Automatikus méretezési beállítások és szakaszméretezés</string>
     <string name="score">Pontszám</string>
     <string name="screen">Képernyő</string>
+    <string name="screen_recorder">Képernyőrögzítő</string>
+    <string name="screen_recorder_disclosure">A funkció használatához engedélyezned kell az OpenSongApp számára a teljes képernyő rögzítését.</string>
+    <string name="screen_recorder_info">Ez rögzíti a teljes képernyődet, és lehetővé teszi egy videó megosztását, amely illusztrálja a felmerült problémát.</string>
+    <string name="screen_recorder_started">Képernyőrögzítő elindítva</string>
     <string name="screenshot">Pillanatkép</string>
     <string name="screenshot_info">Képernyőkép arról, hogyan jelenik meg a dal az eszközön (az alkalmazás témája alapján)</string>
     <string name="scripture">Szentírás</string>

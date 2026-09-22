@@ -186,6 +186,8 @@
     <string name="capo_fret">卡波烦恼</string>
     <string name="capo_hide">自动隐藏变调夹</string>
     <string name="capo_style">投诉警察课担心数字</string>
+    <string name="capture_device_audio">音频采集设备</string>
+    <string name="capture_device_audio_full_info">实时分析设备本地音频。不会录制或存储任何音频。</string>
     <string name="cast_info_string">OpenSongApp使用屏幕镜像显示在第二个屏幕上。如果应用程序无法打开显示可用设备的投射设置页面，则必须在运行 OpenSongApp 之前在设备上手动启动屏幕镜像。然后，该应用程序将使用连接的屏幕</string>
     <string name="category">类别</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">选择背景视频2</string>
     <string name="chord_capo_display">如果一首歌有变调夹和弦，应该显示哪些和弦？</string>
     <string name="chord_color">和弦字体</string>
+    <string name="chord_detection">和弦检测</string>
+    <string name="chord_detection_info">允许应用显示它能听到的任何和弦的名称。</string>
     <string name="chord_display">和弦显示样式</string>
     <string name="chord_fingering">和弦指法</string>
     <string name="chord_fingering_inline">显示歌曲中的和弦指法</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">自动缩放设置和截面缩放</string>
     <string name="score">分数</string>
     <string name="screen">屏幕</string>
+    <string name="screen_recorder">屏幕录制</string>
+    <string name="screen_recorder_disclosure">要使用此功能，您需要允许 OpenSongApp 访问并录制您的整个屏幕。</string>
+    <string name="screen_recorder_info">这将录制您的整个屏幕，并允许您分享视频来说明您遇到的问题。</string>
+    <string name="screen_recorder_started">屏幕录制程序已启动</string>
     <string name="screenshot">截图</string>
     <string name="screenshot_info">歌曲在您的设备上的显示方式的屏幕截图（基于您的应用主题）</string>
     <string name="scripture">圣经</string>

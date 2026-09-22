@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo pražec</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo se chvěje jako číslice</string>
+    <string name="capture_device_audio">Zachycování zvuku zařízení</string>
+    <string name="capture_device_audio_full_info">Analyzuje zvuk zařízení lokálně v reálném čase. Žádný zvuk se nezaznamenává ani neukládá.</string>
     <string name="cast_info_string">OpenSongApp pomocí zrcadlení obrazovky pro zobrazení na druhé obrazovce. Pokud aplikace nemůže otevřít stránku nastavení obsazení zobrazující dostupná zařízení, budete muset ručně spustit zrcadlení obrazovky na vašem zařízení před spuštěním OpenSongApp. Aplikace pak použije připojenou obrazovku</string>
     <string name="category">Kategorie</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Vyberte si pozadí video 2</string>
     <string name="chord_capo_display">Pokud má skladba akordy capo, které akordy by se měly zobrazit?</string>
     <string name="chord_color">Akordy písmo</string>
+    <string name="chord_detection">Detekce akordů</string>
+    <string name="chord_detection_info">Povolte aplikaci zobrazit vám název libovolného akordu, který slyší</string>
     <string name="chord_display">Styl zobrazení akordů</string>
     <string name="chord_fingering">Prstění akordů</string>
     <string name="chord_fingering_inline">Zobrazit akordové prstoklady v písni</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Nastavení automatického měřítka a měřítka sekcí</string>
     <string name="score">Skóre</string>
     <string name="screen">Obrazovka</string>
+    <string name="screen_recorder">Záznamník obrazovky</string>
+    <string name="screen_recorder_disclosure">Abyste mohli tuto funkci používat, musíte aplikaci OpenSongApp povolit přístup k nahrávání celé obrazovky.</string>
+    <string name="screen_recorder_info">Tím se nahraje celá obrazovka a vy se s ní můžete podělit o video, které ilustruje váš problém.</string>
+    <string name="screen_recorder_started">Spuštěn záznamník obrazovky</string>
     <string name="screenshot">Snímek obrazovky</string>
     <string name="screenshot_info">Snímek obrazovky, jak skladba vypadá na vašem zařízení (na základě motivu vaší aplikace)</string>
     <string name="scripture">Písmo svaté</string>

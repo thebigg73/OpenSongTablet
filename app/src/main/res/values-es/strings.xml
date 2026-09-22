@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo traste</string>
     <string name="capo_hide">Cejilla de ocultación automática</string>
     <string name="capo_style">Capo traste como numeral</string>
+    <string name="capture_device_audio">Captura de audio del dispositivo</string>
+    <string name="capture_device_audio_full_info">Analiza el audio del dispositivo localmente y en tiempo real. No se graba ni se almacena ningún audio.</string>
     <string name="cast_info_string">OpenSongApp usa la duplicación de pantalla para mostrar en una segunda pantalla. Si la aplicación no puede abrir la página de configuración de transmisión que muestra los dispositivos disponibles, deberá iniciar manualmente la duplicación de pantalla en su dispositivo antes de ejecutar OpenSongApp. La aplicación utilizará la pantalla conectada</string>
     <string name="category">Categoría</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Elija el fondo de vídeo 2</string>
     <string name="chord_capo_display">Si una canción tiene acordes capo, ¿qué acordes se deben mostrar?</string>
     <string name="chord_color">Acordes de la fuente</string>
+    <string name="chord_detection">Detección de acordes</string>
+    <string name="chord_detection_info">Permite que la aplicación te muestre el nombre de cualquier acorde que pueda escuchar.</string>
     <string name="chord_display">Estilo de visualización de acordes</string>
     <string name="chord_fingering">Digitación de acordes</string>
     <string name="chord_fingering_inline">Mostrar digitaciones de acordes en la canción.</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Ajustes de escalado automático y escalado de secciones</string>
     <string name="score">Puntaje</string>
     <string name="screen">Pantalla</string>
+    <string name="screen_recorder">grabador de pantalla</string>
+    <string name="screen_recorder_disclosure">Para utilizar esta función, deberá otorgar a OpenSongApp acceso para grabar toda su pantalla.</string>
+    <string name="screen_recorder_info">Esto grabará toda tu pantalla y te permitirá compartir un video para ilustrar un problema que estás teniendo.</string>
+    <string name="screen_recorder_started">Se ha iniciado la grabación de pantalla.</string>
     <string name="screenshot">Captura de pantalla</string>
     <string name="screenshot_info">Una captura de pantalla de cómo aparece la canción en su dispositivo (según el tema de su aplicación)</string>
     <string name="scripture">Sagrada Escritura</string>

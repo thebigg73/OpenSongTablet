@@ -186,6 +186,8 @@
     <string name="capo_fret">Capodaster</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo se smije kao brojčanik</string>
+    <string name="capture_device_audio">Zabeleži zvuk uređaja</string>
+    <string name="capture_device_audio_full_info">Analizira zvuk uređaja lokalno u realnom vremenu. Nije snimljen ni sačuvan nijedan zvuk.</string>
     <string name="cast_info_string">OpenSongApp koristi preslikavanje ekrana za prikazivanje na drugom ekranu. Ako aplikacija ne može da otvori stranicu sa postavkama gipsa koja prikazuje dostupne uređaje, moraćete ručno da započnete preslikavanje ekrana na uređaju pre nego što pokrenete OpenSongApp. Aplikacija će zatim koristiti povezani ekran</string>
     <string name="category">Kategorija</string>
     <string name="cavaquinho">Cavakuinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Odabrati pozadinski video 2</string>
     <string name="chord_capo_display">Ako pesma ima kapo akorde, koje akorde treba prikazati?</string>
     <string name="chord_color">Font akroda</string>
+    <string name="chord_detection">Detekcija akorda</string>
+    <string name="chord_detection_info">Dozvoli aplikaciji da ti pokaže ime svakog akorda koji može da čuje</string>
     <string name="chord_display">Stil prikaza akorda</string>
     <string name="chord_fingering">Ukazivanje akorda</string>
     <string name="chord_fingering_inline">Pokažite akord prstima u pesmi</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Podešavanja automatskog skaliranja i skaliranje sekcija</string>
     <string name="score">Rezultat</string>
     <string name="screen">Ekranu</string>
+    <string name="screen_recorder">Program za snimanje ekrana</string>
+    <string name="screen_recorder_disclosure">Da biste koristili ovu funkciju, moraćete da dozvolite OpenSongApp pristup kako bi mogao da snima ceo vaš ekran.</string>
+    <string name="screen_recorder_info">Ovo će snimiti ceo vaš ekran i omogućiti vam da delite video kako biste ilustrovali problem koji imate</string>
+    <string name="screen_recorder_started">Snimanje ekrana je počelo</string>
     <string name="screenshot">Snimak ekrana</string>
     <string name="screenshot_info">Snimak ekrana kako se pesma pojavljuje na vašem uređaju (na osnovu teme aplikacije)</string>
     <string name="scripture">Skripta</string>

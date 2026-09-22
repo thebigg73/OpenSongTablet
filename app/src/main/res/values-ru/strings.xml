@@ -186,6 +186,8 @@
     <string name="capo_fret">Лад капо</string>
     <string name="capo_hide">Автоскрытие капо</string>
     <string name="capo_style">Обозначение лада капо цифрой</string>
+    <string name="capture_device_audio">Захват звука с устройства</string>
+    <string name="capture_device_audio_full_info">Анализирует звук устройства локально в режиме реального времени. Запись и сохранение звука не производится.</string>
     <string name="cast_info_string">OpenSongApp использует зеркальное отображение главного экрана на втором экране. Если приложение не может открыть страницу настроек трансляции с доступными устройствами, вам придется вручную запустить зеркальное отображение экрана на вашем устройстве перед запуском OpenSongApp. При этом приложение будет использовать подключенный экран</string>
     <string name="category">Kатегория</string>
     <string name="cavaquinho">Кавакиньо</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Выбор фонового видео 2</string>
     <string name="chord_capo_display">Если в песне есть капо аккорды, какие из аккордов нужно показать?</string>
     <string name="chord_color">Шрифт аккордов</string>
+    <string name="chord_detection">Обнаружение аккордов</string>
+    <string name="chord_detection_info">Разрешите приложению отображать название любого аккорда, который оно может распознать.</string>
     <string name="chord_display">стиль отображения аккордов</string>
     <string name="chord_fingering">Аппликатура аккордов</string>
     <string name="chord_fingering_inline">Покажите аппликатуры аккордов в песне</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Настройки автомасштабирования и масштабирования раздела</string>
     <string name="score">Счет</string>
     <string name="screen">Экран</string>
+    <string name="screen_recorder">Запись экрана</string>
+    <string name="screen_recorder_disclosure">Для использования этой функции вам потребуется разрешить OpenSongApp доступ к записи всего экрана.</string>
+    <string name="screen_recorder_info">Это позволит записать весь экран и поделиться видео, иллюстрирующим возникшую проблему.</string>
+    <string name="screen_recorder_started">Запущена программа записи экрана.</string>
     <string name="screenshot">Скриншот</string>
     <string name="screenshot_info">Снимок экрана (скриншот), в том же виде, как песня отображается на вашем устройстве (в зависимости от темы).</string>
     <string name="scripture">Cвященное писание</string>

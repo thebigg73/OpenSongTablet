@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo Fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret som tal</string>
+    <string name="capture_device_audio">Spela in ljud från enheten</string>
+    <string name="capture_device_audio_full_info">Analyserar enhetens ljud lokalt i realtid. Inget ljud spelas in eller lagras.</string>
     <string name="cast_info_string">OpenSongApp använder skärmspegling för att visa på en andra skärm. Om appen inte kan öppna din cast-inställningssida som visar tillgängliga enheter måste du manuellt starta skärmspegling på din enhet innan du kör OpenSongApp. Appen använder sedan den anslutna skärmen</string>
     <string name="category">Kategori</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Välj bakgrunds video 2</string>
     <string name="chord_capo_display">Om en låt har capo-ackord, vilka ackord ska visas?</string>
     <string name="chord_color">Ackord typsnitt</string>
+    <string name="chord_detection">Ackorddetektering</string>
+    <string name="chord_detection_info">Tillåt att appen visar namnet på alla ackord den kan höra</string>
     <string name="chord_display">Ackordvisningsstil</string>
     <string name="chord_fingering">Ackord fingersättning</string>
     <string name="chord_fingering_inline">Visa ackordsfingersättningar i låten</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Autoskalningsinställningar och sektionsskalning</string>
     <string name="score">Göra</string>
     <string name="screen">Skärm</string>
+    <string name="screen_recorder">Skärminspelare</string>
+    <string name="screen_recorder_disclosure">För att kunna använda den här funktionen måste du ge OpenSongApp åtkomst för att spela in hela din skärm.</string>
+    <string name="screen_recorder_info">Detta spelar in hela din skärm och låter dig dela en video för att illustrera ett problem du har.</string>
+    <string name="screen_recorder_started">Skärminspelaren har startats</string>
     <string name="screenshot">Skärmdump</string>
     <string name="screenshot_info">En skärmdump av hur låten visas på din enhet (baserat på ditt app-tema)</string>
     <string name="scripture">Skriften</string>

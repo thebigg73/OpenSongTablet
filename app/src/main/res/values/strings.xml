@@ -206,6 +206,8 @@
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>
+    <string name="capture_device_audio">Capture device audio</string>
+    <string name="capture_device_audio_full_info">Analyzes device audio locally in real time. No audio is recorded or stored.</string>
     <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable to open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category">Category</string>
@@ -234,6 +236,8 @@
     <string name="choose_video2">Choose background video 2</string>
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
     <string name="chord_color">Chords font</string>
+    <string name="chord_detection">Chord detection</string>
+    <string name="chord_detection_info">Allow the app to show you the name of any chord it can hear</string>
     <string name="chord_display">Chord display style</string>
     <string name="chord_fingering">Chord fingering</string>
     <string name="chord_fingering_inline">Show chord fingerings in the song</string>
@@ -1272,6 +1276,10 @@
     <string name="scaling_info">Autoscale settings and section scaling</string>
     <string name="score">Score</string>
     <string name="screen">Screen</string>
+    <string name="screen_recorder">Screen recorder</string>
+    <string name="screen_recorder_disclosure">In order to use this feature, you will need to allow OpenSongApp access to record your entire screen.</string>
+    <string name="screen_recorder_info">This will record your entire screen and allow you to share a video to illustrate an issue you are having</string>
+    <string name="screen_recorder_started">Screen recorder started</string>
     <string name="screenshot">Screenshot</string>
     <string name="screenshot_info">A screenshot of how the song appears on your device (based on your app theme)</string>
     <string name="scripture">Scripture</string>

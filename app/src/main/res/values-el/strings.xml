@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Αυτόματη απόκρυψη capo</string>
     <string name="capo_style">Capo fret ως αριθμητικό</string>
+    <string name="capture_device_audio">Καταγραφή ήχου συσκευής</string>
+    <string name="capture_device_audio_full_info">Αναλύει τον ήχο της συσκευής τοπικά σε πραγματικό χρόνο. Δεν καταγράφεται ούτε αποθηκεύεται ήχος.</string>
     <string name="cast_info_string">OpenSongApp χρησιμοποιώντας κατοπτρισμό οθόνης για εμφάνιση σε δεύτερη οθόνη. Εάν η εφαρμογή δεν μπορεί να ανοίξει τη σελίδα ρυθμίσεων μετάδοσης που εμφανίζει τις διαθέσιμες συσκευές, θα πρέπει να ξεκινήσετε με μη αυτόματο τρόπο τον κατοπτρισμό οθόνης στη συσκευή σας πριν εκτελέσετε το OpenSongApp. Στη συνέχεια, η εφαρμογή θα χρησιμοποιήσει τη συνδεδεμένη οθόνη</string>
     <string name="category">Κατηγορία</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Επιλογή βίντεο φόντου 2</string>
     <string name="chord_capo_display">Αν ένα τραγούδι έχει συγχορδίες capo, ποιες συγχορδίες πρέπει να εμφανίζονται;</string>
     <string name="chord_color">Γραμματοσειρά συγχορδιών</string>
+    <string name="chord_detection">Ανίχνευση συγχορδιών</string>
+    <string name="chord_detection_info">Επιτρέψτε στην εφαρμογή να σας δείξει το όνομα οποιασδήποτε συγχορδίας που μπορεί να ακούσει</string>
     <string name="chord_display">Στυλ εμφάνισης συγχορδιών</string>
     <string name="chord_fingering">Χορδές</string>
     <string name="chord_fingering_inline">Εμφάνιση συγχορδιών στο τραγούδι</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Ρυθμίσεις αυτόματης κλίμακας και κλιμάκωση τομών</string>
     <string name="score">Σκορ</string>
     <string name="screen">Οθόνη</string>
+    <string name="screen_recorder">Εγγραφή οθόνης</string>
+    <string name="screen_recorder_disclosure">Για να χρησιμοποιήσετε αυτήν τη λειτουργία, θα πρέπει να επιτρέψετε στο OpenSongApp πρόσβαση για να εγγράψει ολόκληρη την οθόνη σας.</string>
+    <string name="screen_recorder_info">Αυτό θα καταγράψει ολόκληρη την οθόνη σας και θα σας επιτρέψει να κοινοποιήσετε ένα βίντεο για να δείξετε ένα πρόβλημα που αντιμετωπίζετε.</string>
+    <string name="screen_recorder_started">Η εγγραφή οθόνης ξεκίνησε.</string>
     <string name="screenshot">Στιγμιότυπο οθόνης</string>
     <string name="screenshot_info">Ένα στιγμιότυπο οθόνης του τρόπου με τον οποίο εμφανίζεται το τραγούδι στη συσκευή σας (με βάση το θέμα της εφαρμογής σας)</string>
     <string name="scripture">Scripture</string>

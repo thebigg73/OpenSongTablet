@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo Bund</string>
     <string name="capo_hide">Kapodaster automatisch ausblenden</string>
     <string name="capo_style">Capo Büste als Ziffer</string>
+    <string name="capture_device_audio">Audioaufnahmegerät</string>
+    <string name="capture_device_audio_full_info">Analysiert die Audioausgabe des Geräts lokal in Echtzeit. Es werden keine Audiodaten aufgezeichnet oder gespeichert.</string>
     <string name="cast_info_string">OpenSongApp mit Bildschirmspiegelung, um auf einem zweiten Bildschirm angezeigt zu werden. Wenn die App nicht in der Lage ist, die Seite mit den Cast-Einstellungen zu öffnen, auf der die verfügbaren Geräte angezeigt werden, müssen Sie die Bildschirmspiegelung auf Ihrem Gerät manuell starten, bevor Sie OpenSongApp ausführen. Die App verwendet dann den verbundenen Bildschirm</string>
     <string name="category">Kategorie</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Hintergrundvideo 2 wählen</string>
     <string name="chord_capo_display">Wenn ein Song Capo-Akkorde hat, welche Akkorde sollen angezeigt werden?</string>
     <string name="chord_color">Schrift Akkorde</string>
+    <string name="chord_detection">Akkorderkennung</string>
+    <string name="chord_detection_info">Erlauben Sie der App, Ihnen den Namen jedes erkannten Akkords anzuzeigen.</string>
     <string name="chord_display">Chord-Anzeigestil</string>
     <string name="chord_fingering">Griffbilder</string>
     <string name="chord_fingering_inline">Akkordgriffe im Lied anzeigen</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Autoscale-Einstellungen und Abschnittsskalierung</string>
     <string name="score">Punktzahl</string>
     <string name="screen">Bildschirm</string>
+    <string name="screen_recorder">Bildschirmaufnahme</string>
+    <string name="screen_recorder_disclosure">Um diese Funktion nutzen zu können, müssen Sie OpenSongApp den Zugriff auf Ihren gesamten Bildschirm erlauben.</string>
+    <string name="screen_recorder_info">Dadurch wird Ihr gesamter Bildschirm aufgezeichnet und Sie können ein Video teilen, um ein Problem zu veranschaulichen.</string>
+    <string name="screen_recorder_started">Bildschirmaufnahme gestartet</string>
     <string name="screenshot">Screenshot</string>
     <string name="screenshot_info">Ein Screenshot davon, wie der Song auf Ihrem Gerät angezeigt wird (basierend auf Ihrem App-Thema)</string>
     <string name="scripture">Bibeltext</string>

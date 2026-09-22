@@ -186,6 +186,8 @@
     <string name="capo_fret">කපෝ fret</string>
     <string name="capo_hide">කපෝ ස්වයංක්‍රීයව සඟවන්න</string>
     <string name="capo_style">Capo fret ඉලක්කම් ලෙස</string>
+    <string name="capture_device_audio">උපාංග ශ්‍රව්‍ය ග්‍රහණය කරන්න</string>
+    <string name="capture_device_audio_full_info">උපාංග ශ්‍රව්‍යය තථ්‍ය කාලීනව දේශීයව විශ්ලේෂණය කරයි. කිසිදු ශ්‍රව්‍යයක් පටිගත කර හෝ ගබඩා කර නොමැත.</string>
     <string name="cast_info_string">OpenSongApp දෙවන තිරයක සංදර්ශන කිරීමට තිර දර්පණ භාවිතා කරයි.  පවතින උපාංග පෙන්වන ඔබගේ විකාශන සැකසුම් පිටුව විවෘත කිරීමට යෙදුමට නොහැකි නම්, OpenSongApp ධාවනය කිරීමට පෙර ඔබට ඔබගේ උපාංගයේ තිර දර්පණය අතින් ආරම්භ කිරීමට සිදුවේ.  යෙදුම පසුව සම්බන්ධිත තිරය භාවිතා කරනු ඇත</string>
     <string name="category">වර්ගය</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">පසුබිම් වීඩියෝව තෝරන්න 2</string>
     <string name="chord_capo_display">ගීතයක Capo chords තිබේ නම්, කුමන chords පෙන්විය යුතුද?</string>
     <string name="chord_color">කෝඩ්ස් අකුරු</string>
+    <string name="chord_detection">ස්වර නාද හඳුනාගැනීම</string>
+    <string name="chord_detection_info">යෙදුමට ඇසිය හැකි ඕනෑම ස්වරයක නමක් ඔබට පෙන්වීමට ඉඩ දෙන්න.</string>
     <string name="chord_display">ස්වර සංදර්ශක විලාසය</string>
     <string name="chord_fingering">Chord fingering</string>
     <string name="chord_fingering_inline">ගීතයේ ස්වර ඇඟිලි සලකුණු පෙන්වන්න</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">ස්වයංක්‍රීය පරිමාණ සැකසුම් සහ කොටස් පරිමාණය</string>
     <string name="score">ස්කෝර්</string>
     <string name="screen">තිරය</string>
+    <string name="screen_recorder">තිර රෙකෝඩරය</string>
+    <string name="screen_recorder_disclosure">මෙම විශේෂාංගය භාවිතා කිරීම සඳහා, ඔබ ඔබේ සම්පූර්ණ තිරය පටිගත කිරීමට OpenSongApp ප්‍රවේශයට ඉඩ දිය යුතුය.</string>
+    <string name="screen_recorder_info">මෙය ඔබගේ මුළු තිරයම පටිගත කර ඔබට ඇති ගැටලුවක් නිරූපණය කිරීම සඳහා වීඩියෝවක් බෙදා ගැනීමට ඉඩ සලසයි.</string>
+    <string name="screen_recorder_started">තිර රෙකෝඩරය ආරම්භ විය</string>
     <string name="screenshot">තිර රුවක්</string>
     <string name="screenshot_info">ගීතය ඔබගේ උපාංගයේ දිස්වන ආකාරය පිළිබඳ තිර රුවක් (ඔබේ යෙදුම් තේමාව මත පදනම්ව)</string>
     <string name="scripture">ශුද්ධ ලියවිල්ල</string>

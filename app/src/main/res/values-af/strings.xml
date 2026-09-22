@@ -186,6 +186,8 @@
     <string name="capo_fret">Capo kabbeling</string>
     <string name="capo_hide">Verberg kapo outomaties</string>
     <string name="capo_style">Capo fret as syfer</string>
+    <string name="capture_device_audio">Neem toestelklank op</string>
+    <string name="capture_device_audio_full_info">Analiseer toestelklank plaaslik intyds. Geen klank word opgeneem of gestoor nie.</string>
     <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
     <string name="category">kategorie</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -212,6 +214,8 @@
     <string name="choose_video2">Kies agtergrond video 2</string>
     <string name="chord_capo_display">As \'n liedjie capo-akkoorde het, watter akkoorde moet gewys word?</string>
     <string name="chord_color">Akkoorde font</string>
+    <string name="chord_detection">Akkoordopsporing</string>
+    <string name="chord_detection_info">Laat die program toe om die naam van enige akkoord wat dit kan hoor, vir jou te wys</string>
     <string name="chord_display">Akkoordvertoningstyl</string>
     <string name="chord_fingering">Akkoord vinger</string>
     <string name="chord_fingering_inline">Wys akkoordvingersettings in die liedjie</string>
@@ -1078,6 +1082,10 @@
     <string name="scaling_info">Outoskaal instellings en seksie skaal</string>
     <string name="score">Telling</string>
     <string name="screen">Skerm</string>
+    <string name="screen_recorder">Skermopnemer</string>
+    <string name="screen_recorder_disclosure">Om hierdie funksie te gebruik, moet jy OpenSongApp toegang gee om jou hele skerm op te neem.</string>
+    <string name="screen_recorder_info">Dit sal jou hele skerm opneem en jou toelaat om \'n video te deel om \'n probleem wat jy ondervind te illustreer.</string>
+    <string name="screen_recorder_started">Skermopnemer het begin</string>
     <string name="screenshot">Skermskoot</string>
     <string name="screenshot_info">\'n Skermskoot van hoe die liedjie op jou toestel verskyn (gebaseer op jou programtema)</string>
     <string name="scripture">Skrif</string>
