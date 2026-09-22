@@ -33,6 +33,7 @@ public class AreYouSureBottomSheet extends BottomSheetCommon {
     private final ArrayList<String> arguments;
     private final Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
     private final Song song;
+    private boolean agree = false;
 
     public AreYouSureBottomSheet(String what, String textToShow, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         this.what = what;               // Variable passed to MainActivity to trigger required action
@@ -91,6 +92,7 @@ public class AreYouSureBottomSheet extends BottomSheetCommon {
 
         myView.action.setText(text);
         myView.okButton.setOnClickListener(v -> {
+            agree = true;
             dismiss();
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
         });
@@ -102,6 +104,10 @@ public class AreYouSureBottomSheet extends BottomSheetCommon {
         super.onDismiss(dialog);
         if (what.equals("exit")) {
             mainActivityInterface.setAlreadyBackPressed(false);
+        }
+        if (!agree && what.equals("chordDetectionStream")) {
+            // Need to switch off the aydio stream switch
+            mainActivityInterface.confirmedAction(false,what,arguments,fragName,callingFragment,song);
         }
     }
 }

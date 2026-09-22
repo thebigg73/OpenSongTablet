@@ -629,6 +629,9 @@ public class PerformanceGestures {
             case "tuner":
                 showTuner();
                 break;
+            case "chorddetection":
+                toggleChordDetection();
+                break;
             case "bible":
                 bibleSettings();
                 break;
@@ -1129,6 +1132,11 @@ public class PerformanceGestures {
     public void showTuner() {
         TunerBottomSheet tunerBottomSheet = new TunerBottomSheet();
         tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "tunerBottomSheet");
+    }
+
+    // Chord detection
+    public void toggleChordDetection() {
+        mainActivityInterface.toggleChordDetection();
     }
 
     // Show or hide the lyrics

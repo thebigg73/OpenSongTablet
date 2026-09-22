@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garethevans.church.opensongtablet.customviews.FloatWindow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minWidth="280dp"
+    android:orientation="vertical"
+    android:background="@drawable/popup_bg"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <!-- Header Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Title TextView -->
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/chordDetectionTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/chord_detection" />
+
+        <!-- Close Button -->
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/close"
+            app:makeFlat="true"
+            app:myFabSize="mini"
+            android:contentDescription="@string/close" />
+
+    </LinearLayout>
+
+    <!-- Toggle Switch with Subtext Hint -->
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+        android:id="@+id/switchAudioSource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/capture_device_audio"
+        android:hint="@string/capture_device_audio_full_info"/>
+
+        <!-- Detected Chord Key -->
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+        android:id="@+id/detectedKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:minWidth="140dp"
+        android:gravity="center"
+        android:textSize="48sp"
+        tools:text="Bm" />
+
+    </LinearLayout>
+</com.garethevans.church.opensongtablet.customviews.FloatWindow>

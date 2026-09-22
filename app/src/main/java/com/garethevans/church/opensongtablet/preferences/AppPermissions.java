@@ -201,6 +201,11 @@ public class AppPermissions {
         return checkForPermission(getAudioPermissions());
     }
 
+    // 🔑 Device Audio Capture check (Android 10+ / API 29+)
+    public boolean canCaptureDeviceAudio() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
     // STORAGE
     public String getStoragePermissions() {
         return Manifest.permission.WRITE_EXTERNAL_STORAGE;

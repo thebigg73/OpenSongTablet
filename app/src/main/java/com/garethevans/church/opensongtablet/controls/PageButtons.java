@@ -325,6 +325,7 @@ public class PageButtons {
         prepareOption("?","--- " + c.getString(R.string.utilities) + " ---","","",R.drawable.help);
         prepareOption("soundlevel",c.getString(R.string.sound_level_meter),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.sound_level);
         prepareOption("tuner",c.getString(R.string.tuner),c.getString(R.string.select),"",R.drawable.tuner);
+        prepareOption("chorddetection",c.getString(R.string.chord_detection),c.getString(R.string.show)+" / "+c.getString(R.string.hide),"",R.drawable.chord_detection);
         prepareOption("bible",c.getString(R.string.bible_verse),c.getString(R.string.search),"",R.drawable.bible);
         prepareOption("audiorecorder",c.getString(R.string.audio_recorder),c.getString(R.string.select),"",R.drawable.microphone);
         prepareOption("audioplayer",c.getString(R.string.audio_player),c.getString(R.string.select),"",R.drawable.audio_player);

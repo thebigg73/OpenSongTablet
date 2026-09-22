@@ -76,6 +76,9 @@
     <!-- Specifying never for location stops many devices being discovered -->
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" tools:targetApi="s" />
 
+    <!-- For the screen/audio recorder in chord detection -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
     <!-- These aren't required.  If the user leaves the app, they don't need the services
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -142,6 +145,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name="com.garethevans.church.opensongtablet.utilities.ScreenRecorderService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
 
         <!--
         android:authorities="com.garethevans.church.opensongtablet.fileprovider"

@@ -36,6 +36,16 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/chordDetection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chord_detection"
+                android:hint="@string/chord_detection_info"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/aeros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +125,6 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
-
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/databaseOptions"
                 android:layout_width="match_parent"
@@ -126,6 +135,15 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/screenRecorder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/screen_recorder"
+                android:hint="@string/screen_recorder_info"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

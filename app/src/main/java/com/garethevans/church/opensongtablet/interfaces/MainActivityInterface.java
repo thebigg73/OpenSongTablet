@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.interfaces;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.projection.MediaProjection;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -96,6 +97,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Consumer;
 
 public interface MainActivityInterface {
 
@@ -340,6 +342,15 @@ public interface MainActivityInterface {
     File getScreenshotFile();
     boolean validScreenShotFile();
     void setScreenshotFile(Bitmap bitmap);
+
+    // Chord detection popup
+    void toggleChordDetection();
+    void requestDeviceAudioCapture(Consumer<MediaProjection> callback);
+    void stopDeviceAudioCapture();
+
+    // Screen recorder
+    void startScreenRecorder();
+    void stopScreenRecorder();
 
     // Custom slides
     Bible getBible();

@@ -13,6 +13,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -84,6 +86,7 @@ import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddyControlPopUp;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.chorddetector.ChordDetectionPopUp;
 import com.garethevans.church.opensongtablet.chords.ChordDirectory;
 import com.garethevans.church.opensongtablet.chords.ChordDisplayProcessing;
 import com.garethevans.church.opensongtablet.chords.CustomChordsFragment;
@@ -104,6 +107,7 @@ import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActio
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
+import com.garethevans.church.opensongtablet.customviews.StopRecordingPopUp;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.drummer.DrumViewModel;
@@ -193,6 +197,7 @@ import com.garethevans.church.opensongtablet.utilities.AudioPlayerPopUp;
 import com.garethevans.church.opensongtablet.utilities.AudioRecorderPopUp;
 import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
+import com.garethevans.church.opensongtablet.utilities.ScreenRecorderService;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.variations.Variations;
 import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
@@ -218,6 +223,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyReturnActionsInterface, DialogReturnInterface,
@@ -251,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Bible bible;
     private CCLILog ccliLog;
     private CheckInternet checkInternet;
+    private ChordDetectionPopUp chordDetectionPopUp;
+    private StopRecordingPopUp stopRecordingPopup;
     private ChordDirectory chordDirectory;
     private ChordDisplayProcessing chordDisplayProcessing;
     private CommonControls commonControls;
@@ -320,6 +328,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MultiTrackPopUp multiTrackPopUp;
     private AudioPlayerPopUp audioPlayerPopUp;
     private BeatBuddyControlPopUp beatBuddyControlPopup;
+    private MediaProjectionManager projectionManager;
+    private MediaProjection mediaProjection;
+    private ActivityResultLauncher<Intent> mediaProjectionLauncher;
+    private Consumer<MediaProjection> onMediaProjectionReady;
+    private boolean isScreenRecordingMode = false;
 
     // The drummer
     private DrummerPopUp drummerPopUp;
@@ -476,6 +489,43 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                 });
 
+        // The MediaProjection launcher
+        mediaProjectionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        if (isScreenRecordingMode) {
+
+                            // 🔑 Delay the service start slightly to let the app resume from background picker
+                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                                Intent serviceIntent = new Intent(this, ScreenRecorderService.class);
+                                serviceIntent.putExtra(ScreenRecorderService.EXTRA_MODE, ScreenRecorderService.MODE_SCREEN_RECORD);
+                                serviceIntent.putExtra("code", result.getResultCode());
+                                serviceIntent.putExtra("data", result.getData());
+                                ScreenRecorderService.setContext(this);
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    startForegroundService(serviceIntent);
+                                } else {
+                                    startService(serviceIntent);
+                                }
+
+                                showScreenRecorderStopButton();
+                            }, 600); // 600ms delay gives Android time to restore your activity to the foreground
+
+                        } else {
+                            // Existing audio capture flow...
+                        }
+                    } else {
+                        stopDeviceAudioCapture();
+                        isScreenRecordingMode = false;
+                        stopScreenRecorder();
+                        if (onMediaProjectionReady != null) {
+                            onMediaProjectionReady.accept(null);
+                        }
+                    }
+                }
+        );
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -936,6 +986,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         timeTools = getTimeTools();
         displayPrevNext = getDisplayPrevNext();
         multiTrackPlayer = getMultiTrackPlayer();
+
+        // For the chord detection
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        }
+
 
         // Other file actions
         ccliLog = getCCLILog();
@@ -3888,11 +3944,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
-        if (agree) {
+        if (!agree && what!=null && what.equals("chordDetectionStream") && chordDetectionPopUp!=null) {
+            chordDetectionPopUp.allowStream(false);
+
+        } else if (agree) {
             boolean result = false;
             boolean allowToast = true;
 
+            Log.d(TAG,"what:"+what);
             switch (what) {
+                case "chordDetectionStream":
+                    // We have decided to record the audio stream for chord detection
+                    if (chordDetectionPopUp!=null) {
+                            // This will display Android's permission screen
+                            chordDetectionPopUp.allowStream(true);
+                        }
+                    allowToast = false;
+                    break;
+                case "screenRecorder":
+                    // We have decided to record the screen for debugging
+                    showScreenRecorderStopButton();
+                    allowToast = false;
+                    break;
                 case "syncNearbyZip":
                     // If we are about to import files from a zip file and overwrite our files
                     if (arguments != null && arguments.size() == 2) {
@@ -4171,6 +4244,87 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void doScrollToProportion(float scrollProportion) {
         if (performanceValid()) {
             performanceFragment.doNearbyScrollTo(scrollProportion);
+        }
+    }
+
+    @Override
+    public void toggleChordDetection() {
+        if (chordDetectionPopUp == null) {
+            if (!getAppPermissions().hasAudioPermissions()) {
+                audioPermissionLauncher.launch(getAppPermissions().getAudioPermissions());
+            } else {
+                chordDetectionPopUp = new ChordDetectionPopUp(this);
+                chordDetectionPopUp.floatChordDetection(myView.getRoot());
+            }
+        } else {
+            chordDetectionPopUp.closePopup();
+            chordDetectionPopUp = null;
+        }
+    }
+
+    public void showScreenRecorderStopButton() {
+        if (stopRecordingPopup == null) {
+            // Initialize it
+            stopRecordingPopup = new StopRecordingPopUp(this);
+
+            // Show it and start the recording
+            stopRecordingPopup.show(getWindow().getDecorView().getRootView());
+        }
+    }
+
+    @Override
+    public void startScreenRecorder() {
+        if (projectionManager != null) {
+            // 🔑 1. Set your mode flag so the result handler knows to start the ScreenRecorderService
+            isScreenRecordingMode = true;
+
+            // 🔑 2. Create the system permission intent and launch it using your existing launcher
+            Intent permissionIntent = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                permissionIntent = projectionManager.createScreenCaptureIntent();
+            }
+            mediaProjectionLauncher.launch(permissionIntent);
+        } else {
+            getShowToast().doIt(getString(R.string.not_available));
+        }
+    }
+
+    @Override
+    public void stopScreenRecorder() {
+        if (stopRecordingPopup !=null) {
+            stopRecordingPopup.dismiss();
+            stopRecordingPopup = null;
+        }
+    }
+
+    @Override
+    public void requestDeviceAudioCapture(Consumer<MediaProjection> callback) {
+        this.onMediaProjectionReady = callback;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && projectionManager != null) {
+
+            // 🔑 1. Start the Foreground Service BEFORE launching the projection dialog
+            Intent serviceIntent = new Intent(this, com.garethevans.church.opensongtablet.utilities.ScreenRecorderService.class);
+            serviceIntent.putExtra(ScreenRecorderService.EXTRA_MODE, ScreenRecorderService.MODE_AUDIO_CAPTURE);
+
+            startForegroundService(serviceIntent);
+
+            // 2. Now launch the system permission prompt
+            Intent permissionIntent = projectionManager.createScreenCaptureIntent();
+            mediaProjectionLauncher.launch(permissionIntent);
+
+        } else {
+            callback.accept(null);
+        }
+    }
+
+    @Override
+    public void stopDeviceAudioCapture() {
+        if (mediaProjection != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mediaProjection.stop();
+            }
+            mediaProjection = null;
         }
     }
 
@@ -5220,6 +5374,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
 
+        // If the chord detection popup is showing, close it
+        if (chordDetectionPopUp!=null) {
+            chordDetectionPopUp.closePopup();
+            chordDetectionPopUp = null;
+        }
 
         // Keep a reference to connections if needed as bundle
 

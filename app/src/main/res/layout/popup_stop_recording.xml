@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stopRecordingRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="8dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:elevation="8dp">
+
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+        android:id="@+id/btnStopRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop"
+        app:icon="@drawable/stop" />
+
+</LinearLayout>

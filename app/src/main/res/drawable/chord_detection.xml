@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="16.933"
+    android:viewportHeight="16.933">
+
+    <!-- Left Inward-Pointing Chevron (75% scale) -->
+    <path
+        android:pathData="M2.0,6.166 L3.35,8.466 L2.0,10.766 L1.3,10.1 L2.4,8.466 L1.3,6.833 Z"
+        android:fillColor="?attr/colorOnPrimary"/>
+
+    <!-- Centered, Perfectly Aligned Letter 'C' -->
+    <path
+        android:pathData="M11.266,4.8 H7.666 C 6.6,4.8 5.766,5.6 5.766,6.6 V 10.3 C 5.766,11.3 6.6,12.1 7.666,12.1 H 11.266 V 10.6 H 7.666 C 7.4,10.6 7.266,10.5 7.266,10.3 V 6.6 C 7.266,6.4 7.4,6.3 7.666,6.3 H 11.266 Z"
+        android:fillColor="?attr/colorOnPrimary"/>
+
+    <!-- Right Inward-Pointing Chevron (75% scale, safely spaced) -->
+    <path
+        android:pathData="M14.933,6.166 L13.583,8.466 L14.933,10.766 L15.633,10.1 L14.533,8.466 L15.633,6.833 Z"
+        android:fillColor="?attr/colorOnPrimary"/>
+
+</vector>

@@ -17,6 +17,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsUtilitiesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,8 @@ public class UtilitiesMenuFragment extends Fragment {
     private SettingsUtilitiesBinding myView;
     private String beatBuddy_string = "", utilities_string="", aeros_string="",
             deeplink_database_utilities="", voiceLive_string, deeplink_drummer,
-            audio_player_popup_string="", not_allowed_string;
+            audio_player_popup_string="", not_allowed_string="",
+            screen_recorder_disclosure_string="", screen_recorder_info_string;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -81,6 +83,8 @@ public class UtilitiesMenuFragment extends Fragment {
             deeplink_drummer = getString(R.string.deeplink_drummer_settings);
             audio_player_popup_string = getString(R.string.audio_player) + " ("+getString(R.string.popup)+")";
             not_allowed_string = getString(R.string.not_available) + " (Android M+)";
+            screen_recorder_disclosure_string = getString(R.string.screen_recorder_disclosure);
+            screen_recorder_info_string = getString(R.string.screen_recorder_info);
         }
     }
 
@@ -134,6 +138,11 @@ public class UtilitiesMenuFragment extends Fragment {
         });
         myView.mutitrackPlayer.setOnClickListener(v -> mainActivityInterface.displayMultiTrack());
         myView.drumSequencer.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_drummer,0));
+        myView.chordDetection.setOnClickListener(v -> mainActivityInterface.toggleChordDetection());
+        myView.screenRecorder.setOnClickListener(v -> {
+            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("screenRecorder",screen_recorder_disclosure_string+"\n\n"+screen_recorder_info_string,null,null,null,null);
+            areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
+        });
     }
 
     private void audioChooser() {
