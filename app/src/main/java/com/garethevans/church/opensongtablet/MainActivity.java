@@ -495,32 +495,38 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         if (isScreenRecordingMode) {
+                            // 1. User approved! Start the ScreenRecorderService with the code and data intent
+                            Intent serviceIntent = new Intent(this, ScreenRecorderService.class);
+                            serviceIntent.putExtra(ScreenRecorderService.EXTRA_MODE, ScreenRecorderService.MODE_SCREEN_RECORD);
+                            serviceIntent.putExtra("code", result.getResultCode());
+                            serviceIntent.putExtra("data", result.getData());
 
-                            // 🔑 Delay the service start slightly to let the app resume from background picker
-                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                                Intent serviceIntent = new Intent(this, ScreenRecorderService.class);
-                                serviceIntent.putExtra(ScreenRecorderService.EXTRA_MODE, ScreenRecorderService.MODE_SCREEN_RECORD);
-                                serviceIntent.putExtra("code", result.getResultCode());
-                                serviceIntent.putExtra("data", result.getData());
-                                ScreenRecorderService.setContext(this);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                startForegroundService(serviceIntent);
+                            } else {
+                                startService(serviceIntent);
+                            }
 
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    startForegroundService(serviceIntent);
-                                } else {
-                                    startService(serviceIntent);
-                                }
-
-                                showScreenRecorderStopButton();
-                            }, 600); // 600ms delay gives Android time to restore your activity to the foreground
+                            // 2. Now show the floating stop button on the screen
+                            showScreenRecorderStopButton();
 
                         } else {
-                            // Existing audio capture flow...
+                            // Existing Chord Detection Audio Capture flow
+                            MediaProjectionManager projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+                            MediaProjection projection = projectionManager.getMediaProjection(result.getResultCode(), result.getData());
+                            if (onMediaProjectionReady != null) {
+                                onMediaProjectionReady.accept(projection);
+                            }
                         }
                     } else {
-                        stopDeviceAudioCapture();
-                        isScreenRecordingMode = false;
-                        stopScreenRecorder();
-                        if (onMediaProjectionReady != null) {
+                        // User denied the permission
+                        if (isScreenRecordingMode) {
+                            // Reset flag
+                            isScreenRecordingMode = false;
+                            if (getShowToast() != null) {
+                                getShowToast().doIt(getString(R.string.permissions_refused));
+                            }
+                        } else if (onMediaProjectionReady != null) {
                             onMediaProjectionReady.accept(null);
                         }
                     }
@@ -3946,6 +3952,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         if (!agree && what!=null && what.equals("chordDetectionStream") && chordDetectionPopUp!=null) {
             chordDetectionPopUp.allowStream(false);
+            isScreenRecordingMode = false;
 
         } else if (agree) {
             boolean result = false;
@@ -3955,6 +3962,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             switch (what) {
                 case "chordDetectionStream":
                     // We have decided to record the audio stream for chord detection
+                    isScreenRecordingMode = false;
                     if (chordDetectionPopUp!=null) {
                             // This will display Android's permission screen
                             chordDetectionPopUp.allowStream(true);
@@ -3962,8 +3970,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     allowToast = false;
                     break;
                 case "screenRecorder":
-                    // We have decided to record the screen for debugging
-                    showScreenRecorderStopButton();
+                    // 🔑 Set the mode flag and launch the system screen capture permission prompt
+                    isScreenRecordingMode = true;
+                    if (projectionManager != null) {
+                        mediaProjectionLauncher.launch(projectionManager.createScreenCaptureIntent());
+                    }
                     allowToast = false;
                     break;
                 case "syncNearbyZip":
@@ -4320,12 +4331,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void stopDeviceAudioCapture() {
+        // 1. Stop the ScreenRecorderService foreground service
+        Intent serviceIntent = new Intent(this, com.garethevans.church.opensongtablet.utilities.ScreenRecorderService.class);
+        stopService(serviceIntent);
+
+        // 2. Clean up MediaProjection if it's held in MainActivity
         if (mediaProjection != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mediaProjection.stop();
             }
             mediaProjection = null;
         }
+
+        onMediaProjectionReady = null;
     }
 
     @Override
@@ -5379,6 +5397,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             chordDetectionPopUp.closePopup();
             chordDetectionPopUp = null;
         }
+
+        // Ensure the screen recorder service stops when the main activity is destroyed
+        Intent serviceIntent = new Intent(this, ScreenRecorderService.class);
+        stopService(serviceIntent);
+
+        // Also clear your static context reference to avoid memory leaks
+        ScreenRecorderService.clearContext();
 
         // Keep a reference to connections if needed as bundle
 

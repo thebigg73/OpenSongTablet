@@ -77,6 +77,15 @@ public class ScreenRecorderService extends Service {
         Log.d(TAG,"onStartCommand()  intent:"+intent+"  flags:"+flags+"  startId:"+startId);
         if (intent != null && mainActivityInterface!=null) {
             String mode = intent.getStringExtra(EXTRA_MODE);
+
+            if (MODE_AUDIO_CAPTURE.equals(mode)) {
+                // Audio capture runs via MediaProjection inside ChordDetection,
+                // so the service just needs to stay alive as a foreground service
+                // without starting a MediaRecorder.
+                Log.d(TAG, "ScreenRecorderService running in Audio Capture foreground mode.");
+                return START_NOT_STICKY;
+            }
+
             if (MODE_SCREEN_RECORD.equals(mode) && !isRecording) {
                 int resultCode = intent.getIntExtra("code", 0);
                 Intent data = intent.getParcelableExtra("data");
@@ -85,7 +94,6 @@ public class ScreenRecorderService extends Service {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         mediaProjection = projectionManager.getMediaProjection(resultCode, data);
                         if (mediaProjection != null) {
-                            // Register callback required for Android 14+ / API 34+
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                                 mediaProjection.registerCallback(new MediaProjection.Callback() {
                                     @Override
@@ -187,6 +195,10 @@ public class ScreenRecorderService extends Service {
         }
     }
 
+    public static void clearContext() {
+        mainActivityInterface = null;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -213,11 +225,20 @@ public class ScreenRecorderService extends Service {
             mediaProjection = null;
         }
 
+        mainActivityInterface = null;
+
         Log.d(TAG, "ScreenRecorderService destroyed. Recording finalized.");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        // Stops the service and triggers onDestroy() cleanup (releasing MediaRecorder/MediaProjection)
+        stopSelf();
     }
 }
