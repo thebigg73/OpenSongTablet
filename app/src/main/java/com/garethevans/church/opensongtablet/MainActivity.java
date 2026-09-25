@@ -510,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             // 2. Now show the floating stop button on the screen
                             showScreenRecorderStopButton();
 
-                        } else {
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             // Existing Chord Detection Audio Capture flow
                             MediaProjectionManager projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
                             MediaProjection projection = projectionManager.getMediaProjection(result.getResultCode(), result.getData());
@@ -3972,7 +3972,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "screenRecorder":
                     // 🔑 Set the mode flag and launch the system screen capture permission prompt
                     isScreenRecordingMode = true;
-                    if (projectionManager != null) {
+                    if (projectionManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         mediaProjectionLauncher.launch(projectionManager.createScreenCaptureIntent());
                     }
                     allowToast = false;
@@ -4260,6 +4260,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void toggleChordDetection() {
+        ScreenRecorderService.setContext(this);
         if (chordDetectionPopUp == null) {
             if (!getAppPermissions().hasAudioPermissions()) {
                 audioPermissionLauncher.launch(getAppPermissions().getAudioPermissions());
@@ -4294,6 +4295,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 permissionIntent = projectionManager.createScreenCaptureIntent();
             }
+            ScreenRecorderService.setContext(this);
             mediaProjectionLauncher.launch(permissionIntent);
         } else {
             getShowToast().doIt(getString(R.string.not_available));

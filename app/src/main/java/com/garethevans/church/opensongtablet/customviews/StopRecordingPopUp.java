@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -15,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -23,6 +24,7 @@ import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.garethevans.church.opensongtablet.utilities.ScreenRecorderService;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 
 public class StopRecordingPopUp {
@@ -110,35 +112,45 @@ public class StopRecordingPopUp {
         });
 
         btnStop.setOnClickListener(v -> {
-            // 1. Target the files directory where the recording was saved
+            Log.d(TAG, "Stop button clicked. Beginning teardown flow...");
+
+            //File filesDir = context.getFilesDir();
+            //File[] existingFiles = filesDir.listFiles((dir, name) -> name.startsWith("OpenSongApp_debug") && name.endsWith(".mp4"));
+
             File filesDir = context.getFilesDir();
+            File[] existingFiles = filesDir.listFiles((dir, name) ->
+                    name.startsWith("OpenSongApp_debug") && name.endsWith(".mp4")
+            );
 
-            // 2. Clear previous recordings, keeping only the newest one
-            File[] existingFiles = filesDir.listFiles((dir, name) -> name.startsWith("OpenSongApp_debug") && name.endsWith(".mp4"));
-
-            File latestFile = null;
+            Log.d(TAG, "Listing ALL files in filesDir (Count: " + (existingFiles != null ? existingFiles.length : 0) + ")");
             if (existingFiles != null) {
-                java.util.Arrays.sort(existingFiles, (f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified()));
-
-                for (int i = 0; i < existingFiles.length; i++) {
-                    if (i == 0) {
-                        latestFile = existingFiles[0];
-                    } else {
-                        Log.d(TAG,"deleted:"+ existingFiles[i].delete());
-                    }
+                for (File f : existingFiles) {
+                    Log.d(TAG, "Found file: " + f.getName() + " | Size: " + f.length() + " bytes");
                 }
             }
 
-            // 3. Stop the recording service
+            if (existingFiles != null) {
+                Log.d(TAG, "Found " + existingFiles.length + " matching recording files before sorting.");
+            } else {
+                Log.d(TAG, "No existing recording files found in directory!");
+            }
+
+            File latestFile = null;
+            if (existingFiles != null && existingFiles.length > 0) {
+                java.util.Arrays.sort(existingFiles, (f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified()));
+                latestFile = existingFiles[0];
+                Log.d(TAG, "Latest file identified: " + latestFile.getAbsolutePath() + " | Size: " + latestFile.length() + " bytes");
+            }
+
+            // Stop the recording service
             Intent stopIntent = new Intent(context, ScreenRecorderService.class);
             context.stopService(stopIntent);
             mainActivityInterface.stopScreenRecorder();
-
-            // 4. Hide/dismiss this popup
             dismiss();
 
-            // 5. Trigger Share Intent for the latest recording
+            // 🔑 Add a tiny delay or check file readiness to allow the MediaRecorder buffer to flush fully
             if (latestFile != null && latestFile.exists()) {
+                Log.d(TAG, "Preparing share intent for: " + latestFile.getAbsolutePath());
                 try {
                     Uri videoUri = androidx.core.content.FileProvider.getUriForFile(
                             context,
@@ -150,13 +162,31 @@ public class StopRecordingPopUp {
                     shareIntent.setType("video/mp4");
                     shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
                     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share)));
+                    Intent chooserIntent = Intent.createChooser(shareIntent, context.getString(R.string.share));
+                    chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    // 🔑 Explicitly grant permission to all apps that can handle this intent
+                    List<ResolveInfo> resolveInfoList = context.getPackageManager()
+                            .queryIntentActivities(chooserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                    for (ResolveInfo resolveInfo : resolveInfoList) {
+                        String packageName = resolveInfo.activityInfo.packageName;
+                        context.grantUriPermission(
+                                packageName,
+                                videoUri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        );
+                    }
+
+                    context.startActivity(chooserIntent);
+                    Log.d(TAG, "Share intent successfully dispatched with explicit grants.");
                 } catch (Exception e) {
-                    Log.d(TAG,"Failed to share video:+"+e);
+                    Log.e(TAG, "FATAL: Failed to share video intent: ", e);
                 }
             }
-
         });
 
         popupWindow = new PopupWindow(rootLayout,

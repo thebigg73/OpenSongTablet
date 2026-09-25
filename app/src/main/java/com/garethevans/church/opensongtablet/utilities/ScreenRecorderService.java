@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -74,14 +75,12 @@ public class ScreenRecorderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG,"onStartCommand()  intent:"+intent+"  flags:"+flags+"  startId:"+startId);
-        if (intent != null && mainActivityInterface!=null) {
+        Log.d(TAG, "onStartCommand() intent:" + intent + " flags:" + flags + " startId:" + startId);
+
+        if (intent != null) {
             String mode = intent.getStringExtra(EXTRA_MODE);
 
             if (MODE_AUDIO_CAPTURE.equals(mode)) {
-                // Audio capture runs via MediaProjection inside ChordDetection,
-                // so the service just needs to stay alive as a foreground service
-                // without starting a MediaRecorder.
                 Log.d(TAG, "ScreenRecorderService running in Audio Capture foreground mode.");
                 return START_NOT_STICKY;
             }
@@ -90,9 +89,20 @@ public class ScreenRecorderService extends Service {
                 int resultCode = intent.getIntExtra("code", 0);
                 Intent data = intent.getParcelableExtra("data");
 
+                Log.d(TAG, "resultCode:" + resultCode + " data:" + data + " projectionManager:" + projectionManager);
+
+                // Ensure projectionManager is initialized (fall back to getting it via system service if needed)
+                if (projectionManager == null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        projectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+                    }
+                }
+
                 if (resultCode != 0 && data != null && projectionManager != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+                        Log.d(TAG, "mediaProjection:" + mediaProjection);
+
                         if (mediaProjection != null) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                                 mediaProjection.registerCallback(new MediaProjection.Callback() {
@@ -103,7 +113,7 @@ public class ScreenRecorderService extends Service {
                                     }
                                 }, null);
                             }
-                            startRecording();
+                            startRecording(); // 🔑 Now safely triggers recording without needing mainActivityInterface!
                         }
                     }
                 }
@@ -146,21 +156,26 @@ public class ScreenRecorderService extends Service {
                 isRecording = true;
                 Log.d(TAG, "Screen recording successfully started.");
             } catch (Exception e) {
-                Log.e(TAG, "FATAL: Failed to start screen recording. Note: 'Single App' mode requires the app to remain active.", e);
+                Log.e(TAG, "FATAL: Failed to start screen recording.", e);
 
-                // Clean up UI overlay if it failed
-                handler.post(() -> mainActivityInterface.stopScreenRecorder());
+                if (mainActivityInterface != null) {
+                    handler.post(() -> mainActivityInterface.stopScreenRecorder());
+                }
 
                 stopSelf();
             }
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMediaRecorder() throws IOException {
         mediaRecorder = new MediaRecorder();
 
         // Save directly to the app's internal files directory so it's guaranteed to persist
+        //File outputFile = new File(getFilesDir(), "OpenSongApp_debug_" + System.currentTimeMillis() + ".mp4");
+
         File outputFile = new File(getFilesDir(), "OpenSongApp_debug_" + System.currentTimeMillis() + ".mp4");
+        Log.d(TAG, "Writing recording to absolute path: " + outputFile.getAbsolutePath());
 
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
