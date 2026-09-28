@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
@@ -96,8 +97,10 @@ public class OpenChordsFragment extends Fragment {
                 });
 
                 // Get the folder needed for sync
+                boolean receivedIntent = false;
                 if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
                     // We got here via an intent
+                    receivedIntent = true;
                     // Look for a local folder that matches the intent uuid
                     // If not, set it to null
                     mainActivityInterface.setWhattodo("");
@@ -105,7 +108,7 @@ public class OpenChordsFragment extends Fragment {
                         myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
                                 getOpenSongFolderNameFromUUID(
                                         mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
-                        Log.d(TAG, "here via the intent");
+                        Log.d(TAG, "here via the intent:  uuid:"+mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()+"  folder:"+mainActivityInterface.getOpenChordsAPI().getOpenSongFolderNameFromUUID(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
                     });
                 } else {
                     // Just set it to our preference
@@ -123,7 +126,9 @@ public class OpenChordsFragment extends Fragment {
 
 
                 // This is our first call to the server now we have dealt with everything else
-                myView.folderToSync.post(()-> Log.d(TAG,"first query using folder:"+myView.folderToSync.getText().toString()));
+                if (!receivedIntent) {
+                    myView.folderToSync.post(() -> Log.d(TAG, "first query using folder:" + myView.folderToSync.getText().toString()));
+                }
                 mainActivityInterface.getOpenChordsAPI().delayedQueryServer(1000);
             }
         });
@@ -359,6 +364,9 @@ public class OpenChordsFragment extends Fragment {
 
     public void queryOpenChordsServer() {
         Log.d(TAG, "queryOpenChordsServer()");
+
+        Log.d(TAG,"indexing:"+mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing());
+        Log.d(TAG,"myView:"+myView+"  myView.folderToSync.getText():"+myView.folderToSync.getText());
         checkQueryHandler.removeCallbacks(checkQueryRunnable);
         // Use the folder chosen to query the server and get the results
         mainActivityInterface.getMainHandler().post(() -> {
@@ -525,6 +533,7 @@ public class OpenChordsFragment extends Fragment {
     }
 
     public void updateFolderMessage() {
+        mainActivityInterface.getOpenChordsAPI().doTestingFolderDownload();
         // Try to update the folder message sensibly
         int downloadCount = mainActivityInterface.getOpenChordsAPI().getDownloadCount();
         int uploadCount = mainActivityInterface.getOpenChordsAPI().getUploadCount();

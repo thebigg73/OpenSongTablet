@@ -28,7 +28,7 @@ public class OpenChordsSong {
     @Nullable private String lastUpdated;     // The last time the song was updated ISO 8601 format e.g. 2025-01-14T07:17:02Z
     @Nullable private String[] tags;          // The tags for the song.  These are UUIDs that get looked up
     @Nullable private ArrayList<OpenChordsSongStructureItem> structure;     // Any song structure/presentation order in OpenSongApp
-    @Nullable private OpenChordsSongMetaDataItem metadata;       // Any song metadata in OpenSongApp
+    @Nullable private ArrayList<OpenChordsSongMetaDataItem> metadata;       // Any song metadata in OpenSongApp
 
     // The getters
     @Nullable public String getId() {
@@ -82,7 +82,7 @@ public class OpenChordsSong {
     @Nullable public ArrayList<OpenChordsSongStructureItem> getStructure() {
         return structure;
     }
-    @Nullable public OpenChordsSongMetaDataItem getMetadata() {
+    @Nullable public ArrayList<OpenChordsSongMetaDataItem> getMetadata() {
         return metadata;
     }
 
@@ -138,7 +138,7 @@ public class OpenChordsSong {
     public void setStructure(@Nullable ArrayList<OpenChordsSongStructureItem> structure) {
         this.structure = structure;
     }
-    public void setMetadata(@Nullable OpenChordsSongMetaDataItem metadata) {
+    public void setMetadata(@Nullable ArrayList<OpenChordsSongMetaDataItem> metadata) {
         this.metadata = metadata;
     }
 }

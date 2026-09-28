@@ -37,6 +37,7 @@ import java.util.UUID;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +60,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             songFolderUUIDsFile = "songFolderUUIDs.json";
     private boolean receivedFolderLink = false, isOwner, isReadOnly, folderIsDifferentUuid;
     private String jwtToken;
-    private java.util.regex.Pattern UUID_REGEX =
+    private final java.util.regex.Pattern UUID_REGEX =
             java.util.regex.Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     // The retrofit, server and fragment declarations
@@ -79,7 +80,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         @Override
         public void run() {
             if (openChordsFragment!=null) {
-                Log.d(TAG,"Runnable - about to trigger openChrodsFragment.queryOpenChordsServer()");
+                Log.d(TAG,"Runnable - about to trigger openChordsFragment.queryOpenChordsServer()");
                 openChordsFragment.queryOpenChordsServer();
             }
         }
@@ -130,10 +131,15 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     private void rebuildRetrofitInterface() {
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         AuthInterceptor interceptor = new AuthInterceptor(jwtToken);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(logging)
                 .build();
 
         retrofitInterface = new Retrofit.Builder()
@@ -718,6 +724,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public void onResponse(@NonNull Call call, @NonNull Response response) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             receivedResponse();
+            Log.d(TAG,"response.code():"+response.code());
 
             if (response.code() == 401) {
                 // We need to get the auth token again
@@ -900,6 +907,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
+        throwable.printStackTrace();
         // We received a response (even though it was a failure!)
         receivedResponse();
 
@@ -994,14 +1002,16 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         }
         // Now check for link urls in the metadata
         if (openChordsSong.getMetadata()!=null) {
-            if (openChordsSong.getMetadata().getYoutubeUrl()!=null && openChordsSong.getMetadata().getYoutubeUrl().startsWith("http")) {
-                song.setLinkyoutube(openChordsSong.getMetadata().getYoutubeUrl());
-            }
-            if (openChordsSong.getMetadata().getAudioUrl()!=null && openChordsSong.getMetadata().getAudioUrl().startsWith("http")) {
-                song.setLinkaudio(openChordsSong.getMetadata().getAudioUrl());
-            }
-            if (openChordsSong.getMetadata().getSpotifyId()!=null && openChordsSong.getMetadata().getSpotifyId().contains("spotify")) {
-                song.setLinkother(openChordsSong.getMetadata().getSpotifyId());
+            for (int i=0;i<openChordsSong.getMetadata().size();i++) {
+                if (openChordsSong.getMetadata().get(i).getYoutubeUrl() != null && openChordsSong.getMetadata().get(i).getYoutubeUrl().startsWith("http")) {
+                    song.setLinkyoutube(openChordsSong.getMetadata().get(i).getYoutubeUrl());
+                }
+                if (openChordsSong.getMetadata().get(i).getAudioUrl() != null && openChordsSong.getMetadata().get(i).getAudioUrl().startsWith("http")) {
+                    song.setLinkaudio(openChordsSong.getMetadata().get(i).getAudioUrl());
+                }
+                if (openChordsSong.getMetadata().get(i).getSpotifyId() != null && openChordsSong.getMetadata().get(i).getSpotifyId().contains("spotify")) {
+                    song.setLinkother(openChordsSong.getMetadata().get(i).getSpotifyId());
+                }
             }
         }
         return song;
@@ -1236,26 +1246,32 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsSong.setStructure(getOpenChordsStructure(openSongSong));
         }
         // Now add any http(s) link files as metadata
-        OpenChordsSongMetaDataItem metaDataItem = new OpenChordsSongMetaDataItem();
+        ArrayList<OpenChordsSongMetaDataItem> metaDataItems = new ArrayList<>();
         String linkYouTube = jsonNullIfEmpty(openSongSong.getLinkyoutube());
         String linkAudio = jsonNullIfEmpty(openSongSong.getLinkaudio());
         String linkOther = jsonNullIfEmpty(openSongSong.getLinkother());
 
         // Add YouTube link if it exists and is web based
         if (linkYouTube!=null && linkYouTube.startsWith("http")) {
+            OpenChordsSongMetaDataItem metaDataItem = new OpenChordsSongMetaDataItem();
             metaDataItem.setYoutubeUrl(linkYouTube);
+            metaDataItems.add(metaDataItem);
         }
         // Add Audio link if it exists and is web based
         if (linkAudio!=null && linkAudio.startsWith("http")) {
+            OpenChordsSongMetaDataItem metaDataItem = new OpenChordsSongMetaDataItem();
             metaDataItem.setAudioUrl(linkAudio);
+            metaDataItems.add(metaDataItem);
         }
         // Add Spotify (or other) link if it exists and is web based
         if (linkOther!=null && linkOther.contains("spotify")) {
+            OpenChordsSongMetaDataItem metaDataItem = new OpenChordsSongMetaDataItem();
             metaDataItem.setSpotifyId(linkOther);
+            metaDataItems.add(metaDataItem);
         }
         // If any of these pieces of metadata are valid, add to the song
-        if (metaDataItem.getAudioUrl()!=null || metaDataItem.getYoutubeUrl()!=null || metaDataItem.getSpotifyId()!=null) {
-            openChordsSong.setMetadata(metaDataItem);
+        if (!metaDataItems.isEmpty()) {
+            openChordsSong.setMetadata(metaDataItems);
         }
 
         return openChordsSong;
@@ -2813,6 +2829,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // If so, uncomment
         //String uploadObjectString = MainActivity.gson.toJson(testObject);
         //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",uploadObjectString,false);
+    }
+
+    public void doTestingFolderDownload() {
+        // TODO Check if we're testing
+        // If so, uncomment
+        String folderJson = MainActivity.gson.toJson(openSongFolderObject);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",folderJson,false);
     }
 
     // So we don't get stuck in a loop and keep querying the server, we use the logic below
