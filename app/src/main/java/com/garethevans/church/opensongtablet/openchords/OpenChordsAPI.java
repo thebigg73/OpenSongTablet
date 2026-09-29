@@ -2834,8 +2834,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public void doTestingFolderDownload() {
         // TODO Check if we're testing
         // If so, uncomment
-        String folderJson = MainActivity.gson.toJson(openSongFolderObject);
-        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",folderJson,false);
+        //String folderJson = MainActivity.gson.toJson(openSongFolderObject);
+        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",folderJson,false);
     }
 
     // So we don't get stuck in a loop and keep querying the server, we use the logic below
