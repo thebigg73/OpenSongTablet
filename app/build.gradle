@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 499     // Also change in wear if we need to update that as well
-        versionName = '6.9.8' // Also change in wear if we need to update that as well
+        versionCode = 501     // Also change in wear if we need to update that as well
+        versionName = '7.0.0' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -164,7 +164,7 @@ dependencies {
     // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:22.3.1'
     // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:19.5.0'
+    implementation 'com.google.android.gms:play-services-nearby:19.5.1'
     // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
     // For OCR text recognition (PDF/Camera)
@@ -182,9 +182,9 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.1.0'
     // Document file dependency
     implementation 'androidx.browser:browser:1.10.0'
-    implementation 'androidx.annotation:annotation:1.10.0'
+    implementation 'androidx.annotation:annotation:1.11.0'
     // Allows annotations in code
-    annotationProcessor 'androidx.annotation:annotation:1.10.0'
+    annotationProcessor 'androidx.annotation:annotation:1.11.0'
     // Allows annotations in code
 
     // App features
