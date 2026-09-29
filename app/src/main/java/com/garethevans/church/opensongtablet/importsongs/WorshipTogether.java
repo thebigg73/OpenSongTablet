@@ -1,11 +1,12 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.UUID;
 
-public class WorshipTogether {
+public class WorshipTogether implements SongParserInterface {
 
     public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
         // From Worship Together

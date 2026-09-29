@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:isScrollContainer="true"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/searchPhrase"
@@ -83,13 +88,21 @@
             android:text="@string/web_view_desktop"
             android:hint="@string/web_view_desktop_info"/>
 
+        <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
+            android:id="@+id/inlineSearchResults"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
         <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
             android:id="@+id/searchButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:text="@string/search" />
     </LinearLayout>
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/webLayout"
@@ -181,7 +194,7 @@
         android:layout_height="match_parent"
         android:isScrollContainer="true"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -229,3 +242,12 @@
 
     </FrameLayout>
 </LinearLayout>
+
+    <com.garethevans.church.opensongtablet.customviews.MyScrimmedProgress
+        android:id="@+id/inlineSearchProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

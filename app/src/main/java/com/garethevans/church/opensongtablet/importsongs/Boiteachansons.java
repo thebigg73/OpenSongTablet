@@ -3,9 +3,10 @@ package com.garethevans.church.opensongtablet.importsongs;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-public class Boiteachansons {
+public class Boiteachansons implements SongParserInterface {
 
     // Extracts from La boite a chansons
 

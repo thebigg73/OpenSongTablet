@@ -1,15 +1,17 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-public class UkuTabs {
+public class UkuTabs implements SongParserInterface {
 
     // This is triggered from the import online option from UkuTabs
 
     private final String[] bitsToClear = new String[] {"</a>","<strong>","</strong>",
     "<a target=\"_blank\" class=\"ukutabschord\" href=\"https://ukuchords.com/\">",};
 
-    public Song processContent(Song newSong, String webString) {
+    public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String webString) {
 
         // Get the headers
         newSong.setTitle(getSubstring(webString,"song: \"","\","));

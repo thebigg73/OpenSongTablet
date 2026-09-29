@@ -1,8 +1,10 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-public class HolyChords {
+public class HolyChords implements SongParserInterface {
 
     // This extracts the song from the HolyChords website
 
@@ -11,7 +13,7 @@ public class HolyChords {
             "</span>","-->","<!--"};
 
 
-    public Song processContent(Song newSong, String webString) {
+    public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String webString) {
 
         // Get the headers
         newSong.setTitle(getSubstring(webString,"<meta property=\"music:song\" content=\"","\">").trim());

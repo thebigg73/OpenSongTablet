@@ -37,6 +37,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
@@ -45,9 +47,11 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongProvider;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.screensetup.ThemeKeeper;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,6 +101,10 @@ public class ImportOnlineFragment extends Fragment {
     private String downloadFilename;
     private boolean webViewDesktop;
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream","application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
+    private PreviewPopUp previewPopUp = null;
+
+    // For the new inline search feature
+    private SongMatchAdapter adapter;
 
     // Remember the mode before WebView creation
     private int currentMode;
@@ -225,6 +233,47 @@ public class ImportOnlineFragment extends Fragment {
         if (mainActivityInterface.getCheckInternet().getSearchSite() != null) {
             myView.onlineSource.setText(mainActivityInterface.getCheckInternet().getSearchSite());
         }
+
+        adapter = new SongMatchAdapter(songMatch -> {
+            showInlineProgress(true);
+            // 1. User clicked a song match! Get the correct provider using your factory
+            SongProvider provider = SongProviderFactory.getProvider(songMatch.getProviderName(), requireContext());
+
+            // 2. Prepare a fresh target Song object
+            newSong = new Song();
+
+            newSong.setFiletype("XML");
+            newSong.setTitle(songMatch.getTitle());
+            newSong.setFilename(songMatch.getTitle());
+            newSong.setAuthor(songMatch.getArtist());
+
+            // TODO: Trigger your song import/scraping logic using the URL
+            // e.g., fetchSongContent(url);
+            // 3. Trigger the asynchronous fetch and parse using the BaseSongProvider contract
+            provider.fetchAndParseSong(songMatch.getUrl(), newSong, mainActivityInterface, processedSong -> {
+
+                // Runs on main thread when complete!
+                // processedSong is now ready to be added to your library or displayed.
+
+                int actualPDFTextColor = mainActivityInterface.getMyThemeColors().getPdfTextColor();
+                int actualPDFBackgroundColor = mainActivityInterface.getMyThemeColors().getPdfBackgroundColor();
+                float defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
+                mainActivityInterface.getProcessSong().setDefFontSize(14f);
+                ArrayList<View> views = mainActivityInterface.getProcessSong().setSongInLayout(newSong,true,false);
+                mainActivityInterface.getProcessSong().setDefFontSize(defFontSize);
+                mainActivityInterface.getMyThemeColors().setPDFTextColor(actualPDFTextColor);
+                mainActivityInterface.getMyThemeColors().setPDFBackgroundColor(actualPDFBackgroundColor);
+                if (myView!=null) {
+                    previewPopUp = new PreviewPopUp(getContext(), views, this);
+                    previewPopUp.floatPreview(myView.getRoot());
+                }
+                // Now we have the views
+                showInlineProgress(false);
+            });
+        });
+
+        myView.inlineSearchResults.setLayoutManager(new LinearLayoutManager(requireContext()));
+        myView.inlineSearchResults.setAdapter(adapter);
 
         setupWebView();
     }
@@ -360,6 +409,9 @@ public class ImportOnlineFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
+                    showInlineProgress(false);
+
                     // Run a check for the desired content
                     extractContent();
                 }
@@ -458,7 +510,137 @@ public class ImportOnlineFragment extends Fragment {
         mainActivityInterface.getCheckInternet().checkConnection(getContext(), this, R.id.importOnlineFragment, mainActivityInterface);
     }
 
+
     public void isConnected(boolean connected) {
+
+        Log.d(TAG, "isConnected:" + connected);
+        if (connected) {
+            showInlineProgress(true);
+            String selectedProviderName = null;
+            String searchString = null;
+            SongProvider provider = null;
+            source = "";
+            if (myView != null && myView.onlineSource.getText()!=null && getContext() != null) {
+                source = myView.onlineSource.getText().toString();
+            }
+
+            if (myView != null && myView.onlineSource.getText() != null && getContext() != null) {
+                selectedProviderName = myView.onlineSource.getText().toString().trim();
+                provider = SongProviderFactory.getProvider(selectedProviderName, getContext());
+            }
+            if (myView != null && myView.searchPhrase.getText() != null) {
+                searchString = myView.searchPhrase.getText().toString();
+            }
+
+            if (searchString!=null && !searchString.trim().isEmpty() && selectedProviderName!=null &&
+                    (selectedProviderName.equals("SongSelect")
+                            || selectedProviderName.equals("HolyChords")
+                            || selectedProviderName.equals("La Boîte à chansons")
+                            || selectedProviderName.equals("eChords")
+                            || selectedProviderName.equals("Google")
+                            || selectedProviderName.equals("DuckDuckGo"))) {
+
+                extractUsingWebView();
+
+            } else if (provider != null && searchString != null && !searchString.trim().isEmpty()) {
+                Log.d(TAG, "Selected Provider: [" + selectedProviderName + "] Search: [" + searchString + "]");
+                provider.searchSongs(searchString, results -> {
+                    // This callback executes on the main thread automatically via Handler
+                    adapter.setSongMatches(results);
+                    showInlineProgress(false);
+                });
+            } else {
+                Log.e(TAG, "Issue with provider: " + selectedProviderName + " and/or searchString:"+searchString);
+                showInlineProgress(false);
+            }
+        }
+    }
+
+    private void extractUsingWebView() {
+        // This listener is to grab text saved to the clipboard manager
+        if (getContext() != null) {
+            if (myView.onlineSource.getText()!=null && myView.onlineSource.getText().toString().equals("Google")) {
+                clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboardManagerListener = () -> {
+                    if (clipboardManager!=null) {
+                        ClipData clipData = clipboardManager.getPrimaryClip();
+                        if (clipData != null) {
+                            ClipData.Item item = clipData.getItemAt(0);
+                            if (item != null) {
+                                CharSequence charSequence = item.getText();
+                                if (charSequence != null) {
+                                    clipboardText = charSequence.toString();
+                                    if (!clipboardText.isEmpty()) {
+                                        clipboardText = mainActivityInterface.getConvertTextSong().convertText(clipboardText);
+                                        // Remove this listener otherwise it keeps going!
+                                        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);
+                                        processContent();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                if (clipboardManager != null) {
+                    clipboardManager.addPrimaryClipChangedListener(clipboardManagerListener);
+                }
+            }
+        }
+        // Get the search string and build the web address
+        String webAddress = "";
+        String extra = "";
+        mainActivityInterface.getCheckInternet().
+                setSearchPhrase(myView.searchPhrase.getText().toString());
+
+        if (myView.onlineSource.getText() != null) {
+            mainActivityInterface.getCheckInternet().
+                    setSearchSite(myView.onlineSource.getText().toString());
+            source = myView.onlineSource.getText().toString();
+            switch (source) {
+                case "Google":
+                case "DuckDuckGo":
+                    extra = " chords lyrics";
+                    break;
+            }
+            for (int x = 0; x < sources.length; x++) {
+                if (sources[x].equals(source)) {
+                    webAddress = address[x];
+                }
+            }
+        }
+        if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null &&
+                !mainActivityInterface.getCheckInternet().getSearchPhrase().isEmpty() &&
+                !webAddress.isEmpty()) {
+            changeLayouts(false, true, false);
+            myView.grabText.setVisibility(View.VISIBLE);
+            if (getActivity()!=null && myView.grabText.getVisibility()==View.VISIBLE) {
+                myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.grabText, null, text_extract_check_string, false, "onlineTextSearch"));
+            }
+            webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
+            String justaddress = webAddress;
+            webView.post(() -> {
+                if (source.equals("La Boîte à chansons")) {
+                    try {
+                        String postData = "inpRecherche=" + URLEncoder.encode(mainActivityInterface.getCheckInternet().getSearchPhrase(), "UTF-8");
+                        webView.postUrl(justaddress,postData.getBytes());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        webView.loadUrl(webSearchFull);
+                    }
+
+                } else {
+                    if (source.equals("SongSelect")) {
+                        changeLayouts(true, false, false);
+                        mainActivityInterface.openDocument(webSearchFull);
+                    } else {
+                        webView.loadUrl(webSearchFull);
+                    }
+                }
+            });
+        }
+    }
+    // TODO extract what we need from below
+    public void isConnectedOld(boolean connected) {
         // Received back from the MainActivity after being told if we have a valid internet connection or not
         if (connected) {
             // This listener is to grab text saved to the clipboard manager
@@ -692,7 +874,7 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "eChords":
-                if (webString.contains("<pre id=\"core\"")) {
+                if (webString.contains("<div class=\"container") || webString.contains("<song-chord")) {
                     show = true;
                 }
                 break;
@@ -769,7 +951,7 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "UltimateGuitar":
-                newSong = ultimateGuitar.processContent(newSong,webString);
+                newSong = ultimateGuitar.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "WorshipTogether":
                 newSong = worshipTogether.processContent(mainActivityInterface,newSong,webString);
@@ -788,10 +970,10 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "UkuTabs":
-                newSong = ukuTabs.processContent(newSong,webString);
+                newSong = ukuTabs.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "HolyChords":
-                newSong = holyChords.processContent(newSong,webString);
+                newSong = holyChords.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "La Boîte à chansons":
                 newSong = boiteachansons.processContent(mainActivityInterface,newSong,webString);
@@ -843,7 +1025,7 @@ public class ImportOnlineFragment extends Fragment {
         setupSaveLayout();
     }
 
-    private void setupSaveLayout() {
+    public void setupSaveLayout() {
         if (myView!=null) {
             showDownloadProgress(false);
 
@@ -974,7 +1156,7 @@ public class ImportOnlineFragment extends Fragment {
         Log.d(TAG,"oldlyrics:"+oldlyrics);
 
         // Put any SongSelect downloaded PDF files into the folder as well
-        if (source.equals("SongSelect") && downloadFilename.toLowerCase().endsWith(".pdf")) {
+        if (source!=null && source.equals("SongSelect") && downloadFilename.toLowerCase().endsWith(".pdf")) {
             copyPDF(downloadUri, downloadFilename);
             // Put to originally extracted info (if any) back
             newSong.setFilename(oldfilename);
@@ -1155,6 +1337,15 @@ public class ImportOnlineFragment extends Fragment {
         }
     }
 
+    private void showInlineProgress(boolean visible) {
+        if (myView!=null) {
+            myView.inlineSearchProgressBar.post(() -> {
+                if (myView!=null) {
+                    myView.inlineSearchProgressBar.setVisibility(visible ? View.VISIBLE:View.GONE);
+                }
+            });
+        }
+    }
     public void destroyWebView() {
         try {
             // Make sure you remove the WebView from its parent view before doing anything.
@@ -1198,6 +1389,9 @@ public class ImportOnlineFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+        if (previewPopUp!=null) {
+            previewPopUp.destroyPopup();
+        }
         try {
             if (clipboardManager!=null && clipboardManagerListener!=null) {
                 clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);

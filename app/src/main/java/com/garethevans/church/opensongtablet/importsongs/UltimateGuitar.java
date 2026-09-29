@@ -1,11 +1,19 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class UltimateGuitar {
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+public class UltimateGuitar implements SongParserInterface {
 
     private final MainActivityInterface mainActivityInterface;
 
@@ -22,9 +30,24 @@ public class UltimateGuitar {
 
     private final String[] bitsToClear = new String[] {"<div class=\"LJhrL\">X</div>","</span>", "(Chords)"};
 
-    // New lines are identified as new lines
+    public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String htmlText) {
+        if (htmlText == null || htmlText.isEmpty()) return newSong;
+        try {
 
-    public Song processContent(Song newSong, String s) {
+            // 1. Parse the document ONCE
+            Document doc = Jsoup.parse(htmlText);
+
+            // 2. Pass the Document to your modular getter methods
+            newSong.setKey(getKey(doc));
+            newSong.setCapo(getCapo(doc));
+            newSong.setLyrics(getLyrics(doc));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newSong;
+    }
+    /*public Song OLD_processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
         // First up separate the content from the headers
         String headerTitle = getHeaderTitle(s);
 
@@ -73,6 +96,7 @@ public class UltimateGuitar {
         }
 
         lyricsText = lyricsText.replace("<div class=\"LJhrL\">X</div>","");
+        lyricsText = lyricsText.replace("\r\n","\n");
 
         if (lyricsText.contains("[ch]") || lyricsText.contains("[tab]")) {
             // This is the non-standard method that extracts it from a value that needs decoded
@@ -154,7 +178,151 @@ public class UltimateGuitar {
         // If we have a capo (which means the key and the chords won't match in UG)
         // We will need to transpose the lyrics to match
         newSong = fixChordsForCapo(newSong);
+
+        Log.d(TAG,"fixed lyrics:"+newSong.getLyrics());
+
         return newSong;
+    }
+*/
+
+    private String getKey(Document doc) {
+        String key = "";
+        // Check JSON-LD schema first
+        for (Element script : doc.select("script[type=application/ld+json]")) {
+            String jsonText = script.html();
+            if (jsonText.contains("musicalKey")) {
+                try {
+                    JsonObject json = JsonParser.parseString(jsonText).getAsJsonObject();
+                    if (json.has("musicalKey")) {
+                        return json.get("musicalKey").getAsString().trim();
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+
+        // Fallback to js-store
+        return getStoreField(doc, "tonality");
+    }
+
+    private String getCapo(Document doc) {
+        String rawCapo = "";
+
+        // 1. Check JSON-LD text description first
+        for (Element script : doc.select("script[type=application/ld+json]")) {
+            String jsonText = script.html();
+            if (jsonText.contains("MusicComposition") && (jsonText.contains("Capo") || jsonText.contains("capo"))) {
+                try {
+                    JsonObject json = JsonParser.parseString(jsonText).getAsJsonObject();
+                    if (json.has("text")) {
+                        rawCapo = json.get("text").getAsString();
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+
+        // 2. Fallback to js-store if JSON-LD didn't yield anything useful
+        if (rawCapo.isEmpty()) {
+            rawCapo = getStoreField(doc, "capo");
+        }
+
+        // 3. Clean up the raw string to extract a valid integer
+        return parseCapoToInt(rawCapo);
+    }
+
+    private String parseCapoToInt(String raw) {
+        if (raw == null || raw.isEmpty()) return "";
+
+        // Replace URL-encoded plus signs with spaces (e.g., "2nd+fret" -> "2nd fret")
+        raw = raw.replace("+", " ").trim();
+
+        // Try finding a direct digit first (e.g., "2" from "2nd fret" or "Capo: 2")
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\d+").matcher(raw);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+
+        // Fallback: Handle Roman numerals if it says something like "Capo II" or "Capo IV"
+        String upper = raw.toUpperCase();
+        if (upper.contains("XII")) return "12";
+        if (upper.contains("XI")) return "11";
+        if (upper.contains("X")) return "10";
+        if (upper.contains("IX")) return "9";
+        if (upper.contains("VIII")) return "8";
+        if (upper.contains("VII")) return "7";
+        if (upper.contains("VI")) return "6";
+        if (upper.contains("V")) return "5";
+        if (upper.contains("IV")) return "4";
+        if (upper.contains("III")) return "3";
+        if (upper.contains("II")) return "2";
+        if (upper.contains("I")) return "1";
+
+        // If no capo/numbers found, default to empty
+        return "";
+    }
+
+    private String getLyrics(Document doc) {
+        Element storeDiv = doc.selectFirst("div.js-store");
+        if (storeDiv == null) return "";
+
+        String lyricsText = "";
+        try {
+            JsonObject jsonObject = JsonParser.parseString(storeDiv.attr("data-content")).getAsJsonObject();
+            JsonObject tabView = jsonObject.getAsJsonObject("store")
+                    .getAsJsonObject("page")
+                    .getAsJsonObject("data")
+                    .getAsJsonObject("tab_view");
+            if (tabView != null) {
+                if (tabView.has("wiki_tab")) {
+                    JsonObject wikiTab = tabView.getAsJsonObject("wiki_tab");
+                    if (wikiTab.has("content")) {
+                        lyricsText = wikiTab.get("content").getAsString();
+                    }
+                }
+                if (lyricsText.isEmpty() && tabView.has("content")) {
+                    lyricsText = tabView.get("content").getAsString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (lyricsText.contains("[ch]") || lyricsText.contains("[tab]")) {
+            lyricsText = lyricsText.replace("\r\n","\n");
+            lyricsText = lyricsText.replace("&#039;","'");
+            lyricsText = lyricsText.replace("[tab]","");
+            lyricsText = lyricsText.replace("[/tab]","");
+            // Lines that contain [ch] are chord lines
+            StringBuilder tempStringBuilder = new StringBuilder();
+            for (String line:lyricsText.split("\n")) {
+                if (line.contains("[ch]")) {
+                    tempStringBuilder.append(".").append(line).append("\n");
+                } else {
+                    tempStringBuilder.append(line).append("\n");
+                }
+            }
+            lyricsText = tempStringBuilder.toString().replace("[ch]","").replace("[/ch]","");
+        }
+
+        // Fix the lyrics as best we can
+        return mainActivityInterface.getConvertTextSong().convertText(lyricsText);
+    }
+
+    // Helper utility to safely query the inner data-content JSON store
+    private String getStoreField(Document doc, String fieldName) {
+        try {
+            Element storeDiv = doc.selectFirst("div.js-store");
+            if (storeDiv != null) {
+                JsonObject jsonObject = JsonParser.parseString(storeDiv.attr("data-content")).getAsJsonObject();
+                JsonObject tabView = jsonObject.getAsJsonObject("store")
+                        .getAsJsonObject("page")
+                        .getAsJsonObject("data")
+                        .getAsJsonObject("tab_view");
+                if (tabView != null && tabView.has(fieldName) && !tabView.get(fieldName).isJsonNull()) {
+                    return tabView.get(fieldName).getAsString().trim();
+                }
+            }
+        } catch (Exception ignored) {}
+        return "";
     }
 
     private String getHeaderTitle(String s) {
@@ -202,7 +370,7 @@ public class UltimateGuitar {
         s = fixHTMLStuff(s);
         return s;
     }
-    private String getKey(String s) {
+    /*private String getKey(String s) {
         String key = getMetaData(s, "<div class=\"label\">Key</div>");
         String key2 = "";
         String key3 = "";
@@ -281,6 +449,7 @@ public class UltimateGuitar {
         }
         return capo;
     }
+    */
     private Song fixChordsForCapo(Song newSong) {
         // If there is a capo, we have to transpose the song to match
         // UG shows the capo chords and the key but they don't match!

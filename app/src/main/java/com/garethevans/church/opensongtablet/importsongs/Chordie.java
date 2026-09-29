@@ -1,9 +1,10 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-public class Chordie {
+public class Chordie implements SongParserInterface {
 
     // Song should be a fully processed ChoPro format
     // The contents are contained in a textarea: <textarea id="chordproContent" name="chopro" style="display: none;">..</textarea>
