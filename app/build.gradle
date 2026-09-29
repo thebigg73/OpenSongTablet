@@ -216,9 +216,14 @@ dependencies {
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'
     // Don't UPDATE                 // To extract text from docx files
 
-
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Logging of retrofit
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
+    // For scraping online song servers
+    implementation 'org.jsoup:jsoup:1.23.2'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
