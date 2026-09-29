@@ -75,7 +75,7 @@ public class ProcessSong {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "ProcessSong", newline_string="___NEWLINE___";
     public final String columnbreak_string="::CBr::", groupline_string="____groupline____";
-    private final float defFontSize = 8.0f;
+    private float defFontSize = 8.0f;
     private boolean addSectionSpace;
     //private boolean addSectionBox;
     private boolean blockShadow;
@@ -2956,6 +2956,9 @@ public class ProcessSong {
         }
     }
 
+    public void setDefFontSize(float defFontSize) {
+        this.defFontSize = defFontSize;
+    }
     public float getDefFontSize() {
         return defFontSize;
     }
