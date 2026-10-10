@@ -278,7 +278,8 @@ public class ThemeColors {
             Log.d(TAG,"no theme was currently set, so setting it to "+fallback);
             themeName = fallback;
             mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",themeName);
-            mainActivityInterface.getPalette().savePref(c,fallback.equals("dark"));
+            // Added in AMOLED mode.
+            mainActivityInterface.getPalette().savePref(c,fallback);
         }
     }
 
@@ -287,20 +288,19 @@ public class ThemeColors {
         switch (themeName) {
             case "light":
                 setThemeLight();
-                //setSytemDayNight(false);
                 break;
             case "custom1":
                 setThemeCustom1();
-                //setSytemDayNight(true);
                 break;
             case "custom2":
                 setThemeCustom2();
-                //setSytemDayNight(false);
+                break;
+            case "amoled":
+                setThemeAmoled();
                 break;
             case "dark":
             default:
                 setThemeDark();
-                //setSytemDayNight(true);
                 break;
         }
         pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
@@ -330,6 +330,8 @@ public class ThemeColors {
             case "custom2":
                 setPDFThemeCustom2();
                 break;
+            case "amoled":
+                setPDFThemeAmoled();
             case "default":
             default:
                 setPDFThemeDefault();
@@ -397,6 +399,7 @@ public class ThemeColors {
                 break;
 
             case "custom1_":
+            case "amoled_":
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          true);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"multilingualTextColor",  vlightgrey);
@@ -554,6 +557,36 @@ public class ThemeColors {
         setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_hotZoneColor",                 transparent));
         setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_abcPopupColor",               vvlightgrey));
         setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_abcPopupTextColor",       black));
+    }
+    private void setThemeAmoled() {
+        setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("amoled_invertPDF",           true));
+        setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_metronomeColor",             darkishred));
+        setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyTextColor",           black));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyBackgroundColor",stickybg));
+        setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsTextColor",           white));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_multilingualTextColor",vlightgrey));
+        setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCapoColor",           red));
+        setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsBackgroundColor",black));
+        setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsVerseColor",         black));
+        setLyricsChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsChorusColor",       black));
+        setLyricsBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsBridgeColor",       black));
+        setLyricsCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCommentColor",     black));
+        setLyricsPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsPreChorusColor", black));
+        setLyricsTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsTagColor",             black));
+        setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsChordsColor",       yellow));
+        setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCustomColor",       black));
+        setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoFontColor",             white));
+        setPresoMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoMultilingualColor",vlightgrey));
+        setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoChordColor",           yellow));
+        setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoInfoFontColor",     white));
+        setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoAlertColor",           red));
+        setPresoCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoCapoColor",             red));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_presoShadowColor",         translucentDark));
+        setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_highlightChordColor",   transparent));
+        setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_highlightHeadingColor",transparent));
+        setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_hotZoneColor",                 transparent));
+        setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_abcPopupColor",               white));
+        setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_abcPopupTextColor",       black));
     }
 
     public String getPdfTheme() {
@@ -727,6 +760,22 @@ public class ThemeColors {
         setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCustomColor",         white));
         setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightChordColor",     transparent));
         setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor", transparent));
+    }
+    private void setPDFThemeAmoled() {
+        setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsTextColor",             white));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_multilingualTextColor",vlightgrey));
+        setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCapoColor",             red));
+        setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsBackgroundColor", black));
+        setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsVerseColor",           black));
+        setPDFChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsChorusColor",         black));
+        setPDFBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsBridgeColor",         black));
+        setPDFCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCommentColor",       black));
+        setPDFPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsPreChorusColor",   black));
+        setPDFTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsTagColor",               black));
+        setPDFChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsChordsColor",         yellow));
+        setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCustomColor",         black));
+        setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_highlightChordColor",     transparent));
+        setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_highlightHeadingColor", transparent));
     }
 
     public int getValue(String what) {

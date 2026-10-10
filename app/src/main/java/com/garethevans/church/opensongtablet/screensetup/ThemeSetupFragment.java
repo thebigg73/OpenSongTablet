@@ -31,7 +31,7 @@ public class ThemeSetupFragment extends Fragment {
 
     private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
             stage_mode_string="", theme_dark_string="", theme_light_string="",
-            theme_custom1_string="", theme_custom2_string="", reset_colours_string="",
+            theme_custom1_string="", theme_custom2_string="", theme_amoled_string="", reset_colours_string="",
             recreate_string="", this_deeplink="";
     private ArrayList<String> themes;
     private String webAddress;
@@ -83,6 +83,7 @@ public class ThemeSetupFragment extends Fragment {
             theme_light_string = getString(R.string.theme_light);
             theme_custom1_string = getString(R.string.theme_custom1);
             theme_custom2_string = getString(R.string.theme_custom2);
+            theme_amoled_string = getString(R.string.theme_amoled);
             reset_colours_string = getString(R.string.reset_colours);
             recreate_string = getString(R.string.restart_auto);
             initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","");
@@ -96,6 +97,7 @@ public class ThemeSetupFragment extends Fragment {
         themes.add(theme_light_string);
         themes.add(theme_custom1_string);
         themes.add(theme_custom2_string);
+        themes.add(theme_amoled_string);
 
         arrayAdapter = null;
         if (getContext() != null) {
@@ -112,6 +114,9 @@ public class ThemeSetupFragment extends Fragment {
                 break;
             case "custom2":
                 myView.themeName.setText(themes.get(3));
+                break;
+            case "amoled":
+                myView.themeName.setText(themes.get(4));
                 break;
             case "dark":
             default:
@@ -136,10 +141,12 @@ public class ThemeSetupFragment extends Fragment {
                                 myTheme = "custom1";
                             } else if (s != null && s.toString().equals(themes.get(3))) {
                                 myTheme = "custom2";
+                            } else if (s != null && s.toString().equals(themes.get(4))) {
+                                myTheme = "amoled";
                             }
 
                             if (getContext() != null) {
-                                mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
+                                mainActivityInterface.getPalette().savePref(getContext(),myTheme);
                                 mainActivityInterface.getToolbar().changeTheme();
                                 mainActivityInterface.getBatteryStatus().getBatteryStatus();
                                 mainActivityInterface.tintBackgroundToTheme();
@@ -251,7 +258,7 @@ public class ThemeSetupFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (getContext()!=null) {
-            mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
+            mainActivityInterface.getPalette().savePref(getContext(),myTheme);
         }
         myView = null;
     }
@@ -263,9 +270,11 @@ public class ThemeSetupFragment extends Fragment {
         String currentTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         Log.d(TAG,"currentTheme:"+currentTheme+"  initialTheme:"+initialTheme);
         if (currentTheme.equals("dark") || currentTheme.equals("custom1")) {
-            refreshActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.isEmpty();
+            refreshActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.equals("amoled") || initialTheme.isEmpty();
         } else if (currentTheme.equals("light") || currentTheme.equals("custom2")) {
-            refreshActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.isEmpty();
+            refreshActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.equals("amoled") || initialTheme.isEmpty();
+        } else if (currentTheme.equals("amoled")) {
+            refreshActivity = !initialTheme.equals("amoled");
         }
         Log.d(TAG,"refreshActivity:"+refreshActivity);
         return refreshActivity;

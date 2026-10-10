@@ -19,8 +19,8 @@ public class DisplayMenuFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayBinding myView;
     private String display_string="", theme_dark_string="", theme_light_string="",
-            theme_custom1_string="", theme_custom2_string="", deeplink_inlineset_string="",
-            deeplink_margins_string="";
+            theme_custom1_string="", theme_custom2_string="", theme_amoled_string="",
+            deeplink_inlineset_string="", deeplink_margins_string="";
 
     @Override
     public void onResume() {
@@ -65,6 +65,7 @@ public class DisplayMenuFragment extends Fragment {
             theme_light_string = getString(R.string.theme_light);
             theme_custom1_string = getString(R.string.theme_custom1);
             theme_custom2_string = getString(R.string.theme_custom2);
+            theme_amoled_string = getString(R.string.theme_amoled);
             deeplink_inlineset_string = getString(R.string.deeplink_inlineset);
             deeplink_margins_string = getString(R.string.deeplink_margins);
         }
@@ -81,6 +82,9 @@ public class DisplayMenuFragment extends Fragment {
                 break;
             case "custom2":
                 themeName = theme_custom2_string;
+                break;
+            case "amoled":
+                themeName = theme_amoled_string;
                 break;
             case "dark":
             default:

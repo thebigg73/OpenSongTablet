@@ -188,6 +188,36 @@ public class Preferences extends Activity {
     // airTurnLongPressTime             int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                      boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     // allowPinchToZoom                 boolean     Can the song be pinch zoomed in Performance mode? (def:true)
+    // amoled_invertPDF                 boolean     Should the PDF colours be inverted (def:true)
+    // amoled_lyricsBackgroundColor     int         The color for the lyrics background in the amoled theme
+    // amoled_lyricsBridgeColor         int          The color for the background for the bridge in the amoled theme
+    // amoled_lyricsCapoColor           int         The color for the capo text in the amoled theme
+    // amoled_lyricsChordsColor         int         The color for the chords text in the amoled theme
+    // amoled_lyricsChorusColor         int         The color for the background for the chorus in the amoled theme
+    // amoled_lyricsCommentColor        int         The color for the background for the comment in the amoled theme
+    // amoled_lyricsCustomColor         int         The color for the background for the custom section in the amoled theme
+    // amoled_lyricsPreChorusColor      int         The color for the background for the prechorus in the amoled theme
+    // amoled_lyricsTagColor            int         The color for the background for the tag in the amoled theme
+    // amoled_lyricsTextColor           int         The color for the lyrics text in the amoled theme
+    // amoled_lyricsVerseColor          int         The color for the background for the verse in the amoled theme,
+    // amoled_multilingualTextColor     int         The color for the multilingual text lines (alternative line if heading ends with "L]")
+    // amoled_presoFontColor            int         The color for the presentation text in the amoled theme
+    // amoled_presoMultilingualColor    int         The color for the presentation multilingual text (if heading ends with "L]")
+    // amoled_presoChordColor           int         The color for the presentation chords in the amoled theme
+    // amoled_presoShadowColor          int         The color for the presentation text shadow in the amoled theme
+    // amoled_presoInfoColor            int         The color for the presentation info text in the amoled theme
+    // amoled_presoAlertColor           int         The color for the presentation alert text in the amoled theme
+    // amoled_presoCapoColor            int         The color for the presentation capo text in the amoled theme
+    // amoled_metronomeColor            int         The color for the metronome background in the amoled theme
+    // amoled_stickyTextColor           int         The color for the sticky note text info text in the amoled theme
+    // amoled_stickyBackgroundColor     int         The color for the sticky note background info text in the amoled theme
+    // amoled_extraInfoTextColor        int         The color for the extra info text in the amoled theme
+    // amoled_extraInfoBgColor          int         The color for the extra info background in the amoled theme
+    // amoled_highlightChordColor       int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
+    // amoled_highlightHeadingColor     int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // amoled_hotZoneColor              int         The color to tint the hot zones (def: transparent/0x00000000);
+    // amoled_abcPopupColor             int         The background colour for the abc popup window (def:white)
+    // amoled_abcPopupTextColor         int         The text color for the abc popup windonw (def:black)
     // appTheme                         String      The theme to use (dark, light, custom1, custom2) (def:dark)
     // autoscrollAutoStart              boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
     // autoscrollDefaultSongLength      int         The default length of a song to use for autoscroll (def:180)
@@ -259,7 +289,7 @@ public class Preferences extends Activity {
     // custom1_multilingualTextColor    int         The color for the multilingual text lines (alternative line if heading ends with "L]")
     // custom1_presoFontColor           int         The color for the presentation text in the custom1 theme
     // custom1_presoMultilingualColor   int         The color for the presentation multilingual text (if heading ends with "L]")
-    // custom2_presoChordColor          int         The color for the presentation chords in the custom1 theme
+    // custom1_presoChordColor          int         The color for the presentation chords in the custom1 theme
     // custom1_presoShadowColor         int         The color for the presentation text shadow in the custom1 theme
     // custom1_presoInfoColor           int         The color for the presentation info text in the custom1 theme
     // custom1_presoAlertColor          int         The color for the presentation alert text in the custom1 theme
@@ -273,7 +303,7 @@ public class Preferences extends Activity {
     // custom1_highlightHeadingColor    int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // custom1_hotZoneColor             int         The color to tint the hot zones (def: transparent/0x00000000);
     // custom1_abcPopupColor            int         The background colour for the abc popup window (def:white)
-    // custom2_abcPopupTextColor        int         The text color for the abc popup windonw (def:black)
+    // custom1_abcPopupTextColor        int         The text color for the abc popup windonw (def:black)
     // custom2_invertPDF                boolean     Should the PDF colours be inverted (def:false)
     // custom2_lyricsBackgroundColor    int         The color for the lyrics background in the custom2 theme
     // custom2_lyricsBridgeColor        int         The color for the background for the bridge in the custom2 theme
@@ -433,6 +463,7 @@ public class Preferences extends Activity {
     // hotZoneTopLeftLong               String      The action for short pressing on this hot zone (def:"")
     // ignorePlayServicesWarning        boolean     Has the user ticked the box to not show this again (def:false);
     // indexSkipAllowed                 boolean     Can we skip indexing (only allowed if it has been completed) (def:false)
+    // inlineSearch                     boolean     When importing songs from online source, should we prefer the built in search rather than using a WebView (def:true)
     // inlineSet                        boolean     Should we show the inline setlist (def:true)
     // inlineSetLongPress               String      Action when long pressing on an item in the inline set "cue" or "scroll" (def:scroll)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)

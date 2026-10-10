@@ -667,7 +667,7 @@
     <string name="harmony_vibrato_boost">Harmony vibrato boost</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
-    <string name="hex_color_code">Hex color code</string>
+    <string name="hex_color_code">Hex colour code</string>
     <string name="hide">Hide</string>
     <string name="hide_inline_midi">Hide inline MIDI</string>
     <string name="hide_inline_midi_info">Hide any inline MIDI messages in the song lyrics (otherwise they display as comment line)</string>
@@ -680,7 +680,7 @@
     <string name="host">Host</string>
     <string name="hot">Hot</string>
     <string name="hot_zone_bottom_center">Bottom center</string>
-    <string name="hot_zone_center_disabled">Top and bottom center hot zones will be disabled</string>
+    <string name="hot_zone_center_disabled">Top and bottom centre hot zones will be disabled</string>
     <string name="hot_zone_left_disabled">Top left hot zone will be disabled</string>
     <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
     <string name="hot_zone_top_center">Top center</string>
@@ -1208,7 +1208,7 @@
     <string name="profile">Profile</string>
     <string name="profile_backup">Backup current profile</string>
     <string name="profile_explanation">Profiles are used to store your display preferences.</string>
-    <string name="profile_restart">After loading in a profile, you should restart the app to see all of the changes.</string>
+    <string name="profile_restart">After loading in a profile, you should restart the app to see all the changes.</string>
     <string name="profile_restore">Restore a saved profile</string>
     <string name="profiles_found">The following profiles have been found in the OpenSong/Profiles folder.  Click on an item to select it.</string>
     <string name="program">Program</string>
@@ -1919,4 +1919,7 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="inline_search">Inline search</string>
+    <string name="inline_search_info">Seach and extract content directly in the app</string>
+    <string name="theme_amoled" translatable="false">AMOLED</string>
 </resources>
