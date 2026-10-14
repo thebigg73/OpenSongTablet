@@ -234,6 +234,7 @@
     <string name="choose_image2">Choose background image 2</string>
     <string name="choose_video1">Choose background video 1</string>
     <string name="choose_video2">Choose background video 2</string>
+    <string name="chord">Chord</string>
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
     <string name="chord_color">Chords font</string>
     <string name="chord_detection">Chord detection</string>
@@ -486,6 +487,9 @@
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
     <string name="delete_song_warning">You cannot undo this action.  Please make sure you have created a backup just in case!</string>
     <string name="desktop_specific_file">A file specific to the desktop version of OpenSong</string>
+    <string name="detect">Detect</string>
+    <string name="detection">Detection</string>
+    <string name="detector">Detector</string>
     <string name="device">Device</string>
     <string name="diagram">Diagram</string>
     <string name="display">Display</string>
@@ -747,6 +751,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Inline MIDI commands</string>
     <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
+    <string name="inline_search">Inline search</string>
+    <string name="inline_search_info">Seach and extract content directly in the app</string>
     <string name="inline_set_move_to_next">Cue song to next item in set</string>
     <string name="inline_set_scroll_to_item">Scroll to current item</string>
     <string name="insert_guitar_tab">Insert Guitar tab</string>
@@ -857,6 +863,7 @@
     <string name="link_web">Online link</string>
     <string name="link_youtube">YouTube link</string>
     <string name="listen">Listen</string>
+    <string name="listener">Listener</string>
     <string name="load">Load</string>
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location">Location</string>
@@ -1616,6 +1623,7 @@
     <string name="text_file_info">A file that can be opened and viewed by most applications</string>
     <string name="text_size">Text size</string>
     <string name="theme">Theme</string>
+    <string name="theme_amoled" translatable="false">AMOLED</string>
     <string name="theme_choose">Switch theme</string>
     <string name="theme_custom1">Custom 1</string>
     <string name="theme_custom2">Custom 2</string>
@@ -1919,7 +1927,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="inline_search">Inline search</string>
-    <string name="inline_search_info">Seach and extract content directly in the app</string>
-    <string name="theme_amoled" translatable="false">AMOLED</string>
 </resources>

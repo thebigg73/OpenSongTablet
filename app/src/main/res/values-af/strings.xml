@@ -212,6 +212,7 @@
     <string name="choose_image2">Kies agtergrond beeld 2</string>
     <string name="choose_video1">Kies agtergrond video 1</string>
     <string name="choose_video2">Kies agtergrond video 2</string>
+    <string name="chord">Akkoord</string>
     <string name="chord_capo_display">As \'n liedjie capo-akkoorde het, watter akkoorde moet gewys word?</string>
     <string name="chord_color">Akkoorde font</string>
     <string name="chord_detection">Akkoordopsporing</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">As u hierdie subgids verwyder, sal dit ook liedjies of vouers wat daarin is, verwyder. U kan nie hierdie verandering ongedaan maak nie!</string>
     <string name="delete_song_warning">Jy kan nie hierdie handeling ontdoen nie. Maak asseblief seker dat jy \'n rugsteun geskep het vir ingeval!</string>
     <string name="desktop_specific_file">\'n Lêer spesifiek vir die rekenaarweergawe van OpenSong</string>
+    <string name="detect">Opspoor</string>
+    <string name="detection">Opsporing</string>
+    <string name="detector">Detektor</string>
     <string name="device">Toestel</string>
     <string name="diagram">Diagram</string>
     <string name="display">Vertoon</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online skakel</string>
     <string name="link_youtube">YouTube-skakel</string>
     <string name="listen">Luister</string>
+    <string name="listener">Luisteraar</string>
     <string name="load">Laai</string>
     <string name="load_reusable">Laai \'n herbruikbare slide</string>
     <string name="location">Ligging</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="inline_search">Inlyn soektog</string>
+    <string name="inline_search_info">Soek en onttrek inhoud direk in die toepassing</string>
 </resources>

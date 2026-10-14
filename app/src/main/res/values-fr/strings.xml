@@ -212,6 +212,7 @@
     <string name="choose_image2">Choisissez l\'image d\'arriere plan 2</string>
     <string name="choose_video1">Choisissez l\'arrière plan vidéo 1</string>
     <string name="choose_video2">Choisissez l\'arrière plan vidéo 2</string>
+    <string name="chord">Accord</string>
     <string name="chord_capo_display">Si une chanson a des accords de capodastre, quels accords doivent être affichés ?</string>
     <string name="chord_color">Police des accords</string>
     <string name="chord_detection">Détection d\'accords</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Si vous supprimez ce sous-répertoire, cela supprimera également tous les morceaux ou dossiers qu\'il contient. Vous ne pouvez pas annuler ce changement ! Assurez-vous d\'avoir effectué et enregistré des sauvegardes de TOUS vos fichiers avant de continuer !!!</string>
     <string name="delete_song_warning">Vous ne pouvez pas annuler cette action. Assurez-vous d\'avoir créé une sauvegarde au cas où !</string>
     <string name="desktop_specific_file">Un fichier spécifique à la version de bureau d\'OpenSong</string>
+    <string name="detect">Détecter</string>
+    <string name="detection">Détection</string>
+    <string name="detector">Détecteur</string>
     <string name="device">Appareil</string>
     <string name="diagram">Diagramme</string>
     <string name="display">Ecran</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Lien en ligne</string>
     <string name="link_youtube">Lien YouTube</string>
     <string name="listen">Ecoutez</string>
+    <string name="listener">Auditeur</string>
     <string name="load">Chargez</string>
     <string name="load_reusable">Charger une diapositive réutilisables</string>
     <string name="location">Emplacement</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Culte</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="inline_search">Recherche en ligne</string>
+    <string name="inline_search_info">Rechercher et extraire le contenu directement dans l\'application</string>
 </resources>

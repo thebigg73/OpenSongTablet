@@ -212,6 +212,7 @@
     <string name="choose_image2">Выбор фонового изображения 2</string>
     <string name="choose_video1">Выбор фонового видео 1</string>
     <string name="choose_video2">Выбор фонового видео 2</string>
+    <string name="chord">Аккорд</string>
     <string name="chord_capo_display">Если в песне есть капо аккорды, какие из аккордов нужно показать?</string>
     <string name="chord_color">Шрифт аккордов</string>
     <string name="chord_detection">Обнаружение аккордов</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Если вы удалите этот подкаталог, это также приведет к удалению всех песен или папок, которые в нем содержатся. Вы не сможете это отменить!</string>
     <string name="delete_song_warning">Вы не сможете отменить это действие. Пожалуйста, убедитесь, что вы создали резервную копию на всякий случай!</string>
     <string name="desktop_specific_file">Файл, специфичный для настольной версии OpenSong.</string>
+    <string name="detect">Обнаружить</string>
+    <string name="detection">Обнаружение</string>
+    <string name="detector">Детектор</string>
     <string name="device">Устройство</string>
     <string name="diagram">Диаграмма</string>
     <string name="display">Отображение</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Интернет ссылка</string>
     <string name="link_youtube">YouTube ссылка</string>
     <string name="listen">Прослушивание</string>
+    <string name="listener">Слушатель</string>
     <string name="load">Загрузка</string>
     <string name="load_reusable">Загрузить слайд для повторного использования</string>
     <string name="location">Расположение</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
+    <string name="inline_search">Встроенный поиск</string>
+    <string name="inline_search_info">Искать и извлекать контент прямо в приложении</string>
 </resources>

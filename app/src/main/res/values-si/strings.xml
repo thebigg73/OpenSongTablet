@@ -212,6 +212,7 @@
     <string name="choose_image2">පසුබිම් රූපය තෝරන්න 2</string>
     <string name="choose_video1">පසුබිම් වීඩියෝව තෝරන්න 1</string>
     <string name="choose_video2">පසුබිම් වීඩියෝව තෝරන්න 2</string>
+    <string name="chord">ස්වරය</string>
     <string name="chord_capo_display">ගීතයක Capo chords තිබේ නම්, කුමන chords පෙන්විය යුතුද?</string>
     <string name="chord_color">කෝඩ්ස් අකුරු</string>
     <string name="chord_detection">ස්වර නාද හඳුනාගැනීම</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">ඔබ මෙම උප බහලුම මකා දැමුවහොත්, මෙය එහි අඩංගු ඕනෑම ගීත හෝ ෆෝල්ඩර මකා දමයි.  ඔබට මෙම වෙනස පසුගමනය කළ නොහැක!\n\nකරුණාකර ඉදිරියට යාමට පෙර ඔබ ඔබගේ සියලුම ගොනු උපස්ථ කර ඇති බවට වග බලා ගන්න!!!</string>
     <string name="delete_song_warning">ඔබට මෙම ක්‍රියාව පසුගමනය කළ නොහැක.  කරුණාකර ඔබ උපස්ථයක් සාදා ඇති බව සහතික කර ගන්න!</string>
     <string name="desktop_specific_file">OpenSong හි ඩෙස්ක්ටොප් අනුවාදයට විශේෂිත ගොනුවක්</string>
+    <string name="detect">හඳුනා ගන්න</string>
+    <string name="detection">හඳුනාගැනීම</string>
+    <string name="detector">අනාවරකය</string>
     <string name="device">උපාංගය</string>
     <string name="diagram">රූප සටහන</string>
     <string name="display">ප්රදර්ශනය කරන්න</string>
@@ -630,6 +634,8 @@
     <string name="inline">පෙළට</string>
     <string name="inline_midi">පේළිගත MIDI විධාන</string>
     <string name="inline_midi_info">ගීත අංශයක් මත ක්ලික් කිරීමෙන් ක්‍රියාත්මක කළ හැකි MIDI විධාන</string>
+    <string name="inline_search">පේළිගත සෙවීම</string>
+    <string name="inline_search_info">යෙදුම තුළ කෙලින්ම අන්තර්ගතය සොයන්න සහ උපුටා ගන්න</string>
     <string name="inline_set_move_to_next">කට්ටලයේ ඊළඟ අයිතමයට ගීතය ඉඟි කරන්න</string>
     <string name="inline_set_scroll_to_item">වත්මන් අයිතමයට අනුචලනය කරන්න</string>
     <string name="insert_guitar_tab">ගිටාර් ටැබ් එක ඇතුළු කරන්න</string>
@@ -684,6 +690,7 @@
     <string name="link_web">සබැඳි සබැඳිය</string>
     <string name="link_youtube">YouTube සබැඳිය</string>
     <string name="listen">සවන් දෙන්න</string>
+    <string name="listener">සවන්දෙන්නා</string>
     <string name="load">පැටවීම</string>
     <string name="load_reusable">නැවත භාවිත කළ හැකි ස්ලයිඩයක් පූරණය කරන්න</string>
     <string name="location">ස්ථානය</string>

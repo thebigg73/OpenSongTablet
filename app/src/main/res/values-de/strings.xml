@@ -212,6 +212,7 @@
     <string name="choose_image2">Hintergrundbild 2 wählen</string>
     <string name="choose_video1">Hintergrundvideo 1 wählen</string>
     <string name="choose_video2">Hintergrundvideo 2 wählen</string>
+    <string name="chord">Akkord</string>
     <string name="chord_capo_display">Wenn ein Song Capo-Akkorde hat, welche Akkorde sollen angezeigt werden?</string>
     <string name="chord_color">Schrift Akkorde</string>
     <string name="chord_detection">Akkorderkennung</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Wenn Sie dieses Unterverzeichnis löschen, werden auch alle darin enthaltenen Songs oder Ordner gelöscht. Sie können diese Änderung nicht rückgängig machen! Bitte stellen Sie sicher, dass Sie Sicherungskopien ALLER Ihrer Dateien erstellt und gespeichert haben, bevor Sie fortfahren!!!</string>
     <string name="delete_song_warning">Sie können diese Aktion nicht rückgängig machen. Bitte stellen Sie sicher, dass Sie für alle Fälle ein Backup erstellt haben!</string>
     <string name="desktop_specific_file">Eine Datei, die speziell für die Desktop-Version von OpenSong gilt</string>
+    <string name="detect">Erkennen</string>
+    <string name="detection">Detektion</string>
+    <string name="detector">Detektor</string>
     <string name="device">Gerät</string>
     <string name="diagram">Diagramm</string>
     <string name="display">Anzeige</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online Link</string>
     <string name="link_youtube">YouTube-Link</string>
     <string name="listen">Hör mal zu</string>
+    <string name="listener">Hörer</string>
     <string name="load">Laden</string>
     <string name="load_reusable">Wiederverwendbare Folie laden</string>
     <string name="location">Ort</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Verehrung</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="inline_search">Inline-Suche</string>
+    <string name="inline_search_info">Suchen und Inhalte direkt in der App extrahieren</string>
 </resources>

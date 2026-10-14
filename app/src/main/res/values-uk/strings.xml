@@ -212,6 +212,7 @@
     <string name="choose_image2">Виберіть фонове зображення 2</string>
     <string name="choose_video1">Виберіть фонове відео 1</string>
     <string name="choose_video2">Виберіть фонове відео 2</string>
+    <string name="chord">Акорд</string>
     <string name="chord_capo_display">Якщо в пісні є капо-акорди, які акорди потрібно показати?</string>
     <string name="chord_color">Акорди</string>
     <string name="chord_detection">Виявлення акордів</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Якщо ви видалите цей підкаталог, це також видалить усі пісні та папки, які він містить. Ви не можете скасувати цю зміну!  Будь ласка, переконайтеся, що ви зробили та зберегли резервні копії УСІХ ваших файлів, перш ніж продовжити!!!</string>
     <string name="delete_song_warning">Ви не можете скасувати цю дію. Будь ласка, переконайтеся, що ви створили резервну копію про всяк випадок!</string>
     <string name="desktop_specific_file">Спеціальний файл для настільної версії OpenSong</string>
+    <string name="detect">Виявлення</string>
+    <string name="detection">Виявлення</string>
+    <string name="detector">Детектор</string>
     <string name="device">Пристрій</string>
     <string name="diagram">Діаграма</string>
     <string name="display">Дисплей</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Інтернет посилання</string>
     <string name="link_youtube">YouTube посилання</string>
     <string name="listen">Слухати</string>
+    <string name="listener">Слухач</string>
     <string name="load">Завантаження</string>
     <string name="load_reusable">Завантажити слайд</string>
     <string name="location">Місцезнаходження</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Богослужіння</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="inline_search">Вбудований пошук</string>
+    <string name="inline_search_info">Шукайте та витягуйте контент безпосередньо в додатку</string>
 </resources>

@@ -212,6 +212,7 @@
     <string name="choose_image2">Wybierz obraz tła 2</string>
     <string name="choose_video1">Wybierz tło wideo 1</string>
     <string name="choose_video2">Wybierz tło wideo 2</string>
+    <string name="chord">Akord</string>
     <string name="chord_capo_display">Jeśli piosenka ma akordy kapo, które akordy powinny być pokazane?</string>
     <string name="chord_color">Czcionka akordów</string>
     <string name="chord_detection">Wykrywanie akordów</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Jeśli usuniesz ten podkatalog, usunie to również wszystkie zawarte w nim piosenki lub katalogi. Tej zmiany nie można cofnąć!</string>
     <string name="delete_song_warning">Tej akcji nie można cofnąć. Upewnij się, że utworzyłeś kopię zapasową na wszelki wypadek!</string>
     <string name="desktop_specific_file">Plik specyficzny dla komputerowej wersji OpenSong</string>
+    <string name="detect">Wykryć</string>
+    <string name="detection">Wykrywanie</string>
+    <string name="detector">Detektor</string>
     <string name="device">Urządzenie</string>
     <string name="diagram">Diagram</string>
     <string name="display">Wyświetlacz</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Link w Internecie</string>
     <string name="link_youtube">Link YouTube</string>
     <string name="listen">Słuchaj</string>
+    <string name="listener">Słuchacz</string>
     <string name="load">Wczytaj</string>
     <string name="load_reusable">Wczytaj slajd wielokrotnego użytku</string>
     <string name="location">Lokalizacja</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Cześć</string>
     <string name="zone">Strefa</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="inline_search">Wyszukiwanie w linii</string>
+    <string name="inline_search_info">Wyszukuj i wyodrębniaj treści bezpośrednio w aplikacji</string>
 </resources>

@@ -212,6 +212,7 @@
     <string name="choose_image2">Odabrati pozadinsku sliku 2</string>
     <string name="choose_video1">Odabrati pozadinski video 1</string>
     <string name="choose_video2">Odabrati pozadinski video 2</string>
+    <string name="chord">Akkord</string>
     <string name="chord_capo_display">Ako pesma ima kapo akorde, koje akorde treba prikazati?</string>
     <string name="chord_color">Font akroda</string>
     <string name="chord_detection">Detekcija akorda</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Ako izbrišete ovaj poddirektorijum, izbrisaće se i sve pesme ili fascikle koje sadrži. Ne možete da opozovete ovu promenu!</string>
     <string name="delete_song_warning">Ne možete poništiti ovu radnju. Uverite se da ste napravili rezervnu kopiju za svaki slučaj!</string>
     <string name="desktop_specific_file">Fajl specifičan za desktop verziju OpenSong</string>
+    <string name="detect">Otkrivati</string>
+    <string name="detection">Otkrivanje</string>
+    <string name="detector">Detektor</string>
     <string name="device">Uređaj</string>
     <string name="diagram">Dijagram</string>
     <string name="display">Prikaz</string>
@@ -630,6 +634,8 @@
     <string name="inline">Umetnute</string>
     <string name="inline_midi">Umetnute MIDI komande</string>
     <string name="inline_midi_info">MIDI komande koje se mogu aktivirati klikom na odeljak pesme</string>
+    <string name="inline_search">Pretraga u redu</string>
+    <string name="inline_search_info">Pretražujte i izvodite sadržaj direktno u aplikaciji</string>
     <string name="inline_set_move_to_next">Cue pesma za sledeću stavku u setu</string>
     <string name="inline_set_scroll_to_item">Dođite do trenutne stavke</string>
     <string name="insert_guitar_tab">Ubaci karticu Gitara</string>
@@ -684,6 +690,7 @@
     <string name="link_web">Online veza</string>
     <string name="link_youtube">YouTube veza</string>
     <string name="listen">Sluљaj</string>
+    <string name="listener">Slušač</string>
     <string name="load">Učitati</string>
     <string name="load_reusable">Učitaj slajd za ponovno korišćenje</string>
     <string name="location">Lokacija</string>

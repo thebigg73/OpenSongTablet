@@ -212,6 +212,7 @@
     <string name="choose_image2">Válassza ki a háttérképet 2</string>
     <string name="choose_video1">Válassza ki a háttér video 1</string>
     <string name="choose_video2">Válassza ki a háttér video 2</string>
+    <string name="chord">Akkord</string>
     <string name="chord_capo_display">Ha egy dalnak vannak capo akkordjai, melyik akkordokat kell megjeleníteni?</string>
     <string name="chord_color">Chords font</string>
     <string name="chord_detection">Akkordészlelés</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Ha törli ezt az alkönyvtárat, akkor a benne lévő dalok és mappák is törlődnek. Ez a módosítás nem vonható vissza! Kérjük, győződjön meg róla, hogy az ÖSSZES fájlról biztonsági másolatot készített és mentett, mielőtt továbblép!!!</string>
     <string name="delete_song_warning">Ez a művelet nem vonható vissza. Kérjük, minden esetre készítsen biztonsági másolatot!</string>
     <string name="desktop_specific_file">Az OpenSong asztali verziójára jellemző fájl</string>
+    <string name="detect">Észlelés</string>
+    <string name="detection">Érzékelés</string>
+    <string name="detector">Detektor</string>
     <string name="device">Eszköz</string>
     <string name="diagram">Diagram</string>
     <string name="display">Képernyő</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online kapcsolat</string>
     <string name="link_youtube">YouTube linket</string>
     <string name="listen">Hallgat</string>
+    <string name="listener">Hallgató</string>
     <string name="load">Rak</string>
     <string name="load_reusable">Töltsön be egy újrafelhasználható slide</string>
     <string name="location">Elhelyezkedés</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="inline_search">Soron belüli keresés</string>
+    <string name="inline_search_info">Keresés és tartalom kinyerése közvetlenül az alkalmazásban</string>
 </resources>

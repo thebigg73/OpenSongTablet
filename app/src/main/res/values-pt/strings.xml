@@ -212,6 +212,7 @@
     <string name="choose_image2">Escolha imagem fundo 2</string>
     <string name="choose_video1">Escolha o fundo de vídeo 1</string>
     <string name="choose_video2">Escolha o fundo de vídeo 2</string>
+    <string name="chord">Acorde</string>
     <string name="chord_capo_display">Se uma música tem acordes de capo, quais acordes devem ser mostrados?</string>
     <string name="chord_color">Fonte Chords</string>
     <string name="chord_detection">Detecção de acordes</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Se você excluir este subdiretório, isso também excluirá todas as músicas ou pastas que ele contém. Você não pode desfazer essa alteração!</string>
     <string name="delete_song_warning">Você não pode desfazer esta ação. Por favor, certifique-se de ter criado um backup para o caso!</string>
     <string name="desktop_specific_file">Um arquivo específico para a versão desktop do OpenSong</string>
+    <string name="detect">Detectar</string>
+    <string name="detection">Detecção</string>
+    <string name="detector">Detector</string>
     <string name="device">Dispositivo</string>
     <string name="diagram">Diagrama</string>
     <string name="display">Exibição</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Ligação on-line</string>
     <string name="link_youtube">Link do YouTube</string>
     <string name="listen">Ouço</string>
+    <string name="listener">Ouvinte</string>
     <string name="load">Carregar</string>
     <string name="load_reusable">Coloque um slide reutilizável</string>
     <string name="location">Localização</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Adorar</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="inline_search">Pesquisa em linha</string>
+    <string name="inline_search_info">Pesquisar e extrair conteúdo diretamente na aplicação</string>
 </resources>

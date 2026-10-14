@@ -212,6 +212,7 @@
     <string name="choose_image2">Scegliere l\'immagine di sfondo 2</string>
     <string name="choose_video1">Scegliere il video di sfondo 1</string>
     <string name="choose_video2">Scegliere il video di sfondo 2</string>
+    <string name="chord">Accordo</string>
     <string name="chord_capo_display">Se in un brano viene usato il capotasto, quali accordi dovrebbero essere visualizzati?</string>
     <string name="chord_color">Colore di visualizzazione degli accordi</string>
     <string name="chord_detection">Rilevamento accordi</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Se elimini questa cartella, verranno eliminati anche tutti i brani e le cartelle in essa contenuti. Non puoi annullare questa modifica! Assicurati di aver eseguito un backup di TUTTI i tuoi files prima di procedere!!!</string>
     <string name="delete_song_warning">Attenzione! Questa azione è irreversibile. Assicurati di aver creato un backup completo per ogni evenienza!</string>
     <string name="desktop_specific_file">File specifico per la versione desktop di OpenSong</string>
+    <string name="detect">Rilevare</string>
+    <string name="detection">Rilevamento</string>
+    <string name="detector">Rivelatore</string>
     <string name="device">Dispositivo</string>
     <string name="diagram">Diagramma</string>
     <string name="display">Schermo</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Collegamento a pagina web</string>
     <string name="link_youtube">Collegamento a video di YouTube</string>
     <string name="listen">Ascolta</string>
+    <string name="listener">Ascoltatore</string>
     <string name="load">Caricare</string>
     <string name="load_reusable">Caricare un elemento riutilizzabile</string>
     <string name="location">Posizione</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="inline_search">Ricerca inline</string>
+    <string name="inline_search_info">Cerca ed estrai contenuti direttamente nell\'app</string>
 </resources>

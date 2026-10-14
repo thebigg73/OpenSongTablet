@@ -212,6 +212,7 @@
     <string name="choose_image2">Välj bakgrundsbild 2</string>
     <string name="choose_video1">Välj bakgrundsvideo 1</string>
     <string name="choose_video2">Välj bakgrunds video 2</string>
+    <string name="chord">Ackord</string>
     <string name="chord_capo_display">Om en låt har capo-ackord, vilka ackord ska visas?</string>
     <string name="chord_color">Ackord typsnitt</string>
     <string name="chord_detection">Ackorddetektering</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Om du tar bort den här underkatalogen raderas också alla låtar eller mappar som den innehåller. Du kan inte ångra den här ändringen!</string>
     <string name="delete_song_warning">Du kan inte ångra den här åtgärden. Se till att du har skapat en säkerhetskopia för säkerhets skull!</string>
     <string name="desktop_specific_file">En fil som är specifik för skrivbordsversionen av OpenSong</string>
+    <string name="detect">Upptäcka</string>
+    <string name="detection">Upptäckt</string>
+    <string name="detector">Detektor</string>
     <string name="device">Apparat</string>
     <string name="diagram">Diagram</string>
     <string name="display">Visa</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online länk</string>
     <string name="link_youtube">YouTube-länk</string>
     <string name="listen">Lyssna</string>
+    <string name="listener">Lyssnare</string>
     <string name="load">Ladda</string>
     <string name="load_reusable">Ladda en återanvändbar bild</string>
     <string name="location">Plats</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="inline_search">Sökning i linje</string>
+    <string name="inline_search_info">Sök och extrahera innehåll direkt i appen</string>
 </resources>

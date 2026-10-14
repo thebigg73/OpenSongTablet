@@ -212,6 +212,7 @@
     <string name="choose_image2">背景画像2を選択してください</string>
     <string name="choose_video1">背景ビデオ1を選択してください</string>
     <string name="choose_video2">背景ビデオ2を選択してください</string>
+    <string name="chord">コード</string>
     <string name="chord_capo_display">曲にカポコードがある場合、どのコードを表示する必要がありますか？</string>
     <string name="chord_color">和音フォント</string>
     <string name="chord_detection">コード検出</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">このサブディレクトリを削除すると、それに含まれるすべての曲またはフォルダも削除されます。 この変更を元に戻すことはできません！ 続行する前に、すべてのファイルのバックアップを作成して保存したことを確認してください!!!</string>
     <string name="delete_song_warning">このアクションを元に戻すことはできません。 万が一に備えて、バックアップを作成してください。</string>
     <string name="desktop_specific_file">OpenSong のデスクトップ バージョンに固有のファイル</string>
+    <string name="detect">検出する</string>
+    <string name="detection">検出</string>
+    <string name="detector">検出器</string>
     <string name="device">デバイス</string>
     <string name="diagram">図</string>
     <string name="display">ディスプレイ</string>
@@ -684,6 +688,7 @@
     <string name="link_web">オンラインリンク</string>
     <string name="link_youtube">YouTubeのリンク</string>
     <string name="listen">聞く</string>
+    <string name="listener">リスナー</string>
     <string name="load">積み込む</string>
     <string name="load_reusable">再利用可能なスライドをロードします</string>
     <string name="location">位置</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="inline_search">インライン検索</string>
+    <string name="inline_search_info">アプリ内で直接コンテンツを検索して抽出する</string>
 </resources>

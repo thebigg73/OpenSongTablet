@@ -212,6 +212,7 @@
     <string name="choose_image2">Επιλογή εικόνας φόντου 2</string>
     <string name="choose_video1">Επιλογή βίντεο φόντου 1</string>
     <string name="choose_video2">Επιλογή βίντεο φόντου 2</string>
+    <string name="chord">Χορδή</string>
     <string name="chord_capo_display">Αν ένα τραγούδι έχει συγχορδίες capo, ποιες συγχορδίες πρέπει να εμφανίζονται;</string>
     <string name="chord_color">Γραμματοσειρά συγχορδιών</string>
     <string name="chord_detection">Ανίχνευση συγχορδιών</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Εάν διαγράψετε αυτόν τον υποκατάλογο, θα διαγραφούν επίσης και τυχόν τραγούδια ή φάκελοι που περιέχει. Δεν μπορείτε να αναιρέσετε αυτήν την αλλαγή! Βεβαιωθείτε ότι έχετε δημιουργήσει και αποθηκεύσει αντίγραφα ασφαλείας ΟΛΩΝ των αρχείων σας πριν συνεχίσετε!!!</string>
     <string name="delete_song_warning">Δεν μπορείτε να αναιρέσετε αυτήν την ενέργεια. Βεβαιωθείτε ότι έχετε δημιουργήσει ένα αντίγραφο ασφαλείας για παν ενδεχόμενο!</string>
     <string name="desktop_specific_file">Ένα αρχείο συγκεκριμένο για την έκδοση desktop του OpenSong</string>
+    <string name="detect">Διακρίνω</string>
+    <string name="detection">Ανίχνευση</string>
+    <string name="detector">Ανιχνευτής</string>
     <string name="device">Συσκευή</string>
     <string name="diagram">Διάγραμμα</string>
     <string name="display">Εμφάνιση</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online link</string>
     <string name="link_youtube">Σύνδεσμος YouTube</string>
     <string name="listen">Ακούω</string>
+    <string name="listener">Ακροατής</string>
     <string name="load">Άνοιγμα</string>
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location">Τοποθεσία</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="inline_search">Αναζήτηση εντός γραμμής</string>
+    <string name="inline_search_info">Αναζήτηση και εξαγωγή περιεχομένου απευθείας στην εφαρμογή</string>
 </resources>

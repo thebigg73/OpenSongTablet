@@ -212,6 +212,7 @@
     <string name="choose_image2">Vyberte obrázek na pozadí 2</string>
     <string name="choose_video1">Vyberte si pozadí video 1</string>
     <string name="choose_video2">Vyberte si pozadí video 2</string>
+    <string name="chord">Akord</string>
     <string name="chord_capo_display">Pokud má skladba akordy capo, které akordy by se měly zobrazit?</string>
     <string name="chord_color">Akordy písmo</string>
     <string name="chord_detection">Detekce akordů</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">Pokud odstraníte tento podadresář, budou odstraněny také všechny skladby nebo složky, které obsahuje. Tuto změnu nelze vrátit zpět!</string>
     <string name="delete_song_warning">Tuto akci nelze vrátit zpět. Ujistěte se, že jste vytvořili zálohu pro každý případ!</string>
     <string name="desktop_specific_file">Soubor specifický pro desktopovou verzi OpenSong</string>
+    <string name="detect">Detekce</string>
+    <string name="detection">Detekce</string>
+    <string name="detector">Detektor</string>
     <string name="device">Zařízení</string>
     <string name="diagram">Diagram</string>
     <string name="display">Zobrazit</string>
@@ -684,6 +688,7 @@
     <string name="link_web">Online odkaz</string>
     <string name="link_youtube">Odkaz YouTube</string>
     <string name="listen">Poslouchat</string>
+    <string name="listener">Posluchač</string>
     <string name="load">Naložit</string>
     <string name="load_reusable">Vložte opakovaně použitelný snímek</string>
     <string name="location">Umístění</string>
@@ -1527,4 +1532,6 @@
     <string name="worship">Uctívání</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="inline_search">Inline vyhledávání</string>
+    <string name="inline_search_info">Hledejte a extrahujte obsah přímo v aplikaci</string>
 </resources>

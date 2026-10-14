@@ -212,6 +212,7 @@
     <string name="choose_image2">选择背景图片2</string>
     <string name="choose_video1">选择背景视频1</string>
     <string name="choose_video2">选择背景视频2</string>
+    <string name="chord">弦</string>
     <string name="chord_capo_display">如果一首歌有变调夹和弦，应该显示哪些和弦？</string>
     <string name="chord_color">和弦字体</string>
     <string name="chord_detection">和弦检测</string>
@@ -371,6 +372,9 @@
     <string name="delete_folder_warning">如果删除此子目录，这还将删除它包含的所有歌曲或文件夹。 您无法撤消此更改！</string>
     <string name="delete_song_warning">您无法撤消此操作。 请确保您已创建备份以防万一！</string>
     <string name="desktop_specific_file">特定于桌面版 OpenSong 的文件</string>
+    <string name="detect">探测</string>
+    <string name="detection">检测</string>
+    <string name="detector">探测器</string>
     <string name="device">装置</string>
     <string name="diagram">图表</string>
     <string name="display">显示</string>
@@ -684,6 +688,7 @@
     <string name="link_web">在线链接</string>
     <string name="link_youtube">YouTube链接</string>
     <string name="listen">听</string>
+    <string name="listener">听众</string>
     <string name="load">负荷</string>
     <string name="load_reusable">装入可重复使用的幻灯片</string>
     <string name="location">地点</string>
@@ -1528,4 +1533,6 @@
     <string name="worship">崇拜</string>
     <string name="zone">区</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="inline_search">内联搜索</string>
+    <string name="inline_search_info">在应用中直接搜索和提取内容</string>
 </resources>
