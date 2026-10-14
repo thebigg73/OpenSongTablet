@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.webserver;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -458,6 +459,14 @@ public class CreateHTML {
         string += "    var chordlines = document.getElementsByClassName('chord');\n";
         string += "    for (var i = 0; i < chordlines.length; i++) {\n";
         string += "      chordlines[i].style.display = chords ? 'table-cell' : 'none';\n";
+        string += "    }\n";
+        string += "    var capolines = document.getElementsByClassName('capo');\n";
+        string += "    for (var i = 0; i < capolines.length; i++) {\n";
+        string += "      capolines[i].style.display = chords ? 'table-cell' : 'none';\n";
+        string += "    }\n";
+        string += "    var inlineAbcs = document.getElementsByClassName('inline_abc');\n";
+        string += "    for (var i = 0; i < inlineAbcs.length; i++) {\n";
+        string += "      inlineAbcs[i].style.display = chords ? 'block' : 'none';\n";
         string += "    }\n";
         string += "    // 3. Give the browser a split second to calculate the new table widths\n";
         string += "    // then capture the true width\n";
