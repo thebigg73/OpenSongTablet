@@ -472,7 +472,9 @@ public class EditSongFragmentLyrics extends Fragment {
         // Move the save button down
         myView.imeBarScrollView.setVisibility(View.GONE);
         myView.imeBar.removeAllViews();
-        editSongFragmentInterface.getSaveButton().setTranslationY(0);
+        if (editSongFragmentInterface!=null && editSongFragmentInterface.getSaveButton()!=null) {
+            editSongFragmentInterface.getSaveButton().setTranslationY(0);
+        }
     }
 
     private void undoLyrics() {

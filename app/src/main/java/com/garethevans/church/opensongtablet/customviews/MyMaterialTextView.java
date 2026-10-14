@@ -74,12 +74,14 @@ public class MyMaterialTextView extends LinearLayout {
             if (textValue != null) {
                 // Attribute exists in XML, safe to read
                 TypedArray a = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.text});
+                textView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
                 textView.setText(a.getString(0));
                 a.recycle();
             }
             if (hintValue != null) {
                 // Attribute exists in XML, safe to read
                 TypedArray a2 = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.hint});
+                hintView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
                 hintView.setText(a2.getString(0));
                 a2.recycle();
             }
@@ -113,6 +115,7 @@ public class MyMaterialTextView extends LinearLayout {
     public void setText(String text) {
         if (textView!=null) {
             textView.post(() -> {
+                textView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
                 textView.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
                 textView.setText(text);
             });
@@ -121,6 +124,7 @@ public class MyMaterialTextView extends LinearLayout {
     public void setHint(String text) {
         if (hintView!=null) {
             hintView.post(() -> {
+                hintView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
                 hintView.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
                 hintView.setText(text);
             });
@@ -129,25 +133,13 @@ public class MyMaterialTextView extends LinearLayout {
 
     public void setText(CharSequence text) {
         if (textView!=null) {
-            textView.post(() -> {
-                setText(text==null ? "" : String.valueOf(text));
-            });
+            textView.post(() -> setText(text==null ? "" : String.valueOf(text)));
         }
     }
 
     public void setHint(CharSequence hint) {
         if (hintView!=null) {
-            hintView.post(() -> {
-                setHint(hint==null ? "" : String.valueOf(hint));
-            });
-            /*hintView.post(() -> {
-                hintView.setVisibility(hint!=null ? VISIBLE : GONE);
-                try {
-                    hintView.setText(String.valueOf(hint==null ? "":hint));
-                } catch (Exception e) {
-                    Log.d(TAG, "Couldn't set hint:" + hint);
-                }
-            });*/
+            hintView.post(() -> setHint(hint==null ? "" : String.valueOf(hint)));
         }
     }
 

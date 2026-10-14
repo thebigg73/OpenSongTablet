@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.OverScroller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 public class MyZoomLayout extends FrameLayout {
 
@@ -36,6 +38,7 @@ public class MyZoomLayout extends FrameLayout {
         scaleDetector = new ScaleGestureDetector(c, new ScaleListener());
         gestureDetector = new GestureDetector(c, new GestureListener());
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
+        this.setForegroundGravity(Gravity.START|Gravity.TOP);
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
         setClipToPadding(false);
@@ -46,6 +49,7 @@ public class MyZoomLayout extends FrameLayout {
         scaleDetector = new ScaleGestureDetector(c, new ScaleListener());
         gestureDetector = new GestureDetector(c, new GestureListener());
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
+        this.setForegroundGravity(Gravity.START|Gravity.TOP);
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
         setClipToPadding(false);
@@ -57,6 +61,7 @@ public class MyZoomLayout extends FrameLayout {
         gestureDetector = new GestureDetector(c, new GestureListener());
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
+        this.setForegroundGravity(Gravity.START|Gravity.TOP);
         setClipChildren(false);
         setClipToPadding(false);
     }
@@ -76,20 +81,42 @@ public class MyZoomLayout extends FrameLayout {
         }
         if (overScroller.computeScrollOffset()) {
             scrollTo(overScroller.getCurrX(), overScroller.getCurrY());
-            scrolledToBottom = overScroller.getCurrY()>=maxScrollY;
-            scrolledToTop = overScroller.getCurrY()<=0;
+            scrolledToBottom = overScroller.getCurrY() >= maxScrollY;
+            scrolledToTop = overScroller.getCurrY() <= 0;
             invalidate();
         }
         if ((isUserTouching && isScaling) || gestureControl) {
             canvas.save();
-            getChildAt(0).setTranslationX(0);
-            getChildAt(0).setTranslationY(0);
-            getChildAt(0).setPivotX(0);
-            getChildAt(0).setPivotY(0);
-            if(scaleFactor>Float.NEGATIVE_INFINITY && scaleFactor<Float.POSITIVE_INFINITY) {
-                getChildAt(0).setScaleX(scaleFactor);
-                getChildAt(0).setScaleY(scaleFactor);
-                canvas.scale(scaleFactor, scaleFactor, focusX, focusY);
+
+            boolean isRtl = androidx.core.view.ViewCompat.getLayoutDirection(this) == androidx.core.view.ViewCompat.LAYOUT_DIRECTION_RTL;
+            View child = getChildAt(0);
+
+            if (child != null) {
+                child.setTranslationX(0);
+                child.setTranslationY(0);
+                child.setPivotY(0);
+
+                // Adjust pivot for RTL so it scales from the right edge
+                if (isRtl) {
+                    child.setPivotX(child.getWidth());
+                } else {
+                    child.setPivotX(0);
+                }
+            }
+
+            if (scaleFactor > Float.NEGATIVE_INFINITY && scaleFactor < Float.POSITIVE_INFINITY) {
+                if (child != null) {
+                    child.setScaleX(scaleFactor);
+                    child.setScaleY(scaleFactor);
+                }
+
+                // Adjust the zoom focus point horizontally for RTL if needed
+                float adjustedFocusX = focusX;
+                if (isRtl && child != null) {
+                    // Mirror focus X relative to width for RTL scaling matrix
+                    adjustedFocusX = viewWidth - focusX;
+                }
+                canvas.scale(scaleFactor, scaleFactor, adjustedFocusX, focusY);
             }
             calculateMaxScrolls();
             isScaling = false;
@@ -303,8 +330,15 @@ public class MyZoomLayout extends FrameLayout {
         focusX = 0;
         focusY = 0;
         calculateMaxScrolls();
-        scrollTo(0,0);
-        scrolledToBottom = getScrollY()==maxScrollY;
+
+        boolean isRtl = androidx.core.view.ViewCompat.getLayoutDirection(this) == androidx.core.view.ViewCompat.LAYOUT_DIRECTION_RTL;
+        if (isRtl) {
+            scrollTo(maxScrollX, 0); // Start on the right side for RTL
+        } else {
+            scrollTo(0, 0);         // Start on the left side for LTR
+        }
+
+        scrolledToBottom = getScrollY() >= maxScrollY;
         scrolledToTop = true;
     }
 

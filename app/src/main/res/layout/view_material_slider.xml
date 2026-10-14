@@ -12,6 +12,7 @@
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="start"
         tools:text="@string/title"
         android:textSize="@dimen/text_medium"/>
 
@@ -19,6 +20,7 @@
         android:id="@+id/infoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="start"
         android:textSize="@dimen/text_small"
         tools:text="Hint" />
 

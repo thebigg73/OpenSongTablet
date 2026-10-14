@@ -21,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="start"
         android:orientation="vertical">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -31,6 +32,8 @@
             android:padding="0dp"
             android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/text_medium"
+            android:layout_gravity="start"
+            android:gravity="start"
             tools:text="Main text" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -41,6 +44,9 @@
             android:padding="0dp"
             android:textColor="?attr/hintTextColor"
             android:textSize="@dimen/text_small"
+            android:layout_gravity="start"
+            android:gravity="start"
+
             tools:text="Info text"/>
 
     </LinearLayout>

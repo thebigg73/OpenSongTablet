@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
+            android:gravity="start"
             android:textColor="?attr/colorOnPrimary"
             tools:text="Main text" />
 
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
+            android:gravity="start"
             android:textColor="?attr/hintTextColor"
             tools:text="Info text" />
 

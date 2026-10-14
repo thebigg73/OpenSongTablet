@@ -13,6 +13,7 @@
         android:labelFor="@+id/editText"
         tools:hint="Hint"
         style="@style/EditTextLayoutOutline"
+        android:gravity="start"
         android:importantForAutofill="no">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -27,6 +28,7 @@
             android:cursorVisible="true"
             android:enabled="true"
             tools:text="The text"
+            android:gravity="start"
             android:imeOptions="flagNoExtractUi"
             android:importantForAutofill="no"/>
     </com.google.android.material.textfield.TextInputLayout>

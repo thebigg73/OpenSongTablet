@@ -56,8 +56,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private boolean isKeyboardVisible = false;
     private final Handler keyboardHandler = new Handler(Looper.getMainLooper());
     private View.OnFocusChangeListener externalFocusChangeListener;
-    private Palette palette;
-    private Context c;
+    private final Palette palette;
+    private final Context c;
     private Typeface monoTypeface;
 
     // By default this is a single line edit text
@@ -69,12 +69,14 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         c = getWrappedContext(context);
         palette = new Palette(c);
         editText = new TextInputEditText(c);
+        editText.setTextDirection(TEXT_DIRECTION_LOCALE);
         textInputLayout = new TextInputLayout(c);
+        textInputLayout.setTextDirection(TEXT_DIRECTION_LOCALE);
         textInputLayout.addView(editText,
                 new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         this.addView(textInputLayout,
                 new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-
+        this.setTextDirection(TEXT_DIRECTION_LOCALE);
         restoreState = true;
 
         //editText.setId(View.generateViewId());
@@ -132,6 +134,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
         editText = findViewById(R.id.editText);
         textInputLayout = findViewById(R.id.holderLayout);
+
+        editText.setTextDirection(TEXT_DIRECTION_LOCALE);
+        textInputLayout.setTextDirection(TEXT_DIRECTION_LOCALE);
+
         editText.setTextInputLayoutFocusedRectEnabled(false);
 
         editText.setId(View.generateViewId());

@@ -23,6 +23,7 @@
             android:layout_margin="0dp"
             android:padding="0dp"
             tools:text="Main text"
+            android:gravity="start"
             android:textSize="@dimen/text_medium"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
+            android:gravity="start"
             tools:text="@string/info_text" />
     </LinearLayout>
 

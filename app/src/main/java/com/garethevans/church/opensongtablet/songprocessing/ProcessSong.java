@@ -513,7 +513,7 @@ public class ProcessSong {
     public String fixLyricsOnlySpace(String s) {
         // IV - Used for whole lines when displaying lyrics only
         // IV - Remove typical word splits, white space and trim - beautify!
-        return s.replaceAll("_", "")
+        return s.replace("_", "")
                 .replaceAll("\\s+-\\s+", "")
                 .replaceAll("\\s{2,}", " ")
                 // Fix sentences
@@ -535,8 +535,8 @@ public class ProcessSong {
                 type = "capoinfo";
             } else if (string.startsWith(";__")) {
                 type = "extra";
-                //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
-                //    type = "abcnotation";
+            } else if (string.contains(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
+                type = "abc";
             } else if (string.length() > 4 && (string.indexOf("|") == 2 || string.indexOf("|") == 3)) {
                 // Used to do this by identifying type of string start or drum start
                 // Now just look for ;*| or ;**| where * is anything such as ;e | or ;BD|
@@ -544,8 +544,6 @@ public class ProcessSong {
             } else if ((string.contains("+") && string.contains("1") && string.contains("2"))) {
                 // Drum tab count line
                 type = "tab";
-            } else if (string.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
-                type = "abc";
             } else {
                 type = "comment";
             }
@@ -751,10 +749,10 @@ public class ProcessSong {
         myLyrics = myLyrics
                 // Fix standard conversions
                 .replace("]\n\n", "]\n")
-                .replaceAll("\r\n", "\n")
-                .replaceAll("\r", "\n")
-                .replaceAll("\\t", "    ")
-                .replaceAll("\f", "    ")
+                .replace("\r\n", "\n")
+                .replace("\r", "\n")
+                .replace("\\t", "    ")
+                .replace("\f", "    ")
                 .replace("\r", "")
                 .replace("\t", "    ")
                 .replace("\b", "    ")
@@ -776,10 +774,10 @@ public class ProcessSong {
                 .replace("&rsquo;", "'")
                 .replace("&amp;rsquo;", "'")
                 .replace("&rdquor;", "'")
-                .replaceAll("\u0092", "'")
-                .replaceAll("\u0093", "'")
-                .replaceAll("‘", "'")
-                .replaceAll("’", "'")
+                .replace("\u0092", "'")
+                .replace("\u0093", "'")
+                .replace("‘", "'")
+                .replace("’", "'")
                 // If UG has been bad, replace these bits:
                 .replace("pre class=\"\"", "")
                 // Make double tags into single ones
@@ -872,10 +870,10 @@ public class ProcessSong {
             return "chord";
         } else if (string.startsWith("˄")) {
             return "capoline";
-        } else if (string.startsWith(";") && string.contains("|")) {
-            return "tab";
         } else if (string.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
             return "abc";
+        } else if (string.startsWith(";") && string.contains("|")) {
+            return "tab";
         } else if (string.startsWith(";")) {
             return "comment";
         } else if (string.startsWith("[")) {
@@ -1087,7 +1085,7 @@ public class ProcessSong {
                     // IV - Support a useful quirk of v5 that renders a comment line immediately following a chord line as a lyric line
                     // IV - For example a line may have a chords version for repeat. The repeat variant lyrics can be changed to comment, it will not be projected
                     if (lines[i].startsWith(";")) {
-                        lines[i] = lines[i].replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+": ");
+                        lines[i] = lines[i].replace(";D:", ";" + c.getString(R.string.autoscroll_inline_pause) + ": ");
                         //lines[i] = lines[i].replaceFirst(";"," ");
                         if (!lines[i].startsWith(";;")) {
                             lines[i] = lines[i].replaceFirst(";", ";;");
@@ -1106,6 +1104,11 @@ public class ProcessSong {
                         sb.append(fixWordStretch(lines[i])).append(groupline_string);
                     }
                 }
+            } else if (lines[i].startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator()) &&
+                displayChords) {
+                String newbit = "\n"+lines[i].trim()+"\n";
+                sb.append(newbit);
+
             } else if (lines[i].startsWith(" ") && !showChords && displayLyrics) {
                 // IV - When displaying lyrics only - remove typical word splits, white space and trim - beautify!
                 sb.append("\n ").append(fixLyricsOnlySpace(lines[i]));
@@ -1131,8 +1134,9 @@ public class ProcessSong {
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
         boolean isNlTabLine = nl < lines.length && lines[nl].startsWith(";") && lines[nl].contains("|") && lines[nl].indexOf("|")==3;
+        boolean isAbcLine = nl < lines.length && lines[nl].startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator());
         if (incnormallyricline) {
-            return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || (lines[nl].startsWith(";") && !isNlTabLine) ||
+            return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || (lines[nl].startsWith(";") && !isNlTabLine && !isAbcLine) ||
                     lines[nl].matches("\\d.*$")));
         } else {
             return (nl < lines.length && (lines[nl].matches("\\d.*$")));
@@ -1143,6 +1147,7 @@ public class ProcessSong {
                                    int highlightChordColor, boolean presentation, boolean boldText, boolean asPDF) {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+        //tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 
         htmlLyrics.append("\n<table class=\"lyrictable\">\n");
 
@@ -1150,6 +1155,7 @@ public class ProcessSong {
                 (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)));
         boolean showChords = (presentation && mainActivityInterface.getPresenterSettings().getPresoShowChords()) ||
                 (!presentation && displayChords);
+        boolean isRtl = tableLayout.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = thisSong.getCapo();
@@ -1213,6 +1219,7 @@ public class ProcessSong {
                     // Standard chord line followed by lyrics
                     chordPos = getChordPositions(lines[0], lines[1]);
                 }
+
                 for (String p : chordPos) {
                     // Convert to int arraylist
                     pos.add(Integer.valueOf(p));
@@ -1226,12 +1233,16 @@ public class ProcessSong {
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
+            // Check if the current line/string contains RTL characters (e.g., Hebrew)
+
             TableRow tableRow = newTableRow();
             htmlLyrics.append("<tr>");
             if (presentation && !performancePresentation) {
                 tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             }
             linetype = getLineType(lines[t]);
+            ArrayList<View> rowViews = new ArrayList<>();
+
 
             // Headings with just a comment missed this out
             // Also comments followed by headings
@@ -1243,6 +1254,7 @@ public class ProcessSong {
                 lines[t] = trimOutLineIdentifiers(thisSong, linetype, lines[t]);
             }
 
+
             Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
             float size = getFontSize(linetype);
             int color = getFontColor(linetype, lyricColor, multilingualColor, chordColor, capoColor);
@@ -1250,6 +1262,8 @@ public class ProcessSong {
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
                     MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
+                    textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+                    textView.setGravity(Gravity.START);
                     ImageView chordLayout = null;
                     LinearLayout chordLineLayout = null;
                     String str = lines[t].substring(startpos, endpos);
@@ -1270,6 +1284,12 @@ public class ProcessSong {
                     // We process separately, otherwise it is handled in the last default 'else'
                     switch (linetype) {
                         case "chord":
+                            if (isRtl) {
+                                textView.setTextDirection(View.TEXT_DIRECTION_RTL);
+                            } else {
+                                textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+                            }
+                            textView.setGravity(Gravity.START);
                             // Only show this if we want chords and if there is a capo, we want both capo and native
                             if (showChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
@@ -1314,6 +1334,7 @@ public class ProcessSong {
                             break;
                         case "capoline":
                             // Only show this if we want chords and if there is a capo and showcapo
+                            textView.setTextDirection(View.TEXT_DIRECTION_LTR);
                             if (showChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
                                     // Use highlighted chords
@@ -1425,25 +1446,52 @@ public class ProcessSong {
                             break;
                     }
 
-                    if (chordLineLayout!=null) {
-                        tableRow.addView(chordLineLayout);
-
-                    } else if (chordLayout!=null) {
-                        tableRow.addView(chordLayout);
-
-                    } else if (textView!=null) {
-                        tableRow.addView(textView);
+                    // Collect your generated views into a temporary list first
+                    if (chordLineLayout != null) {
+                        rowViews.add(chordLineLayout);
+                    } else if (chordLayout != null) {
+                        rowViews.add(chordLayout);
+                    } else if (textView != null) {
+                        rowViews.add(textView);
                     }
 
                     startpos = endpos;
                 }
             }
+
+            if (isRtl && rowViews.size() > 1) {
+                Collections.reverse(rowViews);
+            }
+
+            // Add them to the table row in their final order
+            for (View v : rowViews) {
+                tableRow.addView(v);
+            }
+
             tableLayout.addView(tableRow);
             htmlLyrics.append("</tr>\n");
 
         }
         htmlLyrics.append("</table>");
         return tableLayout;
+    }
+
+    private boolean containsRtlCharacters(String text) {
+        if (text == null || text.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < text.length(); ) {
+            int codePoint = text.codePointAt(i);
+            int direction = Character.getDirectionality(codePoint);
+
+            // Check if the character directionality is Right-to-Left or Right-to-Left Arabic
+            if (direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                    direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
+                return true;
+            }
+            i += Character.charCount(codePoint);
+        }
+        return false;
     }
 
     private ImageView getSingleChordImage(String str, boolean capochord) {
@@ -2261,7 +2309,7 @@ public class ProcessSong {
         line = line.replace("\"","&quot;");
         line = line.replace("\\&quot;","&quot;");
         line = line.replace("&quot;","\\\"");
-        String abcJS = "<p>\n<div " +
+        String abcJS = "<p>\n<div class=\"inline_abc\" " +
                 "id=\""+abcID+"\"></div>\n<script>ABCJS.renderAbc(\""+abcID+"\", \"" +
                 line + "\", {paddingtop:0, paddingbottom:0, paddingright:0, paddingleft:0,staffwidth:"+
                 mainActivityInterface.getAbcNotation().getAbcInlineWidth()+", responsive: 'resize'});</script>";
@@ -2613,6 +2661,8 @@ public class ProcessSong {
         ArrayList<Integer> sectionColors = new ArrayList<>();
         htmlLyrics = new StringBuilder();
 
+        boolean isRtl = containsRtlCharacters(song.getLyrics());
+
         if (song.getFiletype()==null) {
             song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song.getFilename()));
         }
@@ -2696,12 +2746,10 @@ public class ProcessSong {
                     section = ("¬" + section).trim().replace("¬","");
                 }
                 LinearLayout linearLayout = newLinearLayout(); // transparent color
-                linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 if (presentation && !performancePresentation) {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
-
 
                 // Add this section to the array (so it can be called later for presentation)
                 if (!section.trim().isEmpty()) {
@@ -2798,38 +2846,39 @@ public class ProcessSong {
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
                                 if (line.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
-                                    if (!presentation && !performancePresentation && !pdfPrinting && !asPDF) {
-                                        // This is where we render the ABC WebView.
-                                        // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
-                                        InlineAbcObject inlineAbcObject = new InlineAbcObject(c, line, sect, overallBackgroundColor);
-                                        if (pdfPrinting) {
-                                            inlineAbcObject.setIsPDF(true);
-                                        }
-                                        mainActivityInterface.getAbcNotation().addInlineAbcObject(inlineAbcObject);
-                                        // Now we add the WebView and ImageView for the song display
-                                        // Once rendering is complete, we hide the WebView and display the ImageView
-                                        linearLayout.addView(inlineAbcObject.getInlineAbcWebView());
-                                        linearLayout.addView(inlineAbcObject.getInlineAbcImageView(false));
+                                    if (showChords) {
+                                        if (!presentation && !performancePresentation && !pdfPrinting && !asPDF) {
+                                            // This is where we render the ABC WebView.
+                                            // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
+                                            InlineAbcObject inlineAbcObject = new InlineAbcObject(c, line, sect, overallBackgroundColor);
+                                            if (pdfPrinting) {
+                                                inlineAbcObject.setIsPDF(true);
+                                            }
+                                            mainActivityInterface.getAbcNotation().addInlineAbcObject(inlineAbcObject);
+                                            // Now we add the WebView and ImageView for the song display
+                                            // Once rendering is complete, we hide the WebView and display the ImageView
+                                            linearLayout.addView(inlineAbcObject.getInlineAbcWebView());
+                                            linearLayout.addView(inlineAbcObject.getInlineAbcImageView(false));
+                                            //linearLayout.addView(abcWebView.getInlin)
+                                        } else {
+                                            // Just show a text view for now until I can fix this for PDF/presentation/export
+                                            MyMaterialSimpleTextView tv = lineText(song, "comment", ";" + c.getString(R.string.abc_not_available), typeface, size, textColor,
+                                                    mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                                    mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                                    true, isChorusBold);
+                                            linearLayout.addView(tv);
 
-                                    } else {
-                                        // Just show a text view for now until I can fix this for PDF/presentation/export
-                                        MyMaterialSimpleTextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
-                                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
-                                                true,isChorusBold);
-                                        linearLayout.addView(tv);
-
-                                        // This is for the secondary display
-                                        // This is where we render the ABC WebView.
-                                        // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
-                                        //InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition());
-                                        //mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
-                                        // Now we add the WebView and ImageView for the song display
-                                        // Once rendering is complete, we hide the WebView and display the ImageView
-                                        //inlineAbcObject.setIsPresentation(true);
-                                        //linearLayout.addView(inlineAbcObject.getInlineAbcImageView(true));
-                                        //inlineAbcObject.setIsPresentation(false);
-                                        // We have already created the WebView and can now call a new ImageView from it.
+                                            // This is for the secondary display
+                                            // This is where we render the ABC WebView.
+                                            // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
+                                            //InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition());
+                                            //mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
+                                            // Now we add the WebView and ImageView for the song display
+                                            // Once rendering is complete, we hide the WebView and display the ImageView
+                                            //inlineAbcObject.setIsPresentation(true);
+                                            //linearLayout.addView(inlineAbcObject.getInlineAbcImageView(true));
+                                            //inlineAbcObject.setIsPresentation(false);
+                                            // We have already created the WebView and can now call a new ImageView from it.
                                     /*    try {
                                             int positionToGet = mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition();
                                             InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(positionToGet);
@@ -2844,6 +2893,10 @@ public class ProcessSong {
                                                     true,isChorusBold);
                                             linearLayout.addView(tv);
                                         }*/
+                                        }
+                                    } else {
+                                        // This was abc notation, but not showing chords so simply consume
+                                        Log.d(TAG,"showChords:false, so don't show abc notation");
                                     }
 
                                 } else if ((!presentation || performancePresentation) && !asPDF &&
@@ -2862,6 +2915,12 @@ public class ProcessSong {
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
+                                    tv.setGravity(Gravity.START);
+                                    if (isRtl) {
+                                        tv.setTextDirection(View.TEXT_DIRECTION_RTL);
+                                    } else {
+                                        tv.setTextDirection(View.TEXT_DIRECTION_LTR);
+                                    }
                                     linearLayout.addView(tv);
                                 } else if (!line.isEmpty() || (asPDF && !trimSections)) {
                                     // PDF or presentation
@@ -3034,6 +3093,13 @@ public class ProcessSong {
     // Creating new blank views
     private TableLayout newTableLayout() {
         TableLayout tableLayout = new TableLayout(c);
+        // Explicitly set LayoutParams so it matches parent width instead of wrapping content
+        TableLayout.LayoutParams params = new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+        );
+        tableLayout.setLayoutParams(params);
+        tableLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         tableLayout.setPadding(0, 0, 0, 0);
         tableLayout.setClipChildren(false);
         tableLayout.setClipToPadding(false);
@@ -3043,6 +3109,13 @@ public class ProcessSong {
 
     private TableRow newTableRow() {
         TableRow tableRow = new TableRow(c);
+        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+        );
+        tableRow.setLayoutParams(rowParams);
+        // Ensure it respects RTL layout direction
+        tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         tableRow.setPadding(0, 0, 0, 0);
         tableRow.setDividerPadding(0);
         return tableRow;
@@ -3057,12 +3130,15 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
         linearLayout.setClipChildren(false);
         linearLayout.setClipToPadding(false);
+        // Explicitly enforce layout direction inheritance
+        linearLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         return linearLayout;
     }
 
     private MyMaterialSimpleTextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
         MyMaterialSimpleTextView textView = getTextView(linetype, size);
-        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+        textView.setTextDirection(View.TEXT_DIRECTION_LTR);
         textView.setTextSize(size);
         textView.setTypeface(typeface);
         textView.setTextColor(color);
@@ -3087,6 +3163,7 @@ public class ProcessSong {
 
     private MyMaterialSimpleTextView getTextView(String linetype, float size) {
         MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
+        textView.setGravity(Gravity.START);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval;
             if (linetype.equals("chord") || linetype.equals("capoline")) {
@@ -3148,13 +3225,24 @@ public class ProcessSong {
         this.makingImageOrScreenShot = makingImageOrScreenShot;
     }
 
-    private void scaleView(LinearLayout innerColumn, float scaleSize) {
+    private void scaleView(LinearLayout innerColumn, float scaleSize, int width) {
         // IV - Cope with empty songs!
         if (scaleSize == Double.POSITIVE_INFINITY) {
             scaleSize = 1.0f;
         }
-        if (innerColumn!=null) {
-            innerColumn.setPivotX(0);
+        if (innerColumn != null) {
+            // Check if the container is in RTL mode
+            boolean isRtl = innerColumn.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+
+            // Set pivotX based on the layout direction
+            if (isRtl) {
+                // Anchor to the right edge for RTL scaling
+                innerColumn.setPivotX(width);
+            } else {
+                // Anchor to the left edge for LTR scaling
+                innerColumn.setPivotX(0);
+            }
+
             innerColumn.setPivotY(0);
             innerColumn.setScaleX(scaleSize);
             innerColumn.setScaleY(scaleSize);
@@ -3487,6 +3575,7 @@ public class ProcessSong {
         // Clear and reset the view's scaling
         resetRelativeLayout(pageHolder);
         clearAndResetLinearLayout(songView, false);
+        songView.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         if (songSheetView!=null) {
             clearAndResetLinearLayout(songSheetView, false);
         }
@@ -3685,12 +3774,13 @@ public class ProcessSong {
 
         // Prepare the inner column
         LinearLayout innerCol1 = newLinearLayout();
+        innerCol1.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
 
         // For each section, add it
         for (int i=0; i<sectionViews.size(); i++) {
             View v = sectionViews.get(i);
-
             v.getLayoutParams().width = maxWidth;
+            v.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
 
             // If this isn't the last view, add the section space
             if (i!=sectionViews.size()-1) {
@@ -3702,7 +3792,7 @@ public class ProcessSong {
         }
 
         // Now scale the column to the correct sizes
-        scaleView(innerCol1, scaleSize);
+        scaleView(innerCol1, scaleSize, Math.round((float)maxWidth*scaleSize));
 
         // GE Adding extra height here.
         // It seems to be linked to the display cutout height (on rotation so cutout isn't there it isn't an issue)
@@ -3769,8 +3859,8 @@ public class ProcessSong {
         innerCol2.getLayoutParams().height = col2_2Height+1000;
 
         // Scale the inner columns
-        scaleView(innerCol1, col1_2ScaleBest);
-        scaleView(innerCol2, col2_2ScaleBest);
+        scaleView(innerCol1, col1_2ScaleBest, col1_2Width);
+        scaleView(innerCol2, col2_2ScaleBest, col2_2Width);
 
         for (int i = 0; i < columnBreak2; i++) {
             // Make all the views the same width as each other
@@ -3802,8 +3892,8 @@ public class ProcessSong {
         }
 
         // Now the view has been drawn, scale the innerCols
-        scaleView(innerCol1, col1_2ScaleBest);
-        scaleView(innerCol2, col2_2ScaleBest);
+        scaleView(innerCol1, col1_2ScaleBest, col1_2Width);
+        scaleView(innerCol2, col2_2ScaleBest, col2_2Width);
 
         // Resize the holding column height to the correct size
         // Don't adjust the width, as this is set by weights in the layout
@@ -3929,9 +4019,9 @@ public class ProcessSong {
         }
 
         // Now the view has been drawn, scale the innerCols
-        scaleView(innerCol1, col1_3ScaleBest);
-        scaleView(innerCol2, col2_3ScaleBest);
-        scaleView(innerCol3, col3_3ScaleBest);
+        scaleView(innerCol1, col1_3ScaleBest, col1_3Width);
+        scaleView(innerCol2, col2_3ScaleBest, col2_3Width);
+        scaleView(innerCol3, col3_3ScaleBest, col3_3Width);
 
         // Resize the holding column height to the correct size
         // Don't adjust the width, as this is set by weights in the layout
@@ -4026,9 +4116,6 @@ public class ProcessSong {
         page = getCurrentPage(page);
 
         if (parcelFileDescriptor != null && pdfRenderer != null && pageCount > 0) {
-            // Good to continue!
-            Log.d(TAG,"Good to continue");
-
             // Get the currentPDF page
             PdfRenderer.Page currentPage = getPDFPage(pdfRenderer, page);
 
