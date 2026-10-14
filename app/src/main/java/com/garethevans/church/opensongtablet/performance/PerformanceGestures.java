@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -897,10 +898,10 @@ public class PerformanceGestures {
         // Check the ZoomLayout for XML
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             // Can we scroll down?
-            if (scrollDown && !myZoomLayout.getScrolledToBottom()) {
-                return true;
+            if (scrollDown) {
+                return !myZoomLayout.getScrolledToBottom();
             } else {
-                return !scrollDown && !myZoomLayout.getScrolledToTop();
+                return !myZoomLayout.getScrolledToTop();
             }
 
             // Check the recyclerView for images/pdfs

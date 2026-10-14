@@ -339,7 +339,9 @@ public class SongListBuildIndex {
                     append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         } finally {
-            db.endTransaction();
+            if (db!=null && db.isOpen() && db.inTransaction()) {
+                db.endTransaction();
+            }
         }
 
         // Make sure we hide the progress text

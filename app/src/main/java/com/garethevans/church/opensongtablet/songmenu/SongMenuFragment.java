@@ -571,11 +571,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
                                 // Clean up UI
                                 // Pass the pre-calculated index map from the adapter
-                                displayIndex(newAlphaIndex);
-                                updateSongCount();
-                                if (myView != null) myView.progressBar.setVisibility(View.GONE);
-                                adapterReady = true;
-                                buttonsEnabled(true);
+                                try {
+                                    displayIndex(newAlphaIndex);
+                                    updateSongCount();
+                                    if (myView != null) myView.progressBar.setVisibility(View.GONE);
+                                    adapterReady = true;
+                                    buttonsEnabled(true);
+                                } catch (Exception e) {
+                                    // Isse updating the song menu (likely resetting)
+                                    Log.d(TAG,"crash updating song menu:"+e);
+                                }
                             });
                         }
 
@@ -591,7 +596,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void updateCheckForThisSong(Song thisSong) {
         // Call to update something about a specific song
         getSongsFound();
-        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()!=null) {
+        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()!=null & songListAdapter!=null) {
             int pos = -1;
             for (int i = 0; i < songMenuSongs.getCount(); i++) {
                 if (songMenuSongs.getFoundSongs().get(i).getFilename().equals(thisSong.getFilename()) &&
@@ -613,48 +618,50 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void displayIndex(LinkedHashMap<String, Integer> indexMap) {
-        if (myView == null || indexMap == null) return;
+        if (mainActivityInterface!=null || getContext()!=null || myView!=null) {
+            if (myView == null || indexMap == null) return;
 
-        boolean isIndexEnabled = mainActivityInterface.getPreferences()
-                .getMyPreferenceBoolean("songMenuAlphaIndexShow", true);
+            boolean isIndexEnabled = mainActivityInterface.getPreferences()
+                    .getMyPreferenceBoolean("songMenuAlphaIndexShow", true);
 
-        myView.songmenualpha.sideIndexRecyclerView.setVisibility(isIndexEnabled? View.VISIBLE:View.GONE);
+            myView.songmenualpha.sideIndexRecyclerView.setVisibility(isIndexEnabled ? View.VISIBLE : View.GONE);
 
-        // 1. Ensure the adapter exists
-        if (indexAdapter == null) {
-            indexAdapter = new IndexAdapter();
-        }
-
-        // 2. IMPORTANT: Always ensure the RecyclerView has the adapter attached
-        // This fixes the "No adapter attached; skipping layout" warning
-        if (myView.songmenualpha.sideIndexRecyclerView.getAdapter() == null) {
-            myView.songmenualpha.sideIndexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            myView.songmenualpha.sideIndexRecyclerView.setAdapter(indexAdapter);
-        }
-
-        // 3. Update the data
-        // Add the missing boolean preference for Level 2 here as well
-        boolean level2Pref = mainActivityInterface.getPreferences()
-                .getMyPreferenceBoolean("songMenuAlphaIndexLevel2", false);
-
-        indexAdapter.setIndexTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f));
-        indexAdapter.setData(indexMap, (text, position, isIndexSelfScroll) -> {
-            if (isIndexSelfScroll) {
-                // SCROLL THE INDEX BAR
-                myView.songmenualpha.sideIndexRecyclerView.post(() -> {
-                    LinearLayoutManager lm = (LinearLayoutManager) myView.songmenualpha.sideIndexRecyclerView.getLayoutManager();
-                    if (lm != null) {
-                        lm.scrollToPositionWithOffset(position, 0);
-                    }
-                });
-            } else {
-                // SCROLL THE MAIN SONG LIST
-                if (position != -1 && myView.songListRecyclerView.getLayoutManager()!=null) {
-                    ((LinearLayoutManager) myView.songListRecyclerView.getLayoutManager())
-                            .scrollToPositionWithOffset(position, 0);
-                }
+            // 1. Ensure the adapter exists
+            if (indexAdapter == null) {
+                indexAdapter = new IndexAdapter();
             }
-        }, level2Pref); // Don't forget to pass the boolean to your new setData method
+
+            // 2. IMPORTANT: Always ensure the RecyclerView has the adapter attached
+            // This fixes the "No adapter attached; skipping layout" warning
+            if (myView.songmenualpha.sideIndexRecyclerView.getAdapter() == null) {
+                myView.songmenualpha.sideIndexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                myView.songmenualpha.sideIndexRecyclerView.setAdapter(indexAdapter);
+            }
+
+            // 3. Update the data
+            // Add the missing boolean preference for Level 2 here as well
+            boolean level2Pref = mainActivityInterface.getPreferences()
+                    .getMyPreferenceBoolean("songMenuAlphaIndexLevel2", false);
+
+            indexAdapter.setIndexTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14f));
+            indexAdapter.setData(indexMap, (text, position, isIndexSelfScroll) -> {
+                if (isIndexSelfScroll) {
+                    // SCROLL THE INDEX BAR
+                    myView.songmenualpha.sideIndexRecyclerView.post(() -> {
+                        LinearLayoutManager lm = (LinearLayoutManager) myView.songmenualpha.sideIndexRecyclerView.getLayoutManager();
+                        if (lm != null) {
+                            lm.scrollToPositionWithOffset(position, 0);
+                        }
+                    });
+                } else {
+                    // SCROLL THE MAIN SONG LIST
+                    if (position != -1 && myView.songListRecyclerView.getLayoutManager() != null) {
+                        ((LinearLayoutManager) myView.songListRecyclerView.getLayoutManager())
+                                .scrollToPositionWithOffset(position, 0);
+                    }
+                }
+            }, level2Pref); // Don't forget to pass the boolean to your new setData method
+        }
     }
 
     public void changeAlphabeticalLayout() {
@@ -883,7 +890,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 }
             });
             myView.songTitleStuff.songCount.post(() -> {
-                if (myView!=null) {
+                if (myView!=null && mainActivityInterface!=null) {
                     myView.songTitleStuff.songCount.setVisibility(View.GONE);
                     if (songMenuSongs.getFoundSongs() != null) {
                         myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);

@@ -1896,6 +1896,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navHome() {
         getMainHandler().post(() -> {
+            if (isFinishing() || isDestroyed() || getSupportFragmentManager().isStateSaved()) {
+                return;
+            }
+
             // NavHome always clears the backstack (no back navigation)
             if (navController == null) {
                 try {
@@ -1915,10 +1919,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 FragmentManager childFm = navHostFragment.getChildFragmentManager();
                 if (!childFm.isStateSaved()) {
                     childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                } else {
-                    // Safely queue it for when the activity comes back to the foreground
-                    childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+                // If state is saved, skip popping back stack to avoid IllegalStateException (Can not perform this action after onSaveInstanceState)
             }
 
             // 3. Reset the NavController state safely

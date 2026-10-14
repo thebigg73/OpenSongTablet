@@ -686,6 +686,7 @@ public class Preferences extends Activity {
     // scrollSpeed                      int         How quick should the scroll animation be (def:1500)
     // searchFolder                     boolean     Should the folder be included in the search (def:true)
     // searchFolderChosen               String      What is the currently selected folder
+    // searchMenuText                   String      The current menu search string (def:"")
     // setCurrent                       String      The current set (each item enclosed in $**_folder/song_**$) - gets parsed on loading app (def:"")
     // setCurrentBeforeEdits            String      The current set before edits.  Used as a comparison to decide save action(def:"")
     // setCurrentLastName               String      The last name used when saving or loading a set (def:"")

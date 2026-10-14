@@ -105,6 +105,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String chopro = "Chopro"; // *
         String chordie = "Chordie"; // *
         String chordpro = c.getString(R.string.chordpro); // *
+        String chord = c.getString(R.string.chord);
         String chords = c.getString(R.string.chords);
         String chromecast = "Chromecast"; // *
         String church = c.getString(R.string.church);
@@ -131,6 +132,9 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String database = c.getString(R.string.database);
         String decrease = c.getString(R.string.decrease);
         String delete = c.getString(R.string.delete);
+        String detection = c.getString(R.string.detection);
+        String detector = c.getString(R.string.detector);
+        String detect = c.getString(R.string.detect);
         String device = c.getString(R.string.device);
         String diagram = c.getString(R.string.diagram);
         String discover = c.getString(R.string.connections_discover);
@@ -196,6 +200,8 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String licence = c.getString(R.string.licence);
         String light = c.getString(R.string.light);
         String link = c.getString(R.string.link);
+        String listen = c.getString(R.string.listen);
+        String listener = c.getString(R.string.listener);
         String load = c.getString(R.string.load);
         String logs = c.getString(R.string.logs);
         String looper = c.getString(R.string.looper);
@@ -393,7 +399,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // Fonts
                 new SettingItem(c.getString(R.string.font_choose),c.getString(R.string.font_choose_description),
-                        Arrays.asList(font,text,display,style,lyrics,chords),
+                        Arrays.asList(font,text,display,style,lyrics,chords,chord),
                         c.getString(R.string.deeplink_fonts),
                         settings+"/"+display+"/"+c.getString(R.string.font_choose)),
 
@@ -405,13 +411,13 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // Song display advanced settings
                 new SettingItem(c.getString(R.string.song_display),c.getString(R.string.extra_settings),
-                        Arrays.asList(display,song,songsheet,next,previous,autohide,automatic,hide,show,bold,bracket,format,lyrics,chords,curly,multiline,order,presentation,pdf,section,trim,filter,filtering),
+                        Arrays.asList(display,song,songsheet,next,previous,autohide,automatic,hide,show,bold,bracket,format,lyrics,chords,chord,curly,multiline,order,presentation,pdf,section,trim,filter,filtering),
                         c.getString(R.string.deeplink_display_extra),
                         settings+"/"+display+"/"+c.getString(R.string.song_display)),
 
                 // Connected display
                 new SettingItem(c.getString(R.string.connected_display),c.getString(R.string.connected_display_description),
-                        Arrays.asList(display,song,chords,connected,hdmi,cast,chromecast,secondary,background,information,margins),
+                        Arrays.asList(display,song,chords,chord,connected,hdmi,cast,chromecast,secondary,background,information,margins),
                         c.getString(R.string.deeplink_connected_display),
                         settings+"/"+display+"/"+c.getString(R.string.connected_display)),
 
@@ -513,7 +519,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // Edit song
                 new SettingItem(c.getString(R.string.edit) + " ("+song+")",c.getString(R.string.edit_song),
-                        Arrays.asList(song,songs,edit,change,lyrics,chords,settings),
+                        Arrays.asList(song,songs,edit,change,lyrics,chords,chord,settings),
                         c.getString(R.string.deeplink_edit),
                         settings+"/"+songactions+"/"+c.getString(R.string.edit)),
 
@@ -584,31 +590,31 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // Chords
                 new SettingItem(c.getString(R.string.chords),c.getString(R.string.chord_settings),
-                        Arrays.asList(song,songs,chords,finger,fingering,shape,custom,transpose,settings,capo,key,format,autohide,nashville,doremi,numeral,standard,fret,draw,drawing,diagram,position,piano,banjo,guitar,cavaquinho,mandolin),
+                        Arrays.asList(song,songs,chords,chord,finger,fingering,shape,custom,transpose,settings,capo,key,format,autohide,nashville,doremi,numeral,standard,fret,draw,drawing,diagram,position,piano,banjo,guitar,cavaquinho,mandolin),
                         c.getString(R.string.deeplink_chords),
                         settings+"/"+songactions+"/"+chords),
 
                 // Chord fingering
                 new SettingItem(c.getString(R.string.chords),c.getString(R.string.chord_fingering),
-                        Arrays.asList(song,songs,chords,finger,fingering,shape,custom,fret,draw,drawing,position,guitar,piano,cavaquinho,mandolin,banjo),
+                        Arrays.asList(song,songs,chords,chord,finger,fingering,shape,custom,fret,draw,drawing,position,guitar,piano,cavaquinho,mandolin,banjo),
                         "bottomSheet_chordFingering",
                         settings+"/"+songactions+"/"+chords+"/"+chords),
 
                 // Custom chords
                 new SettingItem(c.getString(R.string.custom_chords),c.getString(R.string.custom_chords_info),
-                        Arrays.asList(song,songs,chords,custom,shape,finger,fingering,position,draw,drawing,fret,guitar,piano,cavaquinho,mandolin,banjo),
+                        Arrays.asList(song,songs,chords,chord,custom,shape,finger,fingering,position,draw,drawing,fret,guitar,piano,cavaquinho,mandolin,banjo),
                         c.getString(R.string.deeplink_chords_custom),
                         settings+"/"+songactions+"/"+chords+"/"+chords),
 
                 // Transpose
                 new SettingItem(transpose + " ("+song+")",c.getString(R.string.transpose_info),
-                        Arrays.asList(song,songs,chords,transpose,key,fret,capo,change),
+                        Arrays.asList(song,songs,chords,chord,transpose,key,fret,capo,change),
                         "bottomSheet_transpose",
                         settings+"/"+songactions+"/"+chords+"/"+transpose),
 
                 // Chord settings
                 new SettingItem(c.getString(R.string.chord_settings),c.getString(R.string.pref_key_text),
-                        Arrays.asList(song,songs,chords,transpose,settings,capo,key,format,autohide,nashville,doremi,numeral,standard,fret),
+                        Arrays.asList(song,songs,chords,chord,transpose,settings,capo,key,format,autohide,nashville,doremi,numeral,standard,fret),
                         c.getString(R.string.deeplink_chords),
                         settings+"/"+songactions+"/"+chords),
 
@@ -899,6 +905,12 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                         "action_multitrack",
                         settings+"/"+utilities+"/"+multitrack),
 
+                // Chord detection - popup
+                new SettingItem(c.getString(R.string.chord_detection),c.getString(R.string.chord_detection_info),
+                        Arrays.asList(chord,chords,detect,detector,detection,listen,listener,audio),
+                        "action_chordDetectionPopUp",
+                        settings+"/"+utilities+"/"+c.getString(R.string.chord_detection)),
+
                 // Database management
                 new SettingItem(c.getString(R.string.database_management),c.getString(R.string.database_management_info),
                         Arrays.asList(database,backup,reset,clear,trim,song,songs,pdf,image),
@@ -1126,6 +1138,10 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 case "action_drummer":
                     mainActivityInterface.navHome();
                     mainActivityInterface.displayDrummerPopup();
+                    break;
+
+                case "action_chordDetectionPopUp":
+                    mainActivityInterface.toggleChordDetection();
                     break;
             }
 

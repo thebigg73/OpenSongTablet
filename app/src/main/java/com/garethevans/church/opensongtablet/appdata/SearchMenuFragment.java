@@ -27,6 +27,7 @@ public class SearchMenuFragment extends Fragment {
     private SettingsSearchMenuBinding myView;
     private SearchSettingsAdapter searchSettingsAdapter;
     private String title="";
+    private String searchMenuText = "";
     private final String webSearchAddress = "https://www.opensongapp.com/_/search?universe=classic&scope=site&showCloudSearchTab=false&query=";
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable searchRunnable;
@@ -48,6 +49,8 @@ public class SearchMenuFragment extends Fragment {
         setupViews();
         setupListeners();
 
+        // If we have text already searched, re-enter that
+        myView.searchBox.post(() -> myView.searchBox.setText(mainActivityInterface.getPreferences().getMyPreferenceString("searchMenuText","")));
         return myView.getRoot();
     }
 
@@ -86,6 +89,7 @@ public class SearchMenuFragment extends Fragment {
                                                         searchRunnable = () -> {
                                                             if (searchSettingsAdapter != null) {
                                                                 searchSettingsAdapter.filterAndRank(myView.searchBox.getText().toString());
+                                                                mainActivityInterface.getPreferences().setMyPreferenceString("searchMenuText",myView.searchBox.getText().toString());
                                                             }
                                                         };
                                                         handler.postDelayed(searchRunnable, 150); // Wait 150ms before searching
