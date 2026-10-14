@@ -73,6 +73,7 @@ public abstract class BaseSongProvider implements SongProvider {
         executor.execute(() -> {
             // Use a temporary local variable for the result
             Song finalSong = targetSong;
+            Log.d(TAG,"url:"+url);
             try {
                 String html = Jsoup.connect(url)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
@@ -80,7 +81,7 @@ public abstract class BaseSongProvider implements SongProvider {
                         .get()
                         .html();
 
-                Log.d(TAG,"fetchAndParseSong() html returned");
+                Log.d(TAG,"fetchAndParseSong() html returned:"+html);
 
                 finalSong = getParser(context).processContent(mainActivityInterface, targetSong, html);
                 Log.d(TAG,"fetchAndParseSong() finalSong retrieved");

@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.importsongs;
 import android.content.Context;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.customslides.ImageSlideItemInfo;
 import com.garethevans.church.opensongtablet.interfaces.SongParserInterface;
 
 import org.json.JSONArray;
@@ -29,7 +30,6 @@ public class UltimateGuitarProvider extends BaseSongProvider {
     @Override
     protected String getSearchUrl(String query) throws Exception {
         // Pass type=300 to restrict the server-side search strictly to Chords
-        // Pass type=300 to restrict the server-side search strictly to Chords
         return "https://www.ultimate-guitar.com/search.php?search_type=title&value=" +
                 URLEncoder.encode(query, "UTF-8") + "&type=300";
     }
@@ -54,6 +54,7 @@ public class UltimateGuitarProvider extends BaseSongProvider {
                         String artist = item.optString("artist_name", "Unknown");
                         String url = item.optString("tab_url", item.optString("url", ""));
                         String type = item.optString("type", "");
+                        int version = item.optInt("version",0);
 
                         // Extract rating and votes/count
                         double rating = item.optDouble("rating", 0.0);
@@ -66,6 +67,7 @@ public class UltimateGuitarProvider extends BaseSongProvider {
                             SongMatch match = new SongMatch(title, artist, url, getName());
                             match.setRating(rating);
                             match.setVotes(votes);
+                            match.setVersion(version);
 
                             matches.add(match);
                         }
@@ -77,7 +79,7 @@ public class UltimateGuitarProvider extends BaseSongProvider {
         } else {
             Log.e(TAG, "Could not find .js-store element in document!");
         }
-        // 2. Sort the list: Highest votes first, then highest rating as a tie-breaker
+        /*// 2. Sort the list: Highest votes first, then highest rating as a tie-breaker
         matches.sort((m1, m2) -> {
             // Compare votes descending (m2 compared to m1)
             int voteComparison = Integer.compare(m2.getVotes(), m1.getVotes());
@@ -86,7 +88,7 @@ public class UltimateGuitarProvider extends BaseSongProvider {
             }
             // If votes are equal, compare rating descending
             return Double.compare(m2.getRating(), m1.getRating());
-        });
+        });*/
 
         return matches;
     }

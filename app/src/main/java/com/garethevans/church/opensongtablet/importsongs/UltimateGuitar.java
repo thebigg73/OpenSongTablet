@@ -9,6 +9,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,7 +48,9 @@ public class UltimateGuitar implements SongParserInterface {
         }
         return newSong;
     }
-    /*public Song OLD_processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
+
+
+    public Song processContentUsingWebView(MainActivityInterface mainActivityInterface, Song newSong, String s) {
         // First up separate the content from the headers
         String headerTitle = getHeaderTitle(s);
 
@@ -58,8 +61,8 @@ public class UltimateGuitar implements SongParserInterface {
         newSong.setAuthor(getAuthor(headerTitle));
 
         // Get the key which might be in a div
-        newSong.setKey(getKey(s));
-        newSong.setCapo(getCapo(s));
+        newSong.setKey(getKeyFromWebView(s));
+        newSong.setCapo(getCapoFromWebView(s));
 
         // Each method return blank if there was an error (bit not found)
         // Keep going until we get content
@@ -179,11 +182,9 @@ public class UltimateGuitar implements SongParserInterface {
         // We will need to transpose the lyrics to match
         newSong = fixChordsForCapo(newSong);
 
-        Log.d(TAG,"fixed lyrics:"+newSong.getLyrics());
-
         return newSong;
     }
-*/
+
 
     private String getKey(Document doc) {
         String key = "";
@@ -370,7 +371,7 @@ public class UltimateGuitar implements SongParserInterface {
         s = fixHTMLStuff(s);
         return s;
     }
-    /*private String getKey(String s) {
+    private String getKeyFromWebView(String s) {
         String key = getMetaData(s, "<div class=\"label\">Key</div>");
         String key2 = "";
         String key3 = "";
@@ -428,7 +429,7 @@ public class UltimateGuitar implements SongParserInterface {
         }
         return key;
     }
-    private String getCapo(String s) {
+    private String getCapoFromWebView(String s) {
         String capo = getMetaData(s,"<div class=\"label\">Capo</div>");
         String capo2 = "";
         String bit = "Capo: </th><td class=\"";
@@ -449,7 +450,7 @@ public class UltimateGuitar implements SongParserInterface {
         }
         return capo;
     }
-    */
+
     private Song fixChordsForCapo(Song newSong) {
         // If there is a capo, we have to transpose the song to match
         // UG shows the capo chords and the key but they don't match!
@@ -521,6 +522,85 @@ public class UltimateGuitar implements SongParserInterface {
         // Make it xml friendly though (no <,> or &)
         s = mainActivityInterface.getProcessSong().parseToHTMLEntities(s);
         return s;
+    }
+
+
+    // The webView desktop agent extraction
+    public Song extractSongFromWebview(Song newSong, String webString) {
+        Document doc = Jsoup.parse(webString);
+        newSong.setTitle(getTitleWebView(doc));
+        newSong.setFilename(newSong.getTitle());
+        newSong.setAuthor(getAuthorWebView(doc));
+        newSong.setLyrics(getLyricsWebView(doc));
+        newSong.setFiletype("XML");
+        return newSong;
+    }
+
+    private String getAuthorWebView(Document doc) {
+        // Select the JSON-LD script tag directly
+        String artist = "Unknown";
+        try {
+            Element scriptTag = doc.selectFirst("script[type=application/ld+json]");
+
+            if (scriptTag != null) {
+                // The inner text of the script tag is valid JSON
+                String jsonData = scriptTag.html();
+                JSONObject json = new JSONObject(jsonData);
+
+                // Extract artist name safely
+                if (json.has("byArtist")) {
+                    JSONObject artistObj = json.getJSONObject("byArtist");
+                    artist = artistObj.optString("name", artist);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return artist;
+    }
+    private String getTitleWebView(Document doc) {
+        // Select the JSON-LD script tag directly
+        String title = "Unknown";
+
+        try {
+            Element scriptTag = doc.selectFirst("script[type=application/ld+json]");
+
+            if (scriptTag != null) {
+                // The inner text of the script tag is valid JSON
+                String jsonData = scriptTag.html();
+                JSONObject json = new JSONObject(jsonData);
+
+                // Extract song name
+                title = json.optString("name", title);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return title;
+    }
+    private String getLyricsWebView(Document doc) {
+        String content = "";
+        Element preTag = doc.selectFirst("pre");
+        if (preTag != null) {
+            // Returns the plain text layout with chords and lyrics
+            content = preTag.text();
+            // Replaces two or more consecutive newlines (with optional spaces/tabs between them) with a single newline
+            content = content.replaceAll("\\r?\\n[ \\t]*\\r?\\n", "\n");
+        }
+        // Split the lyrics into lines
+        String[] lines = content.split("\n");
+        StringBuilder lyrics = new StringBuilder();
+        for (String line : lines) {
+            if (line == null) {
+                line = "";
+            }
+            if (line.contains("<span data-name")) {
+                lyrics.append(".").append(stripOutTags(line)).append("\n");
+            } else {
+                lyrics.append(" ").append(line).append("\n");
+            }
+        }
+        return lyrics.toString();
     }
 
 }

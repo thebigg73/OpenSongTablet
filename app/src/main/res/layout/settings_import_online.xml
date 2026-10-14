@@ -81,6 +81,14 @@
         </LinearLayout>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+            android:id="@+id/inlineSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/inline_search"
+            android:hint="@string/inline_search_info"/>
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/webViewDesktop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

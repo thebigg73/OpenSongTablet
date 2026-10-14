@@ -49,7 +49,8 @@ public class SongMatchAdapter extends RecyclerView.Adapter<SongMatchAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SongMatch match = songMatches.get(position);
-        holder.title.setText(match.getTitle());
+        String thisTitle = match.getTitle() + match.getVersion();
+        holder.title.setText(thisTitle);
         holder.artist.setText(match.getArtist());
         double rating = match.getRating();
         int votes = match.getVotes();

@@ -439,7 +439,7 @@ public class ConvertChoPro {
                     s = s.replaceFirst("¬", "¬¬");
                 }
 
-                s = s.replaceAll("¬", " ");
+                s = s.replace("¬", " ");
 
                 // IV - Append lyrics before [
                 spos = s.indexOf("[");
@@ -461,6 +461,77 @@ public class ConvertChoPro {
         }
         // IV - Return line end trimmed which keeps any intended leading spaces
         return s.replaceAll("\\s+$", "");
+    }
+
+    public boolean containsRtlCharacters(String text) {
+        if (text == null || text.isEmpty()) return false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            // Check Unicode ranges for Hebrew (\u0590-\u05FF) and Arabic (\u0600-\u06FF)
+            if ((c >= '\u0590' && c <= '\u05FF') || (c >= '\u0600' && c <= '\u06FF')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String convertRtlChordProToOpenSong(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            return s;
+        }
+
+        // If it doesn't contain chords or tags, fallback safely
+        if (!s.contains("[")) {
+            return " " + s;
+        }
+
+        // Tokenize the line into pairs of [Chord] + Text chunks
+        // e.g., "[Bm]סתיו ברחובות [G]עובר" -> pairs
+        java.util.List<ChordTextPair> pairs = new java.util.ArrayList<>();
+
+        // Handle any leading text before the first chord
+        int firstBrace = s.indexOf("[");
+        String leadingText = "";
+        if (firstBrace > 0) {
+            leadingText = s.substring(0, firstBrace);
+            s = s.substring(firstBrace);
+        }
+
+        // Parse out [Chord] and the following lyric chunk until the next [
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\[([^\\]]+)\\]([^\\[]*)").matcher(s);
+        while (matcher.find()) {
+            String chord = matcher.group(1);
+            String text = matcher.group(2);
+            pairs.add(new ChordTextPair(chord, text));
+        }
+
+        // Reverse the pairs so that the rightmost Hebrew text chunk + its chord
+        // maps to OpenSong's starting column on the left edge.
+        java.util.Collections.reverse(pairs);
+
+        // Reassemble into standard ChordPro format with reversed order
+        StringBuilder reordered = new StringBuilder(leadingText);
+        for (int i = 0; i < pairs.size(); i++) {
+            ChordTextPair pair = pairs.get(i);
+            reordered.append("[").append(pair.chord).append("]").append(pair.text);
+            // Add a space between tokens if it makes sense for readability
+            if (i < pairs.size() - 1 && !pair.text.endsWith(" ")) {
+                reordered.append(" ");
+            }
+        }
+
+        // Now pass the cleanly reordered string right into your standard LTR extraction engine!
+        return extractChordLines(reordered.toString());
+    }
+
+    // Simple helper holder class for tokens
+    private static class ChordTextPair {
+        String chord;
+        String text;
+        ChordTextPair(String chord, String text) {
+            this.chord = chord;
+            this.text = text;
+        }
     }
 
     public String removeOtherTags(String l) {
@@ -893,7 +964,6 @@ public class ConvertChoPro {
             switch (howToProcess) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
-                    // IV - We have a next line - make lines the same length.
                     nextLine = lines[y + 1].replaceAll("\\s+$", "");
                     if (thisLine.length() < nextLine.length()) {
                         thisLine = mainActivityInterface.getProcessSong().fixLineLength(thisLine, nextLine.length());
@@ -902,24 +972,45 @@ public class ConvertChoPro {
                     }
                     thisLine = thisLine.replaceFirst(".","");
                     nextLine = nextLine.replaceFirst(" ","");
+
                     positions_returned = mainActivityInterface.getProcessSong().getChordPositions(thisLine, nextLine);
                     chords_returned = mainActivityInterface.getProcessSong().getSections(thisLine, positions_returned);
                     lyrics_returned = mainActivityInterface.getProcessSong().getSections(nextLine, positions_returned);
 
+                    boolean isLineRtl = containsRtlCharacters(nextLine);
+
+                    // Build pairs of chords and lyrics so we can handle RTL reversal cleanly
+                    List<ChordTextPair> exportPairs = new ArrayList<>();
+                    int maxLen = Math.max(chords_returned.length, lyrics_returned.length);
+                    for (int w = 0; w < maxLen; w++) {
+                        String chord = "";
+                        if (w < chords_returned.length && chords_returned[w] != null) {
+                            chord = chords_returned[w].trim();
+                        }
+                        String lyric = "";
+                        if (w < lyrics_returned.length && lyrics_returned[w] != null) {
+                            lyric = lyrics_returned[w];
+                        }
+                        exportPairs.add(new ChordTextPair(chord, lyric));
+                    }
+
+                    // If it's RTL, reverse the chunk pairs so ChordPro writes right-to-left correctly
+                    if (isLineRtl) {
+                        java.util.Collections.reverse(exportPairs);
+                    }
+
                     // Mark the beginning of the line
                     newlyrics.append("¬");
-                    for (int w = 0; w < lyrics_returned.length; w++) {
+                    for (ChordTextPair pair : exportPairs) {
                         String chord_to_add = "";
-                        if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = chords_returned[w];
-                                } else {
-                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
-                                }
+                        if (!pair.chord.isEmpty()) {
+                            if (pair.chord.startsWith(".") || pair.chord.startsWith(":")) {
+                                chord_to_add = pair.chord;
+                            } else {
+                                chord_to_add = "[" + pair.chord + "]";
                             }
                         }
-                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        newlyrics.append(chord_to_add).append(pair.text);
                     }
                     break;
 
@@ -934,24 +1025,37 @@ public class ConvertChoPro {
                     }
                     thisLine = thisLine.replaceFirst(".","");
                     nextLine = nextLine.replaceFirst(";","#");
+
                     positions_returned = mainActivityInterface.getProcessSong().getChordPositions(thisLine, nextLine);
                     chords_returned = mainActivityInterface.getProcessSong().getSections(thisLine, positions_returned);
                     lyrics_returned = mainActivityInterface.getProcessSong().getSections(nextLine, positions_returned);
 
+                    boolean isCommentRtl = containsRtlCharacters(nextLine);
+
+                    List<ChordTextPair> commentPairs = new ArrayList<>();
+                    int maxCommentLen = Math.max(chords_returned.length, lyrics_returned.length);
+                    for (int w = 0; w < maxCommentLen; w++) {
+                        String chord = (w < chords_returned.length && chords_returned[w] != null) ? chords_returned[w].trim() : "";
+                        String lyric = (w < lyrics_returned.length && lyrics_returned[w] != null) ? lyrics_returned[w] : "";
+                        commentPairs.add(new ChordTextPair(chord, lyric));
+                    }
+
+                    if (isCommentRtl) {
+                        java.util.Collections.reverse(commentPairs);
+                    }
+
                     // Mark the beginning of the line
                     newlyrics.append("¬");
-                    for (int w = 0; w < lyrics_returned.length; w++) {
+                    for (ChordTextPair pair : commentPairs) {
                         String chord_to_add = "";
-                        if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = chords_returned[w];
-                                } else {
-                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
-                                }
+                        if (!pair.chord.isEmpty()) {
+                            if (pair.chord.startsWith(".") || pair.chord.startsWith(":")) {
+                                chord_to_add = pair.chord;
+                            } else {
+                                chord_to_add = "[" + pair.chord + "]";
                             }
                         }
-                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        newlyrics.append(chord_to_add).append(pair.text);
                     }
                     break;
 
@@ -963,21 +1067,28 @@ public class ConvertChoPro {
                     chords_returned = mainActivityInterface.getProcessSong().getSections(thisLine, positions_returned);
                     lyrics_returned = mainActivityInterface.getProcessSong().getSections(tempString, positions_returned);
 
+                    // Chord-only lines in OpenSong don't have Hebrew text per se, but if the row needs a right-to-left treatment,
+                    // you can safely apply the pairing loop or check your context. For safety, we can process via pairs too:
+                    List<ChordTextPair> chordOnlyPairs = new ArrayList<>();
+                    int maxChordLen = Math.max(chords_returned.length, lyrics_returned.length);
+                    for (int w = 0; w < maxChordLen; w++) {
+                        String chord = (w < chords_returned.length && chords_returned[w] != null) ? chords_returned[w].trim() : "";
+                        String lyric = (w < lyrics_returned.length && lyrics_returned[w] != null) ? lyrics_returned[w] : "";
+                        chordOnlyPairs.add(new ChordTextPair(chord, lyric));
+                    }
+
                     // Mark the beginning of the line
                     newlyrics.append("¬");
-                    for (int w = 0; w < lyrics_returned.length; w++) {
+                    for (ChordTextPair pair : chordOnlyPairs) {
                         String chord_to_add = "";
-                        if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = "[" + chords_returned[w].trim().replace(".","").replace(":","")+"]";
-
-                                } else {
-                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
-                                }
+                        if (!pair.chord.isEmpty()) {
+                            if (pair.chord.startsWith(".") || pair.chord.startsWith(":")) {
+                                chord_to_add = "[" + pair.chord.replace(".", "").replace(":", "") + "]";
+                            } else {
+                                chord_to_add = "[" + pair.chord + "]";
                             }
                         }
-                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        newlyrics.append(chord_to_add).append(pair.text);
                     }
                     break;
 
@@ -1125,13 +1236,18 @@ public class ConvertChoPro {
 
         for (int x = 0; x < numlines; x++) {
             // Get rid of any extra whitespace and fix the lines
-            Log.d(TAG,"line before processing:"+line[x]);
             if (line[x].trim().isEmpty()) {
                 newlyrics.append("\n");
             } else {
                 line[x] = makeTagsCommon(line[x]);
                 line[x] = removeObsolete(line[x]);
-                line[x] = extractChordLines(line[x]);
+                // Check if this line contains Hebrew/RTL characters before standard chord extraction
+                if (containsRtlCharacters(line[x])) {
+                    // Custom handling or token reversal for RTL ChordPro lines
+                    line[x] = convertRtlChordProToOpenSong(line[x]);
+                } else {
+                    line[x] = extractChordLines(line[x]);
+                }
                 line[x] = convertChordProDirectiveIntoOpenSongHeading(line[x]);
                 line[x] = fixHeadings(line[x]);
                 line[x] = mainActivityInterface.getProcessSong().simplifySectionHeading(line[x]);
@@ -1154,7 +1270,6 @@ public class ConvertChoPro {
                     newlyrics.append(line[x]).append("\n");
                 }
             }
-            Log.d(TAG,"line after processing:"+line[x]);
         }
 
         // Final polish
@@ -1189,7 +1304,6 @@ public class ConvertChoPro {
             simpleText = simpleText.replace(c.getString(R.string.chorus),"C").replace("Chorus","C").replace("chorus","C");
             simpleText = simpleText.toLowerCase().trim();
 
-            Log.d(TAG,"line:"+line+"  simpleText:"+simpleText+" numberOnly:"+numberOnly);
             // Now we should have something like [c],[b],[v], [p], or [....]
             if (simpleText.equals("[c]")) {
                 dealingWithChorus = true;

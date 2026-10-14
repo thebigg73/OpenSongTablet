@@ -14,6 +14,7 @@ public class SongProviderFactory {
             case "HolyChords": return new HolyChordsProvider(context);
             case "La Boîte à chansons": return new BoiteachansonsProvider(context);
             case "WorshipTogether": return new WorshipTogetherProvider(context);
+            case "GuitarTabs": return new GuitarTabsProvider(context);
             default: throw new IllegalArgumentException("Unknown provider: " + providerName);
         }
     }
