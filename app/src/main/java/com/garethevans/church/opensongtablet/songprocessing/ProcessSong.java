@@ -113,6 +113,13 @@ public class ProcessSong {
     private StringBuilder htmlLyrics = new StringBuilder();
     private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
             sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
+    private boolean isRtl = false;
+    private int gravityToUseForRtl = Gravity.START;
+    private int textDirectionForRtl = View.TEXT_DIRECTION_LTR;
+    private int layoutDirectionForRtl = View.LAYOUT_DIRECTION_LTR;
+    private String htmlDirection = "dir=\"ltr\"";
+    private String htmlChordRtlStyle = "style=\"direction: ltr; text-align: left;\"";
+    private String htmlLyricRtlStyle = "style=\"direction: ltr; text-align: left;\"";
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -231,6 +238,47 @@ public class ProcessSong {
         thisSong.setAbc(fixNullValues(thisSong.getAbc()));
         thisSong.setAbcTranspose(fixNullValues(thisSong.getAbcTranspose()));
 
+        /*
+        uuid: UUID of the song as identifier.  Must be set, if it doesn't exist, it gets added e.g. 475c839b-7c6c-44f4-8cec-8d56809e44c5  *required
+        last_modified: The UTC timestamp when the file was last edited e.g. 2026-10-17T14:02:23.641Z *required
+        title: The name of the song *required
+        author: The author/artist/performer
+        copyright: Any copyright info
+        presentation:  Any specific presentation order e.g. V1 C V2 C - used to show the correct sections in order
+        hymn_number: Optional number of the song in a hymn book
+        capo: The capo fret (blank if no capo)
+        tempo: The bpm of the song
+        time_sig: The time signature e.g. 4/4
+        duration: The length of the song in seconds for autoscroll
+        predelay: The delay before autoscrolling
+        ccli: The song CCLI number
+        theme: Any theme tags for the song (separated by a semicolon) e.g Praise;Worship;Christmas
+        altheme: Any additional theme tags (not really used by OpenSongApp)
+        user1, user2, user3:  Additional info the user can store
+        beatbuddysong: The name of a song to load from a connected BeatBuddy pedal (OpenSongApp uses a csv file to generate the MIDI code in the background)
+        beatbuddykit: The name of the drum kit to use from a connected BeatBuddy pedal
+        drummer:  The name of a drummer file to use with the song (kind of like a drummer rather than a basic metronome (blank for default) - stored in OpenSong/Drummer/
+        drummerkit:  The name of the drummer kit (currently either 'Percussion' or 'Acoustic')
+        key: The key of the song e.g. Gm
+        keyoriginal: The original key of the song e.g. Gm
+        preferedinstrument: The preferred instrument for displaying chord diagrams. Can be g (for guitar), u (for ukulele), m (mandolin), b (banjo 4 string) B (banjo 5 string) c (cavaquhino), p (piano)
+        previewoverride:  If when using stage mode (only displaying one section at a time) should a preview of the next section be shown at the bottom.  Options are force_on or force_off.  This option is song specific, the app has a global setting too
+        aka: An also know as, alternative title
+        midi: Midi messages that can be stored with the song separated by a new line.  Follows OpenSong MIDI shorthand code
+        midi_index: A song number that the song can be identified with and triggered from an external midi device
+        notes: Sticky notes text that can popup over the song display (and moved around)
+        lyrics: The main song content in OpenSong format. Comment lines start with ; and can also be used for inline pause (for autoscroll when reaching this point e.g. ;D:5 for a 5 second pause when this line appears on screen), or inline abc code one a single line with e.g. ;#:M:4/4\nK:E\n=G2 =d2 z2 c2|]
+        pad_file: The filename of any pad file to use with the song.  Can be blank or 'auto' to use the build in midi pads in OpenSong/Pads/ matching the song key, 'link' which uses the file in link_audio
+        custom_chords: Any custom chord fingerings used (specific OpenSongApp formatted) separated by new line
+        link_web: Any website to link to the song
+        link_audio: An audio file to link to the song (can be assigned as the pad). Any full file address or localised file in the format of ../OpenSong/Pads/file.mp3, ../OpenSong/Media/Song2.mid
+        loop_audio: boolean to loop the audio track once playback has finished
+        abc_notation: abc notation that can be used as a popup window in the song display
+        abc_transpose: a transpose value e.g. -1 or 2 to transpose the abc notation
+
+        There are some other fields, but OpenSongApp ignores them if they are there - purely used on the desktop
+
+         */
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + thisSong.getEncoding() + "\"?>\n";
         myNEWXML += "<song>\n";
         myNEWXML += "  <uuid>" + parseToHTMLEntities(thisSong.getUuid()).trim() + "</uuid>\n";
@@ -1155,7 +1203,6 @@ public class ProcessSong {
                 (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)));
         boolean showChords = (presentation && mainActivityInterface.getPresenterSettings().getPresoShowChords()) ||
                 (!presentation && displayChords);
-        boolean isRtl = tableLayout.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = thisSong.getCapo();
@@ -1233,14 +1280,16 @@ public class ProcessSong {
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
-            // Check if the current line/string contains RTL characters (e.g., Hebrew)
-
             TableRow tableRow = newTableRow();
-            htmlLyrics.append("<tr>");
+            linetype = getLineType(lines[t]);
+            if (linetype.equals("lyric") || linetype.equals("comment") || linetype.equals("heading")) {
+                htmlLyrics.append("<tr class=\"lyricrow\">");
+            } else {
+                htmlLyrics.append("<tr>");
+            }
             if (presentation && !performancePresentation) {
                 tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             }
-            linetype = getLineType(lines[t]);
             ArrayList<View> rowViews = new ArrayList<>();
 
 
@@ -1262,7 +1311,6 @@ public class ProcessSong {
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
                     MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
-                    textView.setTextDirection(View.TEXT_DIRECTION_LTR);
                     textView.setGravity(Gravity.START);
                     ImageView chordLayout = null;
                     LinearLayout chordLineLayout = null;
@@ -1284,12 +1332,8 @@ public class ProcessSong {
                     // We process separately, otherwise it is handled in the last default 'else'
                     switch (linetype) {
                         case "chord":
-                            if (isRtl) {
-                                textView.setTextDirection(View.TEXT_DIRECTION_RTL);
-                            } else {
-                                textView.setTextDirection(View.TEXT_DIRECTION_LTR);
-                            }
-                            textView.setGravity(Gravity.START);
+                            textView.setTextDirection(textDirectionForRtl);
+                            textView.setGravity(gravityToUseForRtl);
                             // Only show this if we want chords and if there is a capo, we want both capo and native
                             if (showChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
@@ -1334,7 +1378,7 @@ public class ProcessSong {
                             break;
                         case "capoline":
                             // Only show this if we want chords and if there is a capo and showcapo
-                            textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+                            textView.setTextDirection(textDirectionForRtl);
                             if (showChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
                                     // Use highlighted chords
@@ -1459,9 +1503,10 @@ public class ProcessSong {
                 }
             }
 
-            if (isRtl && rowViews.size() > 1) {
+            if (isRtl && rowViews.size() > 1 && (linetype.equals("chord")||linetype.equals("capo"))) {
                 Collections.reverse(rowViews);
             }
+
 
             // Add them to the table row in their final order
             for (View v : rowViews) {
@@ -1474,24 +1519,6 @@ public class ProcessSong {
         }
         htmlLyrics.append("</table>");
         return tableLayout;
-    }
-
-    private boolean containsRtlCharacters(String text) {
-        if (text == null || text.isEmpty()) {
-            return false;
-        }
-        for (int i = 0; i < text.length(); ) {
-            int codePoint = text.codePointAt(i);
-            int direction = Character.getDirectionality(codePoint);
-
-            // Check if the character directionality is Right-to-Left or Right-to-Left Arabic
-            if (direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                    direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
-                return true;
-            }
-            i += Character.charCount(codePoint);
-        }
-        return false;
     }
 
     private ImageView getSingleChordImage(String str, boolean capochord) {
@@ -1594,8 +1621,12 @@ public class ProcessSong {
 
         // Now we have the sizes, split into individual bits into <td>..</td>
         for (int t = 0; t < lines.length; t++) {
-            text.append("<tr>");
             linetype = getLineType(lines[t]);
+            if (linetype.equals("lyric") || linetype.equals("comment") || linetype.equals("heading")) {
+                text.append("<tr class=\"lyricrow\">");
+            } else {
+                text.append("<tr>");
+            }
 
             // Headings with just a comment missed this out
             // Also comments followed by headings
@@ -2194,7 +2225,7 @@ public class ProcessSong {
                               int highlightHeadingColor, int highlightChordColor,
                               boolean presentation, boolean boldText) {
         MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
-
+        textView.setGravity(Gravity.START);
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation ||
                 (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                         !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
@@ -2338,6 +2369,8 @@ public class ProcessSong {
             }
             linearLayout.setScaleX(1.0f);
             linearLayout.setScaleY(1.0f);
+            linearLayout.setLayoutDirection(layoutDirectionForRtl);
+            linearLayout.setGravity(gravityToUseForRtl);
         }
     }
 
@@ -2661,7 +2694,14 @@ public class ProcessSong {
         ArrayList<Integer> sectionColors = new ArrayList<>();
         htmlLyrics = new StringBuilder();
 
-        boolean isRtl = containsRtlCharacters(song.getLyrics());
+        isRtl = mainActivityInterface.getFixLocale().displaySongAsRTL(c,song.getLyrics());
+        Log.d(TAG,"isRtl:"+isRtl);
+        gravityToUseForRtl = Gravity.START;
+        layoutDirectionForRtl = isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
+        textDirectionForRtl = isRtl ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR;
+        htmlDirection = isRtl ? "dir=\"rtl\"" : "dir=\"ltr\"";
+        htmlChordRtlStyle = "style=\"direction:ltr; text-align:" + (isRtl ? "right;" : "left;") + "\"";
+        htmlLyricRtlStyle = "style=\"direction:" + (isRtl ? "rtl; " : "ltr; ") + "text-align:" + (isRtl ? "right;" : "left;") + "\"";
 
         if (song.getFiletype()==null) {
             song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song.getFilename()));
@@ -2866,6 +2906,7 @@ public class ProcessSong {
                                                     mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                                     mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
                                                     true, isChorusBold);
+                                            tv.setGravity(gravityToUseForRtl);
                                             linearLayout.addView(tv);
 
                                             // This is for the secondary display
@@ -2915,12 +2956,8 @@ public class ProcessSong {
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
-                                    tv.setGravity(Gravity.START);
-                                    if (isRtl) {
-                                        tv.setTextDirection(View.TEXT_DIRECTION_RTL);
-                                    } else {
-                                        tv.setTextDirection(View.TEXT_DIRECTION_LTR);
-                                    }
+                                    tv.setGravity(gravityToUseForRtl);
+                                    tv.setTextDirection(textDirectionForRtl);
                                     linearLayout.addView(tv);
                                 } else if (!line.isEmpty() || (asPDF && !trimSections)) {
                                     // PDF or presentation
@@ -3099,7 +3136,7 @@ public class ProcessSong {
                 TableLayout.LayoutParams.WRAP_CONTENT
         );
         tableLayout.setLayoutParams(params);
-        tableLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+        tableLayout.setLayoutDirection(layoutDirectionForRtl);
         tableLayout.setPadding(0, 0, 0, 0);
         tableLayout.setClipChildren(false);
         tableLayout.setClipToPadding(false);
@@ -3115,7 +3152,7 @@ public class ProcessSong {
         );
         tableRow.setLayoutParams(rowParams);
         // Ensure it respects RTL layout direction
-        tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+        tableRow.setLayoutDirection(layoutDirectionForRtl);
         tableRow.setPadding(0, 0, 0, 0);
         tableRow.setDividerPadding(0);
         return tableRow;
@@ -3131,14 +3168,15 @@ public class ProcessSong {
         linearLayout.setClipChildren(false);
         linearLayout.setClipToPadding(false);
         // Explicitly enforce layout direction inheritance
-        linearLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+        linearLayout.setLayoutDirection(layoutDirectionForRtl);
+        linearLayout.setGravity(gravityToUseForRtl);
         return linearLayout;
     }
 
     private MyMaterialSimpleTextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
         MyMaterialSimpleTextView textView = getTextView(linetype, size);
-        textView.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-        textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+        textView.setGravity(gravityToUseForRtl|Gravity.CENTER_VERTICAL);
+        textView.setTextDirection(textDirectionForRtl);
         textView.setTextSize(size);
         textView.setTypeface(typeface);
         textView.setTextColor(color);
@@ -3163,7 +3201,7 @@ public class ProcessSong {
 
     private MyMaterialSimpleTextView getTextView(String linetype, float size) {
         MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
-        textView.setGravity(Gravity.START);
+        textView.setGravity(gravityToUseForRtl);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval;
             if (linetype.equals("chord") || linetype.equals("capoline")) {
@@ -3231,9 +3269,6 @@ public class ProcessSong {
             scaleSize = 1.0f;
         }
         if (innerColumn != null) {
-            // Check if the container is in RTL mode
-            boolean isRtl = innerColumn.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-
             // Set pivotX based on the layout direction
             if (isRtl) {
                 // Anchor to the right edge for RTL scaling
@@ -3246,6 +3281,8 @@ public class ProcessSong {
             innerColumn.setPivotY(0);
             innerColumn.setScaleX(scaleSize);
             innerColumn.setScaleY(scaleSize);
+            innerColumn.setLayoutDirection(layoutDirectionForRtl);
+            innerColumn.setGravity(gravityToUseForRtl);
         }
     }
 
@@ -3567,7 +3604,10 @@ public class ProcessSong {
                                     LinearLayout column1, LinearLayout column2, LinearLayout column3,
                                     boolean presentation, DisplayMetrics displayMetrics) {
         updateProcessingPreferences();
-
+        songView.setLayoutDirection(layoutDirectionForRtl);
+        songView.setGravity(gravityToUseForRtl);
+        pageHolder.setLayoutDirection(layoutDirectionForRtl);
+        pageHolder.setGravity(gravityToUseForRtl);
         // Now we have all the sizes in, determines the best way to show the song
         // This will be single, two or three columns.  The best one will be the one
         // which gives the best scale size
@@ -3575,7 +3615,7 @@ public class ProcessSong {
         // Clear and reset the view's scaling
         resetRelativeLayout(pageHolder);
         clearAndResetLinearLayout(songView, false);
-        songView.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+        songView.setLayoutDirection(layoutDirectionForRtl);
         if (songSheetView!=null) {
             clearAndResetLinearLayout(songSheetView, false);
         }
@@ -3591,6 +3631,7 @@ public class ProcessSong {
         for (int i=0; i<sectionViews.size(); i++) {
             sectionViews.get(i).setScaleX(1f);
             sectionViews.get(i).setScaleY(1f);
+            sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
         }
 
         int currentWidth = getMaxValue(sectionWidths, 0, sectionWidths.size());
@@ -3774,13 +3815,13 @@ public class ProcessSong {
 
         // Prepare the inner column
         LinearLayout innerCol1 = newLinearLayout();
-        innerCol1.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+        innerCol1.setLayoutDirection(layoutDirectionForRtl);
 
         // For each section, add it
         for (int i=0; i<sectionViews.size(); i++) {
             View v = sectionViews.get(i);
             v.getLayoutParams().width = maxWidth;
-            v.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+            v.setLayoutDirection(layoutDirectionForRtl);
 
             // If this isn't the last view, add the section space
             if (i!=sectionViews.size()-1) {
@@ -3850,6 +3891,10 @@ public class ProcessSong {
         LinearLayout innerCol1 = newLinearLayout();
         LinearLayout innerCol2 = newLinearLayout();
 
+        innerCol1.setLayoutDirection(layoutDirectionForRtl);
+        innerCol2.setLayoutDirection(layoutDirectionForRtl);
+
+
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
         // As with column 1, adding height just in case of cropping
@@ -3865,6 +3910,7 @@ public class ProcessSong {
         for (int i = 0; i < columnBreak2; i++) {
             // Make all the views the same width as each other
             if (i<sectionViews.size()) {
+                sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
                 sectionViews.get(i).getLayoutParams().width = col1_2Width;
                 // If this isn't the last view in the column, add the sectionSpace
                 if (i != columnBreak2 - 1) {
@@ -3879,6 +3925,7 @@ public class ProcessSong {
         for (int i = columnBreak2; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
             sectionViews.size();
+            sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
             sectionViews.get(i).getLayoutParams().width = col2_2Width;
 
             // If this isn't the last view in the column, add the sectionSpace
@@ -3965,6 +4012,10 @@ public class ProcessSong {
         LinearLayout innerCol2 = newLinearLayout();
         LinearLayout innerCol3 = newLinearLayout();
 
+        innerCol1.setLayoutDirection(layoutDirectionForRtl);
+        innerCol2.setLayoutDirection(layoutDirectionForRtl);
+        innerCol3.setLayoutDirection(layoutDirectionForRtl);
+
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
         // As with column 1 adding extra height
@@ -3979,6 +4030,7 @@ public class ProcessSong {
             // Make all the views the same width as each other
             if (i<sectionViews.size()) {
                 sectionViews.get(i).getLayoutParams().width = col1_3Width;
+                sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
                 // If this isn't the last view in the column, add the sectionSpace
                 if (i != columnBreak3_a - 1) {
                     sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
@@ -3992,6 +4044,7 @@ public class ProcessSong {
         for (int i = columnBreak3_a; i<columnBreak3_b; i++) {
             // Make all the views the same width as each other
             if (i<sectionViews.size()) {
+                sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
                 sectionViews.get(i).getLayoutParams().width = col2_3Width;
                 // If this isn't the last view in the column, add the sectionSpace
                 if (i != columnBreak3_b - 1) {
@@ -4006,6 +4059,7 @@ public class ProcessSong {
         for (int i = columnBreak3_b; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
             sectionViews.size();
+            sectionViews.get(i).setLayoutDirection(layoutDirectionForRtl);
             sectionViews.get(i).getLayoutParams().width = col3_3Width;
 
             // If this isn't the last view in the column, add the sectionSpace

@@ -181,6 +181,9 @@ public class EditSongFragmentLyrics extends Fragment {
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
         mainActivityInterface.getMainHandler().post(() -> {
             if (myView!=null) {
+                // Check for LTR/LTR
+                checkForRtl();
+
                 myView.lyrics.setTextSize(editTextSize);
                 myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
                 myView.lyrics.setMonoTypeface(mainActivityInterface.getMyFonts().getMonoFont());
@@ -190,6 +193,14 @@ public class EditSongFragmentLyrics extends Fragment {
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
     }
 
+    private void checkForRtl() {
+        boolean isRtl = mainActivityInterface.getFixLocale().displaySongAsRTL(getContext(),mainActivityInterface.getTempSong().getLyrics());
+        if (isRtl) {
+            myView.lyrics.forceStrictRtl();
+        } else {
+            myView.lyrics.forceStrictLtr();
+        }
+    }
     public void setupPreview() {
         // If we have a PDF or image, show a small preview window
         if (mainActivityInterface.getSong().getFiletype()==null) {
@@ -247,7 +258,7 @@ public class EditSongFragmentLyrics extends Fragment {
                 }
                 int finalRotation = rotation;
                 mainActivityInterface.getMainHandler().post(() -> {
-                   if (myView!=null) {
+                   if (myView!=null && getContext()!=null) {
                        myView.previewImage.setVisibility(View.VISIBLE);
                        myView.previewImage.setRotationX(0.5f);
                        myView.previewImage.setRotationY(0.5f);
@@ -287,6 +298,7 @@ public class EditSongFragmentLyrics extends Fragment {
                 handler.removeCallbacks(runnable);
                 runnable = ()-> {
                     mainActivityInterface.getTempSong().setLyrics(editable.toString());
+                    checkForRtl();
                     // If we are not undoing/redoing add the changes to the undo list
                     if (addUndoStep) {
                         int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;

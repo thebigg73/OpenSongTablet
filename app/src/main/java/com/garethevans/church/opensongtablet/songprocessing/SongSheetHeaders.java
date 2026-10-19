@@ -138,8 +138,9 @@ public class SongSheetHeaders {
         // This will generate a separate LinearLayout containing the songsheet info
         String title = thisSong.getTitle();
 
+        String dir = mainActivityInterface.getFixLocale().displaySongAsRTL(c,thisSong.getLyrics()) ? "dir=\"rtl\"" : "dir=\"ltr\"";
         if (title!=null && !title.isEmpty()) {
-            return "<div class=\"titlemain\">" + title + "</div>\n";
+            return "<div " + dir + "class=\"titlemain\">" + title + "</div>\n";
         } else {
             return "";
         }

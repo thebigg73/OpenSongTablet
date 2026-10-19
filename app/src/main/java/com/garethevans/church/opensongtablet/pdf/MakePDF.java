@@ -48,6 +48,7 @@ public class MakePDF {
     private int sectionSpace;
     private float[] columnInfo;
     private Song thisSong;
+    private boolean isRtl = false;
 
     public MakePDF(Context c) {
         this.c = c;
@@ -58,6 +59,7 @@ public class MakePDF {
 
     public void setSong(Song thisSong) {
         this.thisSong = thisSong;
+        isRtl = mainActivityInterface.getFixLocale().displaySongAsRTL(c,thisSong.getLyrics());
     }
 
     public float getMaxPDFScaling() {
@@ -232,7 +234,7 @@ public class MakePDF {
         // Check for min scaling of 0.5
         headerScaling = Math.max(headerScaling,0.5f);
 
-        headerWidth = (int) ((float)headerWidth * headerScaling);
+        //headerWidth = (int) ((float)headerWidth * headerScaling);
         scaledHeaderHeight = (int) ((float)headerHeight * headerScaling);
 
         // Do any scaling
@@ -243,7 +245,11 @@ public class MakePDF {
         try {
             if (headerLayout!=null) {
                 pageCanvas.save();
-                pageCanvas.translate(cmToPx(margin_cm), cmToPx(margin_cm));
+                if (isRtl) {
+                    pageCanvas.translate(docWidth - cmToPx(margin_cm) - headerWidth, cmToPx(margin_cm));
+                } else {
+                    pageCanvas.translate(cmToPx(margin_cm), cmToPx(margin_cm));
+                }
                 pageCanvas.scale(headerScaling, headerScaling);
                 headerLayout.draw(pageCanvas);
                 pageCanvas.restore();
@@ -388,6 +394,24 @@ public class MakePDF {
                                  ArrayList<Integer> sectionWidths,
                                  ArrayList<Integer> sectionHeights) {
 
+        // If we are using RTL, we need to flip the views
+        // Ensure the container layout aligns its contents to the right (RTL)
+        if (isRtl) {
+            for (View view : sectionViews) {
+                if (view instanceof ViewGroup) {
+                    ViewGroup group = (ViewGroup) view;
+                    for (int i = 0; i < group.getChildCount(); i++) {
+                        View child = group.getChildAt(i);
+                        ViewGroup.LayoutParams params = child.getLayoutParams();
+                        if (params instanceof LinearLayout.LayoutParams) {
+                            LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) params;
+                            linearParams.gravity = android.view.Gravity.END;
+                            child.setLayoutParams(linearParams);
+                        }
+                    }
+                }
+            }
+        }
         // For non-XML songs, we always use 1 column
         if (columnInfo==null) {
             columnInfo = new float[13];
@@ -491,6 +515,7 @@ public class MakePDF {
         // Go through views one at a time
         for (int x=0; x<sectionViews.size(); x++) {
             View view = sectionViews.get(x);
+
             int newWidth = (int) ((float)sectionWidths.get(x)*columnScale);
             int newHeight = (int) ((float)sectionHeights.get(x)*columnScale);
 
@@ -517,11 +542,14 @@ public class MakePDF {
 
             // Save, translate to account for new position, write, then restore the page canvas
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm),ypos);
+            setAvailableWidth();
+            if (isRtl) {
+                pageCanvas.translate(docWidth - cmToPx(margin_cm) - newWidth, ypos);
+            } else {
+                pageCanvas.translate(cmToPx(margin_cm), ypos);
+            }
             pageCanvas.scale(columnScale, columnScale);
 
-            Log.d(TAG,"try to check the children");
-            Log.d(TAG,"inlineAbcObjects.count():"+mainActivityInterface.getAbcNotation().countInlineAbcObjects());
             if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()>0) {
                 for (int i = 0; i < ((LinearLayout) view).getChildCount(); i++) {
                     View thisView = ((LinearLayout) view).getChildAt(i);
@@ -561,6 +589,20 @@ public class MakePDF {
         // Because there may be additional pages added (multiple files combined)
         pageNum++;
         totalPages++;
+    }
+
+    // Find the actual rightmost edge of the children inside the layout
+    private int getTrueContentWidth(ViewGroup group) {
+        int maxRight = 0;
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View child = group.getChildAt(i);
+            int right = child.getLeft() + child.getMeasuredWidth();
+            if (right > maxRight) {
+                maxRight = right;
+            }
+        }
+        // Fallback to layout's measured width if no children found
+        return maxRight > 0 ? maxRight : group.getMeasuredWidth();
     }
 
     private void doubleColumn(ArrayList<View> sectionViews,
@@ -621,7 +663,15 @@ public class MakePDF {
             // Save, translate to account for new position, write, then restore the page canvas
             // Column 1 is indented by the page margin only
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm),ypos);
+            float xpos;
+            if (isRtl) {
+                // Column 1's right edge is bounded by: docWidth - margin
+                // So we shift left by this specific view's scaled width
+                xpos = docWidth - cmToPx(margin_cm) - newWidth;
+            } else {
+                xpos = cmToPx(margin_cm);
+            }
+            pageCanvas.translate(xpos,ypos);
             pageCanvas.scale(columnScale1,columnScale1);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -645,7 +695,15 @@ public class MakePDF {
             // Save, translate to account for new position, write, then restore the page canvas
             // Column 2 is indented by the page margin + colum 1 + padding
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm) + columnWidth + columnPadding,ypos);
+            float xpos;
+            if (isRtl) {
+                // Column 2's right edge is bounded by the inner column boundary:
+                // docWidth - margin - columnWidth - columnPadding
+                xpos = docWidth - cmToPx(margin_cm) - columnWidth - columnPadding - newWidth;
+            } else {
+                xpos = cmToPx(margin_cm) + columnWidth + columnPadding;
+            }
+            pageCanvas.translate(xpos, ypos);
             pageCanvas.scale(columnScale2,columnScale2);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -720,7 +778,13 @@ public class MakePDF {
             // Save, translate to account for new position, write, then restore the page canvas
             // Column 1 should be indented by the page margin only
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm),ypos);
+            float xpos;
+            if (isRtl) {
+                xpos = docWidth - cmToPx(margin_cm) - newWidth;
+            } else {
+                xpos = cmToPx(margin_cm);
+            }
+            pageCanvas.translate(xpos, ypos);
             pageCanvas.scale(columnScale1,columnScale1);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -744,7 +808,13 @@ public class MakePDF {
             // Save, translate to account for new position, write, then restore the page canvas
             // Column 2 should be indented by the page margin + first column width + padding
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm)+columnWidth+padding,ypos);
+            float xpos;
+            if (isRtl) {
+                xpos = docWidth - cmToPx(margin_cm) - columnWidth - padding - newWidth;
+            } else {
+                xpos = cmToPx(margin_cm) + columnWidth + padding;
+            }
+            pageCanvas.translate(xpos, ypos);
             pageCanvas.scale(columnScale2,columnScale2);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -768,7 +838,13 @@ public class MakePDF {
             // Save, translate to account for new position, write, then restore the page canvas
             // Column 3 should be indented by the page margin + first/second column widths + 2*padding
             pageCanvas.save();
-            pageCanvas.translate(cmToPx(margin_cm)+(columnWidth*2)+(padding*2),ypos);
+            float xpos;
+            if (isRtl) {
+                xpos = docWidth - cmToPx(margin_cm) - (2 * columnWidth) - (2 * padding) - newWidth;
+            } else {
+                xpos = cmToPx(margin_cm) + (2 * columnWidth) + (2 * padding);
+            }
+            pageCanvas.translate(xpos, ypos);
             pageCanvas.scale(columnScale3,columnScale3);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -793,7 +869,6 @@ public class MakePDF {
             view.setPivotY(0.0f);
             view.setScaleX(scaleValue);
             view.setScaleY(scaleValue);
-            //view.layout(0, 0, (int)((docWidth - (cmToPx(margin_cm) * 2))/scaleValue), (int)(height/scaleValue));
             view.layout(0, 0, (int)(width*scaleValue), (int)(height*scaleValue));
 
         } else {

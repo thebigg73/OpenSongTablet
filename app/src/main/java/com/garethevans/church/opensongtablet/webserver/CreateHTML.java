@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.webserver;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -25,6 +24,9 @@ public class CreateHTML {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private static final String TAG = "CreateHTML";
+    private static boolean isRtl = false;
+    private static String leftOrRight = "left";
+    private static String ltrOrRtl = "ltr";
 
     /**
      * Generates the full HTML for a song to be served to web clients.
@@ -34,7 +36,7 @@ public class CreateHTML {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
 
         StringBuilder html = new StringBuilder();
-        html.append(getCommonHTMLTop(mainActivityInterface,song, ipAddress, false, false, false, mainActivityInterface.getWebServer().getPreviousAndNextSongForArrows(song)));
+        html.append(getCommonHTMLTop(context, mainActivityInterface,song, ipAddress, false, false, mainActivityInterface.getWebServer().getPreviousAndNextSongForArrows(song)));
         html.append("<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n");
 
         // Now add the splash image
@@ -67,13 +69,16 @@ public class CreateHTML {
         }
 
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+        isRtl = mainActivityInterface.getFixLocale().displaySongAsRTL(context,song.getLyrics());
+        leftOrRight = isRtl ? "right" : "left";
+        ltrOrRtl = isRtl ? "rtl" : "ltr";
 
         StringBuilder html = new StringBuilder();
-        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,allowWebNavigation,false,false, prevAndNext));
+        html.append(getCommonHTMLTop(context,mainActivityInterface,song,ipAddress, false,false, prevAndNext));
 
         // Now we add the menu bar for the songs
         html.append(getMenuBarHTML(context, mainActivityInterface, song,allowWebNavigation, !allowWebNavigation,false,false));
-        html.append("<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n");
+        html.append("<div id=\"content\" style=\"width:fit-content; transform-origin: top ").append(leftOrRight).append(";\">\n");
 
         // Check that the song has been processed into sections already
         if (song.getPresoOrderSongSections().isEmpty()) {
@@ -98,7 +103,7 @@ public class CreateHTML {
 
         StringBuilder html = new StringBuilder();
 
-        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,true,true,true, prevAndNext));
+        html.append(getCommonHTMLTop(context, mainActivityInterface,song,ipAddress, true,true, prevAndNext));
 
         // Now we add the menu bar for the songs
         html.append(getMenuBarHTML(context, mainActivityInterface, song, allowWebNavigation, true, true, false));
@@ -146,7 +151,7 @@ public class CreateHTML {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
 
         StringBuilder html = new StringBuilder();
-        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,allowWebNavigation,true,false, prevAndNext));
+        html.append(getCommonHTMLTop(context, mainActivityInterface,song,ipAddress, true,false, prevAndNext));
 
         // Now we add the menu bar for the songs
         html.append(getMenuBarHTML(context, mainActivityInterface, song, allowWebNavigation, true, false, true));
@@ -210,9 +215,9 @@ public class CreateHTML {
         return returnString.toString();
     }
 
-    private static String getCommonHTMLTop(MainActivityInterface mainActivityInterface, Song song,
-                                           String ip, boolean allowWebNavigation,
-                                           boolean isMenu, boolean isSongMenu, ArrayList<SongId> prevAndNext) {
+    private static String getCommonHTMLTop(Context c, MainActivityInterface mainActivityInterface,
+                                           Song song, String ip, boolean isMenu, boolean isSongMenu,
+                                           ArrayList<SongId> prevAndNext) {
         String string = "";
         string += "<!DOCTYPE html>\n";
         string += "<html lang=\"en\">\n";
@@ -232,6 +237,7 @@ public class CreateHTML {
         // This prepares the import code for the top of the html file that locates the fonts from Google
         // If they've been downloaded already, they are cached on the device, so no need to redownload.
         // We also create all of the other css classes
+
         String base1 = "@import url('https://fonts.googleapis.com/css?family=";
         String base2 = "&swap=true');\n";
         String lyricsFontName = mainActivityInterface.getMyFonts().getLyricFontName();
@@ -244,26 +250,30 @@ public class CreateHTML {
         String pageBackgroundColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().background));
         String secondaryColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().secondary));
 
-                String string = "<style>\n";
+        String string = "<style>\n";
         string += base1 + lyricsFontName + base2;
         string += base1 + chordsFontName + base2;
-        string += ".menu                    {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; width: fit-content;}\n";
-        string += ".item                    {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; padding:0px;}\n";
-        string += ".itemSub                 {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size: 60%; font-style:italic; display:block; border-collapse:collapse; opacity:75%;}\n";
-        string += ".lyric                   {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:14.0pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
-        string += ".chord                   {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + chordsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
-        string += ".capo                    {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + capoTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space: nowrap; width: fit-content;}\n";
-        string += ".titlemain               {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*1.1f)+"pt; padding: 0px; text-decoration:underline;}\n";
-        string += ".titleextras             {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*0.6f)+"pt; padding: 0px; text-decoration:none;}\n";
-        string += ".heading                 {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; padding: 0px; text-decoration:underline;}\n";
-        string += ".mono                    {font-family:" + monoFontName + ", 'Courier New', monospace; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; padding: 0px; text-decoration:none;}\n";
-        string += "#content            {display: inline-block; position: absolute; top: 50px; left: 0; transform-origin: top left; padding-bottom: 100px;}\n";
+        string += ".menu               {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; width: fit-content;}\n";
+        string += ".item               {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; padding:0px;}\n";
+        string += ".itemSub            {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size: 60%; font-style:italic; display:block; border-collapse:collapse; opacity:75%;}\n";
+        string += ".lyric              {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:14.0pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
+        string += ".chord              {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + chordsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
+        string += ".capo               {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + capoTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space: nowrap; width: fit-content;}\n";
+        string += ".titlemain          {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*1.1f)+"pt; padding: 0px; text-decoration:underline;}\n";
+        string += ".titleextras        {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*0.6f)+"pt; padding: 0px; text-decoration:none;}\n";
+        string += ".heading            {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; padding: 0px; text-decoration:underline; display: block; clear: both; text-align:"+leftOrRight+";}\n";
+        string += ".mono               {font-family:" + monoFontName + ", 'Courier New', monospace; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; padding: 0px; text-decoration:none;}\n";
+        string += "#content            {display: inline-block; position: absolute; top: 50px; "+leftOrRight+": 0; transform-origin: top "+leftOrRight+"; padding-bottom: 100px;}\n";
         string += "#status-dot         {height: 12px; width: 12px; background-color: #bbb; border-radius: 50%; display: inline-block; margin-left: 10px; margin-top: 6px; margin-bottom: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.5);}\n";
         string += ".connected          {background-color: #00ff00; }\n";
         string += ".disconnected       {background-color: #ff0000; }\n";
         string += ".clickable,a        {-webkit-user-select: none; -ms-user-select: none; user-select: none; cursor: pointer;}\n";
         string += ".page               {color:" + pageTextColor + "; background-color: " + pageBackgroundColor + ";}\n";
-        string += ".lyrictable         {border-spacing:0; border-collapse: collapse; border:0px;}\n";
+        string += ".lyrictable         {border-spacing:0; border-collapse: collapse; border:0px; float: "+leftOrRight+"; clear: both;}\n";
+        string += ".lyrictable tr      {display: flex; " + (isRtl ? "flex-direction: row-reverse; ":"") + "justify-content: flex-start;}\n";
+        string += ".lyrictable td      {display: flex; flex-direction: column; align-items: "+(isRtl ? "flex-end":"flex-start") + ";}\n";
+        string += ".lyrictable .chord  {direction: ltr; text-align: "+leftOrRight+"; unicode-bidi: isolate;}\n";
+        string += ".lyrictable .lyric  {direction: " + ltrOrRtl + "; text-align: " + leftOrRight + "; unicode-bidi: isolate;}\n";
         string += "#menu               {position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background-color: " + pageBackgroundColor + "; display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #444;}\n";
         string += "label               {margin-right: 4px; padding: 4px 2px 2px 2px; float: left; background-color:" + secondaryColor + "; font-size:12pt; color:" + pageTextColor + ";}\n";
         string += "a                   {margin-right: 4px; padding: 4px 2px 4px 2px; float: left; display: inline-block; color:" + pageTextColor + "; background-color: " + secondaryColor + "; font-size:14pt;}\n";
@@ -351,11 +361,30 @@ public class CreateHTML {
         string += "  }\n";
 
         string += "  function hostSong() {\n";
-        string += "    var listenToHost = document.getElementById(\"listenToHost\").checked;";
+        string += "    var listenToHost = document.getElementById(\"listenToHost\").checked;\n";
         string += "    localStorage.setItem('listenToHost', listenToHost); // Save it!\n";
         string += "    if (listenToHost) {\n";
         string += "      window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getHostSongString() + "/?chords=\"+chords;\n";
         string += "    }\n";
+        string += "  }\n";
+
+        string += "  function fixRtlChordTables() {\n";
+        string += "    document.querySelectorAll('.lyrictable tr').forEach(row => {\n";
+        string += "      if (!row.classList.contains('lyricrow') && !row.dataset.reversed) {\n";
+        string += "        const chordCells = Array.from(row.querySelectorAll('td.chord, td.capo'));\n";
+        string += "        if (chordCells.length > 1) {\n";
+        string += "          chordCells.reverse().forEach(cell => {\n";
+        string += "            let html = cell.innerHTML;\n";
+        string += "            let match = html.match(/^(.*?)((\\s|&nbsp;)+)$/i);\n";
+        string += "            if (match) {\n";
+        string += "              cell.innerHTML = match[2] + match[1];\n";
+        string += "            }\n";
+        string += "            row.appendChild(cell);\n";
+        string += "          });\n";
+        string += "          row.dataset.reversed = \"true\"; // Prevents re-reversing on resize/measure\n";
+        string += "        }\n";
+        string += "      }\n";
+        string += "    });\n";
         string += "  }\n";
 
         if (!songMenu) {
@@ -451,6 +480,9 @@ public class CreateHTML {
         string += "  }\n";
 
         string += "  function measure() {\n";
+        if (isRtl) {
+            string += "    fixRtlChordTables();\n";
+        }
         string += "    var content = document.getElementById(\"content\");\n";
         string += "    // 1. Critical: Reset scaling so we can measure the NATURAL width\n";
         string += "    content.style.transform = \"scale(1)\";\n";

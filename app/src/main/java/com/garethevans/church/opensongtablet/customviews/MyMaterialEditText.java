@@ -639,4 +639,36 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         }
     }
 
+    /**
+     * Forces strict Left-to-Right (LTR) text and layout direction.
+     * Essential for English text, chord rows, and metadata lines to prevent
+     * BiDi reordering from reversing brackets, punctuation, and English words
+     * when the app or device is running in an RTL locale.
+     */
+    public void forceStrictLtr() {
+        if (editText != null) {
+            editText.setTextDirection(View.TEXT_DIRECTION_LTR);
+            editText.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            editText.setGravity(Gravity.START | Gravity.TOP);
+        }
+        if (textInputLayout != null) {
+            textInputLayout.setTextDirection(View.TEXT_DIRECTION_LTR);
+            textInputLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+        this.setTextDirection(View.TEXT_DIRECTION_LTR);
+        this.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+    }
+    public void forceStrictRtl() {
+        if (editText != null) {
+            editText.setTextDirection(View.TEXT_DIRECTION_RTL);
+            editText.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            editText.setGravity(Gravity.START | Gravity.TOP);
+        }
+        if (textInputLayout != null) {
+            textInputLayout.setTextDirection(View.TEXT_DIRECTION_RTL);
+            textInputLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+        this.setTextDirection(View.TEXT_DIRECTION_RTL);
+        this.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+    }
 }

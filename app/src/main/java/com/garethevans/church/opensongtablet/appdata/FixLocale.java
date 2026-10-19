@@ -1,6 +1,9 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
@@ -52,11 +55,13 @@ public class FixLocale {
                 // No locale is set, so let's see if the user's language is supported
                 // Get device setting
                 String deviceval = Locale.getDefault().getLanguage();
+                language = deviceval;
 
                 // If this is supported, set the user preference, otherwise use English
-                String translations = "af cs de el es fr hu it ja pl pt ru si sr sv uk zh";
+                String translations = "af cs de el es fr hu it iw ja pl pt ru si sr sv uk zh";
                 if (!translations.contains(deviceval)) {
                     deviceval = "en";
+                    language = "en";
                 }
 
                 userLocale = new Locale(deviceval);
@@ -82,6 +87,58 @@ public class FixLocale {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private boolean isTextRTL(String text) {
+        if (text == null || text.isEmpty()) {
+            Log.d(TAG,"isTextRTL:false");
+            return false;
+        }
+        for (int i = 0; i < text.length(); ) {
+            int codePoint = text.codePointAt(i);
+            int direction = Character.getDirectionality(codePoint);
+
+            // Only return true for *strong* RTL characters (Hebrew/Arabic letters),
+            // ignoring neutral punctuation, brackets, and spaces.
+            if (direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                    direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
+                Log.d(TAG,"isTextRTL:true");
+                return true;
+            }
+            i += Character.charCount(codePoint);
+        }
+        Log.d(TAG,"isTextRTL:false");
+        return false;
+    }
+
+    private boolean isLocaleRTL() {
+        if (language==null) {
+            setLocale();
+        }
+        if (language!=null) {
+            return language.equals("iw");
+        } else {
+            if (language==null) {
+                language = "en";
+            }
+            return false;
+        }
+    }
+
+    private boolean isDeviceRTL(Context c) {
+        Configuration config = c.getResources().getConfiguration();
+        boolean isRTL = config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        Log.d(TAG,"isDeviceRTL:"+isRTL);
+        return isRTL;
+    }
+
+    public boolean displaySongAsRTL(Context c, String lyrics) {
+        // If we are using localeRTL or deviceRTL, use RTL if the lyrics contain RTL or are empty
+        if ((isLocaleRTL() || isDeviceRTL(c)) && (isTextRTL(lyrics) || lyrics.isEmpty())) {
+            return true;
+        } else {
+            return isTextRTL(lyrics);
         }
     }
 }
