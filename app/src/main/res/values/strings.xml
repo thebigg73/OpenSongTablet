@@ -752,7 +752,7 @@
     <string name="inline_midi">Inline MIDI commands</string>
     <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
     <string name="inline_search">Inline search</string>
-    <string name="inline_search_info">Seach and extract content directly in the app</string>
+    <string name="inline_search_info">Search and extract content directly in the app</string>
     <string name="inline_set_move_to_next">Cue song to next item in set</string>
     <string name="inline_set_scroll_to_item">Scroll to current item</string>
     <string name="insert_guitar_tab">Insert Guitar tab</string>
@@ -829,6 +829,7 @@
         <item>(fr) français</item>
         <item>(hu) magyar</item>
         <item>(it) italiano</item>
+        <item>(iw) עִברִית</item>
         <item>(ja) 日本語</item>
         <item>(pl) język polski</item>
         <item>(pt) português</item>
