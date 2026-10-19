@@ -1236,7 +1236,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void initialiseStartVariables() {
-        getMyThemeColors().setThemeName(getPreferences().getMyPreferenceString("appTheme", "dark"));
+        String initialBasicTheme = getPalette().getDefaultTheme();
+        String storedThemePref = getPreferences().getMyPreferenceString("appTheme", "");
+        Log.d(TAG,"initialBasicTheme: " + initialBasicTheme + " storedThemePref:"+storedThemePref);
+        if (storedThemePref.isEmpty()) {
+            getPreferences().setMyPreferenceString("appTheme", initialBasicTheme);
+            storedThemePref = initialBasicTheme;
+        } else if ((storedThemePref.equals("dark") || storedThemePref.equals("custom1")) &&
+                !initialBasicTheme.equals("dark")) {
+            // We have a dark style colour preference but the basic theme is wrong.  Update it
+            getPalette().savePref(this, "dark");
+        } else if ((storedThemePref.equals("light") || storedThemePref.equals("custom2")) &&
+                !initialBasicTheme.equals("light")) {
+            // We have a light style colour preference but the basic theme is wrong.  Update it
+            getPalette().savePref(this, "light");
+        } else if (storedThemePref.equals("amoled") && !initialBasicTheme.equals("amoled")) {
+            // The saved preference is amoled, but the basic theme is not.  Update it
+            getPalette().savePref(this, "amoled");
+        }
+        Log.d(TAG,"new storedThemePref:"+storedThemePref);
+        getMyThemeColors().setThemeName(storedThemePref);
         whichMode = getPreferences().getMyPreferenceString("whichMode", mode_performance);
         // Fix old mode from old profile
         if (whichMode.equals("Presentation")) {

@@ -378,9 +378,11 @@ public class MultiTrackPlayer {
             fadeSamplePosition = 0;
 
             // Reopen our trackStreams and skip if required
-            for (AudioInputTrack track : trackList) {
-                track.reopen();
-                track.skip(audioTrackPositionTracker.getSkipBytes());
+            if (trackList!=null) {
+                for (AudioInputTrack track : trackList) {
+                    track.reopen();
+                    track.skip(audioTrackPositionTracker.getSkipBytes());
+                }
             }
 
             // Put the set the progress slider
@@ -393,7 +395,9 @@ public class MultiTrackPlayer {
             }
 
             // Start the audioTrack player ready for content
+            if (audioTrack!=null) {
             audioTrack.play();
+            }
 
             // Now run the thread that feeds the audioTrack
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
@@ -434,48 +438,50 @@ public class MultiTrackPlayer {
                             }
                         }
 
-                        for (AudioInputTrack track : trackList) {
-                            try {
-                                int frames = track.readNext();
-                                if (frames <= 0) continue;
+                        if (trackList!=null) {
+                            for (AudioInputTrack track : trackList) {
+                                try {
+                                    int frames = track.readNext();
+                                    if (frames <= 0) continue;
 
-                                short[] buf = track.getTrackBuffer();
-                                int length = track.getTrackBufferLength();  // total samples, not frames
+                                    short[] buf = track.getTrackBuffer();
+                                    int length = track.getTrackBufferLength();  // total samples, not frames
 
-                                int frameCount = track.getTrackChannels() == 2 ? length / 2 : length;
+                                    int frameCount = track.getTrackChannels() == 2 ? length / 2 : length;
 
-                                float vol = track.getTrackVolume();
-                                float pan = track.getTrackPan();
-                                float leftGain = (pan <= 0) ? 1f : 1f - pan;
-                                float rightGain = (pan >= 0) ? 1f : 1f + pan;
+                                    float vol = track.getTrackVolume();
+                                    float pan = track.getTrackPan();
+                                    float leftGain = (pan <= 0) ? 1f : 1f - pan;
+                                    float rightGain = (pan >= 0) ? 1f : 1f + pan;
 
-                                int outL;
-                                int outR;
+                                    int outL;
+                                    int outR;
 
-                                for (int i = 0; i < frameCount; i++) {
-                                    short left = track.getTrackChannels() == 2 ? buf[i * 2] : buf[i];
-                                    short right = track.getTrackChannels() == 2 ? buf[i * 2 + 1] : buf[i];
+                                    for (int i = 0; i < frameCount; i++) {
+                                        short left = track.getTrackChannels() == 2 ? buf[i * 2] : buf[i];
+                                        short right = track.getTrackChannels() == 2 ? buf[i * 2 + 1] : buf[i];
 
-                                    if (track.getTrackMute()) {
-                                        left = 0;
-                                        right = 0;
+                                        if (track.getTrackMute()) {
+                                            left = 0;
+                                            right = 0;
+                                        }
+
+                                        if (usingSolos) {
+                                            left = track.getTrackSolo() ? left : 0;
+                                            right = track.getTrackSolo() ? right : 0;
+                                        }
+
+                                        outL = mixBuffer[i * 2] + (int) (left * vol * leftGain * masterLGain);
+                                        outR = mixBuffer[i * 2 + 1] + (int) (right * vol * rightGain * masterRGain);
+
+                                        mixBuffer[i * 2] = clamp16(outL);
+                                        mixBuffer[i * 2 + 1] = clamp16(outR);
                                     }
-
-                                    if (usingSolos) {
-                                        left = track.getTrackSolo() ? left : 0;
-                                        right = track.getTrackSolo() ? right : 0;
-                                    }
-
-                                    outL = mixBuffer[i * 2] + (int) (left * vol * leftGain * masterLGain);
-                                    outR = mixBuffer[i * 2 + 1] + (int) (right * vol * rightGain * masterRGain);
-
-                                    mixBuffer[i * 2] = clamp16(outL);
-                                    mixBuffer[i * 2 + 1] = clamp16(outR);
+                                } catch (Exception e) {
+                                    Log.d(TAG, "The streams were unexpectedly closed");
+                                    isPlaying = false;
+                                    return;
                                 }
-                            } catch (Exception e) {
-                                Log.d(TAG,"The streams were unexpectedly closed");
-                                isPlaying = false;
-                                return;
                             }
                         }
 
