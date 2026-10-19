@@ -31,21 +31,24 @@ public final class Palette {
     private final String TAG = "Palette";
 
     private final String PREF_NAME="theme_choice",
-            DISPLAY_MODE="displayMode", DARK="dark";
+            DISPLAY_MODE="displayMode";
     public boolean dark;
     public boolean amoled;
     public String theme;
 
-    public Palette(Context context) {
-        theme = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    public Palette(Context c) {
+        theme = c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                         .getString(DISPLAY_MODE,"");
         // If the theme hasn't been set, look for the device day/night
         if (theme.isEmpty()) {
-            getDefaultTheme(context);
+            // Get the default theme based on device setting
+            // This then saves this an sets up the colours
+            getDefaultTheme(c);
+        } else {
+            // Go straight to setup
+            setDisplayVariables(c);
+            setColors(c);
         }
-
-        setDisplayVariables();
-        setColors(context);
     }
 
     public void getDefaultTheme(Context c) {
@@ -75,14 +78,14 @@ public final class Palette {
         // Save the new preference
         c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).
                 edit().putString(DISPLAY_MODE,theme).apply();
-        setDisplayVariables();
+        setDisplayVariables(c);
         setColors(c);
     }
 
-    private void setDisplayVariables() {
+    private void setDisplayVariables(Context c) {
         // Theme can be dark, light, custom1, custom2, amoled
         // If set to amoled, then use the amoled colours
-        if (theme!=null) {
+        if (theme!=null && !theme.isEmpty()) {
             switch (theme) {
                 case "amoled":
                     //Use the AMOLED colours
@@ -104,7 +107,21 @@ public final class Palette {
                     amoled = false;
                     break;
             }
+        } else {
+            getDefaultTheme(c);
         }
+    }
+
+    public String getDefaultTheme() {
+        // Returns a basic theme - called on app boot, particularly when no theme has yet been set
+        if (amoled) {
+            return "amoled";
+        } else if (dark) {
+            return "dark";
+        } else {
+            return "light";
+        }
+
     }
 
     @SuppressWarnings("deprecation")
