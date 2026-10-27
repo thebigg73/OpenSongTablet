@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -484,6 +485,9 @@ public class HighlighterEditFragment extends Fragment {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
             mainActivityInterface.getSong().getPdfPageCount()>newPage &&
             newPage>=0) {
+            // Clear the cache
+            myView.drawNotes.delete();
+            mainActivityInterface.getDrawNotes().delete();
             mainActivityInterface.getSong().setPdfPageCurrent(newPage);
             setupViews();
             myView.draggableToolbox.setPDF(true,mainActivityInterface.getSong().getPdfPageCount(),newPage+1);
@@ -503,11 +507,15 @@ public class HighlighterEditFragment extends Fragment {
                         false, highlighterUri, null, "Highlighter", "", hname);
 
                 mainActivityInterface.getMainHandler().post(() -> {
-                    mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
                     try {
-                        highlighterBitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
+                        // Create a fresh bitmap matching the scaled dimensions and draw the current view onto it directly
+                        if (scaledWidth > 0 && scaledHeight > 0) {
+                            highlighterBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(highlighterBitmap);
+                            mainActivityInterface.getDrawNotes().draw(canvas);
+                        }
                     } catch (Exception e) {
-                        Log.d(TAG, "Error extracting the drawing");
+                        Log.d(TAG, "Error extracting the drawing: " + e.getMessage());
                     } catch (OutOfMemoryError e) {
                         Log.d(TAG, "Out of memory trying to get the drawing");
                     }
