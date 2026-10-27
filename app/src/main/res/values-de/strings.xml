@@ -169,7 +169,7 @@
     <string name="book">Buch</string>
     <string name="boost">Schub</string>
     <string name="both">Beide</string>
-    <string name="bottom">Unterseite</string>
+    <string name="bottom">Unten</string>
     <string name="brackets">Klammern</string>
     <string name="bridge">Zwischenteil</string>
     <string name="bridge_background">Hintergrund Bridge</string>
@@ -936,7 +936,7 @@
     <string name="pan">Links / Rechts</string>
     <string name="pan_center">Center</string>
     <string name="pan_left">Links</string>
-    <string name="pan_right">Richtig</string>
+    <string name="pan_right">Rechts</string>
     <string name="panic">Panik</string>
     <string name="panic_stop">Alle Ausgaben wurden gestoppt</string>
     <string name="part">Teil</string>
@@ -1145,7 +1145,7 @@
     <string name="set_manage_info">Sätze speichern, laden, exportieren, entfernen, importieren und sichern</string>
     <string name="set_manage_swipe">Wischen, um ein Element aus der Setlist zu entfernen.</string>
     <string name="set_name">Name einsetzen</string>
-    <string name="set_new">Erstelle eine neue Menge</string>
+    <string name="set_new">Erstelle ein neues Set</string>
     <string name="set_new_info">Entfernen Sie alle Songs aus dem aktuellen Set</string>
     <string name="set_packaged_opensongapp">Verpackte OpenSongApp-Set-Datei</string>
     <string name="set_packaged_opensongapp_info">Dadurch wird eine benutzerdefinierte ZIP-Datei erstellt, die Set-Datei und alle im Set referenzierten OpenSong-, PDF- oder Bilddateien enthält.  Dies kann mit anderen OpenSongApp-Benutzern geteilt werden</string>
