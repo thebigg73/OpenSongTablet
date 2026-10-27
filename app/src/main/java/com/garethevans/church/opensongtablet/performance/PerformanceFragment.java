@@ -1732,11 +1732,13 @@ public class PerformanceFragment extends Fragment {
                         }
                     });
                     myView.highlighterView.post(() -> {
-                        try {
-                            myView.highlighterView.requestLayout();
-                        } catch (Exception e) {
-                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                            e.printStackTrace();
+                        if (myView!=null) {
+                            try {
+                                myView.highlighterView.requestLayout();
+                            } catch (Exception e) {
+                                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                e.printStackTrace();
+                            }
                         }
                     });
                 } else if (myView!=null) {
@@ -1798,12 +1800,20 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void toggleHighlighter() {
-        if (mainActivityInterface.getMode().equals(mode_performance) ||
-            mainActivityInterface.getMode().equals(mode_hybrid)) {
-            if (myView.highlighterView.getVisibility() == View.VISIBLE) {
-                myView.highlighterView.setVisibility(View.GONE);
-            } else {
-                myView.highlighterView.setVisibility(View.VISIBLE);
+        Log.d(TAG,"toggleHighlighter()");
+        if (myView!=null) {
+            if (mainActivityInterface.getMode().equals(mode_performance) ||
+                    mainActivityInterface.getMode().equals(mode_hybrid)) {
+                if (mainActivityInterface.getSong().getFiletype()!=null &&
+                    mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                    pdfPageAdapter!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    // Notify the pdfAdapter that the highlighter should be toggled
+                    pdfPageAdapter.toggleHighlighter();
+                } else if (myView.highlighterView.getVisibility() == View.VISIBLE) {
+                    myView.highlighterView.setVisibility(View.GONE);
+                } else {
+                    myView.highlighterView.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

@@ -295,6 +295,7 @@ public class PerformanceGestures {
                 stickySettings();
                 break;
             case "highlight":
+                Log.d(TAG,"highlight");
                 if (isLongPress) {
                     highlighterEdit();
                 } else {

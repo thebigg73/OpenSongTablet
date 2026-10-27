@@ -55,6 +55,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PDFPageAdapter";
     private float pdfHorizontalScale = 1;
+    private boolean showHighlighter = true;
 
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface,
@@ -307,7 +308,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         // If we have a matching highlighter file...
         Bitmap pdfHighlighter = mainActivityInterface.getProcessSong().getPDFHighlighterBitmap(mainActivityInterface.getSong(),width,height,pageNum);
-        if (pdfHighlighter!=null) {
+        if (showHighlighter && pdfHighlighter!=null) {
             holder.pdfPageHighlight.post(()->{
                 try {
                     holder.pdfPageHighlight.setVisibility(View.VISIBLE);
@@ -421,4 +422,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         return pdfHorizontalScale;
     }
 
+    public void toggleHighlighter() {
+        showHighlighter = !showHighlighter;
+        notifyDataSetChanged();
+    }
 }
