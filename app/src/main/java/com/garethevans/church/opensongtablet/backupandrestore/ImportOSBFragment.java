@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.backupandrestore;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +49,7 @@ public class ImportOSBFragment extends Fragment {
     private final String TAG = "ImportOSBFragment";
     private String importFilename, message, import_basic="", website_restore="", unknown="",
             import_osb="", processing="", mainfoldername="", error_string="", songs_string="",
-            folder_string="", connections_searching="";
+            folder_string="", connections_searching="", persistentDb="";
     private Uri importUri;
     private ArrayList<String> foundFolders, checkedFolders, allZipItems;
     private boolean error, hasPersistentDB, hasHighlighterNotes, alive = true, canoverwrite;
@@ -107,6 +108,7 @@ public class ImportOSBFragment extends Fragment {
             songs_string = getString(R.string.songs);
             folder_string = getString(R.string.folder);
             connections_searching = getString(R.string.connections_searching);
+            persistentDb = getString(R.string.persistent_database);
         }
     }
     private void setupHelpers() {
@@ -358,6 +360,7 @@ public class ImportOSBFragment extends Fragment {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void doImport() {
         // Get the folders we've selected
         getCheckedFolders();
@@ -453,6 +456,7 @@ public class ImportOSBFragment extends Fragment {
                                     (!ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && checkedFolders.contains(filefolder)) ||
                                     (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
                         }
+
                         if (alive && wantit && (!exists || canoverwrite || isDB) && !ze.getName().startsWith(".")) {
                             // We want it and either it doesn't exist, or we've selected overwriting
                             // Update the display
@@ -475,7 +479,9 @@ public class ImportOSBFragment extends Fragment {
                                 if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/", "");
                                     stringBuilder.append("\n").append(TAG).append(" Create Highlighlighter/").append(filename);
+                                    Log.d(TAG,"Highlighter file - filename:"+filename);
                                     mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Highlighter","",filename,false);
+                                    file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
                                     Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", SQLite.NON_OS_DATABASE_NAME);
@@ -555,6 +561,12 @@ public class ImportOSBFragment extends Fragment {
                     if (hasPersistentDB && myView.includePersistentDB.getChecked() && tempDBFile != null) {
                         // We will use SQL to merge the database to our existing one
                         // If we are allowing overwrite, we use REPLACE, if not we use INSERT OR IGNORE
+                        mainActivityInterface.getMainHandler().post(() -> {
+                            if (myView!=null) {
+                                String myText = persistentDb + " (NonOpenSongSongs.db)";
+                                myView.progressText.setText(myText);
+                            }
+                        });
                         String dbPath = tempDBFile.getPath();
                         mainActivityInterface.getNonOpenSongSQLiteHelper().importDB(dbPath, canoverwrite);
                         tempDBFile = null;
