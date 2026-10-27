@@ -108,7 +108,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void importDB(String dbToImport, boolean overwrite) {
+    /*public void importDB(String dbToImport, boolean overwrite) {
         // 1. Force external file upgrade (this is fine as a standalone, short-lived helper)
         SQLiteOpenHelper tempHelper = new SQLiteOpenHelper(c, dbToImport, null, DATABASE_VERSION) {
             @Override public void onCreate(SQLiteDatabase db) {}
@@ -152,8 +152,116 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 Log.e(TAG, "Failed to detach tempDb", e);
             }
         }
-    }
+    }*/
+    public void importDB(String dbToImport, boolean overwrite) {
+        // 1. Force external file upgrade
+        SQLiteOpenHelper tempHelper = new SQLiteOpenHelper(c, dbToImport, null, DATABASE_VERSION) {
+            @Override public void onCreate(SQLiteDatabase db) {}
+            @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                NonOpenSongSQLiteHelper.applySurgicalUpgrade(db, oldVersion);
+            }
+        };
+        tempHelper.getWritableDatabase().close();
+        tempHelper.close();
 
+        // 2. Perform the merge using the application's persistent database reference
+        SQLiteDatabase currentDB = getWritableDatabase();
+        if (currentDB == null) {
+            Log.e(TAG, "Could not get writable database for import");
+            return;
+        }
+
+        try {
+            currentDB.execSQL("ATTACH DATABASE '" + dbToImport + "' AS tempDb");
+
+            try {
+                currentDB.beginTransaction();
+
+                // Explicitly list all columns except COLUMN_ID
+                String[] columns = {
+                        SQLite.COLUMN_SONGID, SQLite.COLUMN_FILENAME, SQLite.COLUMN_FOLDER,
+                        SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR, SQLite.COLUMN_COPYRIGHT,
+                        SQLite.COLUMN_LYRICS, SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI,
+                        SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
+                        SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_BEATBUDDY_SONG,
+                        SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_DRUMMER, SQLite.COLUMN_DRUMMER_KIT,
+                        SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL, SQLite.COLUMN_PREFERRED_INSTRUMENT,
+                        SQLite.COLUMN_PREVIEWOVERRIDE, SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA,
+                        SQLite.COLUMN_AUTOSCROLL_DELAY, SQLite.COLUMN_AUTOSCROLL_LENGTH,
+                        SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE, SQLite.COLUMN_PAD_LOOP,
+                        SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
+                        SQLite.COLUMN_CAPO_PRINT, SQLite.COLUMN_CUSTOM_CHORDS, SQLite.COLUMN_NOTES,
+                        SQLite.COLUMN_ABC, SQLite.COLUMN_ABC_TRANSPOSE, SQLite.COLUMN_LINK_YOUTUBE,
+                        SQLite.COLUMN_LINK_WEB, SQLite.COLUMN_LINK_AUDIO, SQLite.COLUMN_LINK_OTHER,
+                        SQLite.COLUMN_PRESENTATIONORDER, SQLite.COLUMN_FILETYPE, SQLite.COLUMN_UUID,
+                        SQLite.COLUMN_LAST_MODIFIED
+                };
+
+                String columnListString = android.text.TextUtils.join(", ", columns);
+
+                // Step 1: Insert any new records that don't exist yet (ignores existing ones)
+                String insertSql = "INSERT OR IGNORE INTO main." + SQLite.TABLE_NAME + " (" + columnListString + ") " +
+                        "SELECT " + columnListString + " FROM tempDb." + SQLite.TABLE_NAME;
+                currentDB.execSQL(insertSql);
+
+                // Step 2: If overwrite is true, update existing matching records by songid
+                if (overwrite) {
+                    StringBuilder updateSet = new StringBuilder();
+                    for (int i = 0; i < columns.length; i++) {
+                        String col = columns[i];
+                        if (!col.equals(SQLite.COLUMN_SONGID)) {
+                            updateSet.append(col).append(" = (SELECT ").append(col)
+                                    .append(" FROM tempDb.").append(SQLite.TABLE_NAME)
+                                    .append(" WHERE tempDb.").append(SQLite.TABLE_NAME).append(".").append(SQLite.COLUMN_SONGID)
+                                    .append(" = main.").append(SQLite.TABLE_NAME).append(".").append(SQLite.COLUMN_SONGID)
+                                    .append(")"); // <-- Fixed: Use .append(")") here
+
+                            if (i < columns.length - 1) {
+                                updateSet.append(", ");
+                            }
+                        }
+                    }
+
+                    String updateSql = "UPDATE main." + SQLite.TABLE_NAME + " SET " + updateSet.toString() +
+                            " WHERE " + SQLite.COLUMN_SONGID + " IN (SELECT " + SQLite.COLUMN_SONGID + " FROM tempDb." + SQLite.TABLE_NAME + ")";
+                    currentDB.execSQL(updateSql);
+                }
+
+                currentDB.setTransactionSuccessful();
+            } finally {
+                currentDB.endTransaction();
+            }
+
+        } catch (OutOfMemoryError | Exception e) {
+            Log.e(TAG, "Database import failed", e);
+        } finally {
+            try {
+                currentDB.execSQL("DETACH DATABASE tempDb");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to detach tempDb", e);
+            }
+
+            // --- REFRESH ROUTINE ---
+            // 1. Close the SQLiteOpenHelper so it drops its cached connection state
+            close();
+
+            // 2. Sync the updated internal app database back to the user's OpenSong/Settings folder
+            copyUserDatabase();
+
+            if (mainActivityInterface!=null) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // 3. Trigger a full song index rebuild and refresh the UI menus
+                if (mainActivityInterface != null && mainActivityInterface.getSongListBuildIndex() != null) {
+                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                    mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                }
+                if (mainActivityInterface != null) {
+                    mainActivityInterface.updateSongMenu(null, null, null);
+                }
+            });
+            }
+        }
+    }
 
     public boolean copyUserDatabase() {
         // This copies the app persistent database (app cache) into the user's OpenSong/Settings folder
