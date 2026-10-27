@@ -145,7 +145,7 @@ public class TransposeBottomSheet extends BottomSheetCommon {
         }
 
         try {
-            if (startKey.isEmpty()) {
+            if (startKey==null || startKey.isEmpty()) {
                 myView.keyChangeTextView.setText(getTransposeKey("0"));
             } else {
                 myView.keyChangeTextView.setText(getTransposeKey(startKey));

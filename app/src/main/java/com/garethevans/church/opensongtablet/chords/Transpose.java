@@ -985,6 +985,9 @@ public class Transpose {
     }
 
     public String getFixedKey(String selectedKey) {
+        if (selectedKey==null) {
+            return "";
+        }
         String original = selectedKey;
         int format = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
         if (format == 3) {
