@@ -724,6 +724,7 @@ public class Preferences extends Activity {
     // soundMeterRange                  int         The volume range of the sound meter (def:400)
     // stageModeScale                   float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.80f)
     // stickyAuto                       boolean     Should sticky notes be shown automatically (def:true)
+    // stickySongPos                    boolean     Should we save and use song specific sticky notes positions (def:true)
     // stickyTextSize                   float       The text size for the popup sticky note (def:14f)
     // stickyWidth                      int         The width of popup sticky notes (def:400)
     // stickyXPosition                  int         The x position of the popup sticky note (def: -1 which means figure it out first)

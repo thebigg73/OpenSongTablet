@@ -71,6 +71,8 @@ public class StickyNotesFragment extends Fragment {
         myView.stickyNotes.setText(mainActivityInterface.getSong().getNotes());
         myView.autoShowSticky.setChecked(mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("stickyAuto",true));
+
+        myView.stickySongPos.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("stickySongPos",true));
         hideTimeVisibility(myView.autoShowSticky.isChecked());
         int time = mainActivityInterface.getPreferences().
                 getMyPreferenceInt("timeToDisplaySticky",0);
@@ -85,6 +87,8 @@ public class StickyNotesFragment extends Fragment {
         if (alpha<50) {
             alpha = 50;
         }
+        // Alpha will be 50 - 255.  We need to change to a rounded percentage
+        alpha = Math.round(alpha/2.55f);
         myView.alphaSlider.setValue(alpha);
         setAlphaHint(alpha);
         myView.alphaSlider.setLabelFormatter(value -> ((int)value)+"%");
@@ -134,6 +138,9 @@ public class StickyNotesFragment extends Fragment {
         myView.autoShowSticky.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("stickyAuto",isChecked);
             hideTimeVisibility(isChecked);
+        });
+        myView.stickySongPos.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("stickySongPos",isChecked);
         });
         myView.saveButton.setOnClickListener(v -> {
             if (myView.stickyNotes.getText()!=null) {

@@ -59,6 +59,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoshow_stickynotes" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/stickySongPos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song_sticky_positions" />
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/timeSlider"
                 android:layout_width="match_parent"

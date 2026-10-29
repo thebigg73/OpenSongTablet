@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,6 +35,7 @@ public class StickyPopUp {
     private FloatWindow floatWindow;
     private int posX;
     private int posY;
+    private boolean stickySongPos;
     private int stickyWidth;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "StickyPopUp";
@@ -159,8 +161,12 @@ public class StickyPopUp {
     }
 
     private void getPositionAndSize() {
-        posX = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
-        posY = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
+        int posXDef = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
+        int posYDef = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
+        stickySongPos = mainActivityInterface.getPreferences().getMyPreferenceBoolean("stickySongPos",true);
+        int[] stickyPos = getStickyPos(posXDef, posYDef);
+        posX = stickyPos[0];
+        posY = stickyPos[1];
         int w = c.getResources().getDisplayMetrics().widthPixels;
         int h = c.getResources().getDisplayMetrics().heightPixels;
         stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth", 400);
@@ -184,6 +190,54 @@ public class StickyPopUp {
         }
     }
 
+    private int[] getStickyPos(int defXPos, int defYPos) {
+        // If we are not using song specific locations, or haven't set them use the defaults
+        if (!stickySongPos || !mainActivityInterface.getSong().getUser3().contains("SN:")) {
+            return new int[]{defXPos, defYPos};
+        } else {
+            // Try to get the song specific values
+            String existingStickyPos = getExistingSongStickyPos();
+            if (!existingStickyPos.isEmpty()) {
+                existingStickyPos = existingStickyPos.replace("SN:", "");
+                existingStickyPos = existingStickyPos.replace(";", "");
+                String[] pos = existingStickyPos.split("x");
+                if (pos.length == 2) {
+                    String xpos = pos[0].replaceAll("\\D", "");
+                    String ypos = pos[1].replaceAll("\\D", "");
+                    if (!xpos.isEmpty() && !ypos.isEmpty()) {
+                        return new int[]{Integer.parseInt(xpos), Integer.parseInt(ypos)};
+                    }
+                }
+            }
+        }
+        return new int[] {defXPos, defXPos};
+    }
+
+    private void saveStickyPosToSong(int x, int y) {
+        // Remove the old sticky position
+        String existingStickyPos = getExistingSongStickyPos();
+        if (!existingStickyPos.isEmpty()) {
+            mainActivityInterface.getSong().setUser3(mainActivityInterface.getSong().getUser3().replace(existingStickyPos, ""));
+        }
+        mainActivityInterface.getSong().setUser3(mainActivityInterface.getSong().getUser3() + "SN:" + x + "x" + y + ";");
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+    }
+
+    private String getExistingSongStickyPos() {
+        // Try to get the song specific values
+        int startPos = mainActivityInterface.getSong().getUser3().indexOf("SN:");
+        if (startPos>=0) {
+            int endPos = mainActivityInterface.getSong().getUser3().indexOf(";",startPos);
+            if (endPos>startPos && (endPos - startPos) > 3) {
+                String positions = mainActivityInterface.getSong().getUser3().substring(startPos,endPos);
+                if (positions.length()>=3) {
+                    return positions;
+                }
+            }
+        }
+        return "";
+    }
+
     private void setupDrag() {
         floatWindow.setOnTouchListener(new View.OnTouchListener() {
             int orgX, orgY;
@@ -205,6 +259,9 @@ public class StickyPopUp {
                     case MotionEvent.ACTION_UP:
                         mainActivityInterface.getPreferences().setMyPreferenceInt("stickyXPosition", offsetX);
                         mainActivityInterface.getPreferences().setMyPreferenceInt("stickyYPosition", offsetY);
+                        if (stickySongPos) {
+                            saveStickyPosToSong(offsetX, offsetY);
+                        }
                 }
                 return true;
             }
