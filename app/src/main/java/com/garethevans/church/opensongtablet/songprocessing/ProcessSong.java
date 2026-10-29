@@ -4471,6 +4471,29 @@ public class ProcessSong {
         return filename;
     }
 
+    public ArrayList<String> getPDFHighlighterFiles(Song song) {
+        ArrayList<String> pdfHighlighterFiles = new ArrayList<>();
+        if (song.getFiletype()!=null && song.getFiletype().equals("PDF")) {
+            ArrayList<String> allHighlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder("Highlighter", "");
+            String folderAndFilename = song.getFolder() + "_" + song.getFilename();
+            for (String filename : allHighlighterFiles) {
+                if (filename.startsWith(folderAndFilename)) {
+                    pdfHighlighterFiles.add(filename);
+                }
+            }
+        }
+        return pdfHighlighterFiles;
+    }
+
+    public ArrayList<String> getRenamedPDFHighlighterFiles(ArrayList<String> pdfHighlighterNames, Song oldSong, Song newSong) {
+        String folderAndFilename = newSong.getFolder() + "_" + newSong.getFilename();
+        String oldFolderAndFilename = oldSong.getFolder() + "_" + oldSong.getFilename();
+        for (int x=0; x<pdfHighlighterNames.size(); x++) {
+            pdfHighlighterNames.set(x,pdfHighlighterNames.get(x).replace(oldFolderAndFilename,folderAndFilename));
+        }
+        return pdfHighlighterNames;
+    }
+
     public ArrayList<String> getInfoFromHighlighterFilename(String filename) {
         ArrayList<String> bits = new ArrayList<>();
         if (filename!=null) {

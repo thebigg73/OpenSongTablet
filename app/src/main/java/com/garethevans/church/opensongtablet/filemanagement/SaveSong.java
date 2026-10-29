@@ -7,6 +7,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -43,7 +44,8 @@ public class SaveSong {
             String newHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true,1);
             String newHighlighterFile_c = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true,2);
             String newHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,false,2);
-
+            ArrayList<String> oldPDFHighlighterFiles = mainActivityInterface.getProcessSong().getPDFHighlighterFiles(mainActivityInterface.getSong());
+            ArrayList<String> newPDFHighlighterFiles = mainActivityInterface.getProcessSong().getRenamedPDFHighlighterFiles(oldPDFHighlighterFiles,mainActivityInterface.getSong(),newSong);
             // The folder may not be in 'Songs'.  If this is the case, it starts with ../
             // This is most common if a user wants to save a received song (set/nearby)
             //ArrayList<String> oldLocation = mainActivityInterface.getStorageAccess().fixNonSongs(oldFolder);
@@ -88,6 +90,20 @@ public class SaveSong {
                     Uri lNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+lOld+" to "+lNew);
                     mainActivityInterface.getStorageAccess().renameFileFromUri(lOld,lNew,"Highlighter", "", newHighlighterFile_l);
+                }
+                // If this is a pdf, we need to check all pages
+                if (!newPDFHighlighterFiles.isEmpty()) {
+                    try {
+                        for (int p = 0; p < newPDFHighlighterFiles.size(); p++) {
+                            Uri oldNote = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", oldPDFHighlighterFiles.get(p));
+                            Uri newNote = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newPDFHighlighterFiles.get(p));
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doSave renameFileFromUri " + oldNote + " to " + newNote);
+                            mainActivityInterface.getStorageAccess().renameFileFromUri(oldNote, newNote, "Highlighter", "", newPDFHighlighterFiles.get(p));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                    }
                 }
             }
 
