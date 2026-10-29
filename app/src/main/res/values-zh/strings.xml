@@ -1535,4 +1535,5 @@
     <string name="zoom_level">缩放级别</string>
     <string name="inline_search">内联搜索</string>
     <string name="inline_search_info">在应用中直接搜索和提取内容</string>
+    <string name="song_sticky_positions">使用歌曲特定的固定位置</string>
 </resources>

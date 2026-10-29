@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Zoomstufe</string>
     <string name="inline_search">Inline-Suche</string>
     <string name="inline_search_info">Suchen und Inhalte direkt in der App extrahieren</string>
+    <string name="song_sticky_positions">Verwenden Sie liedspezifische feste Positionen</string>
 </resources>

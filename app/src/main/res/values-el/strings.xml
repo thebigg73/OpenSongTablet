@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Επίπεδο ζουμ</string>
     <string name="inline_search">Αναζήτηση εντός γραμμής</string>
     <string name="inline_search_info">Αναζήτηση και εξαγωγή περιεχομένου απευθείας στην εφαρμογή</string>
+    <string name="song_sticky_positions">Χρησιμοποιήστε συγκεκριμένες θέσεις κολλητικής για κάθε τραγούδι</string>
 </resources>

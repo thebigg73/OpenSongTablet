@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Zoomnivå</string>
     <string name="inline_search">Sökning i linje</string>
     <string name="inline_search_info">Sök och extrahera innehåll direkt i appen</string>
+    <string name="song_sticky_positions">Använd låtspecifika fasta positioner</string>
 </resources>

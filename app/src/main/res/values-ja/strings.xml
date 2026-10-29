@@ -1534,4 +1534,5 @@
     <string name="zoom_level">ズームレベル</string>
     <string name="inline_search">インライン検索</string>
     <string name="inline_search_info">アプリ内で直接コンテンツを検索して抽出する</string>
+    <string name="song_sticky_positions">楽曲特有の固定ポジションを使用する</string>
 </resources>

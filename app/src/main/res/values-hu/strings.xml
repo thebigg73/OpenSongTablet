@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Nagyítási szint</string>
     <string name="inline_search">Soron belüli keresés</string>
     <string name="inline_search_info">Keresés és tartalom kinyerése közvetlenül az alkalmazásban</string>
+    <string name="song_sticky_positions">Használjon dalhoz kötött rögzített pozíciókat</string>
 </resources>

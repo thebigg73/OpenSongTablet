@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Úroveň přiblížení</string>
     <string name="inline_search">Inline vyhledávání</string>
     <string name="inline_search_info">Hledejte a extrahujte obsah přímo v aplikaci</string>
+    <string name="song_sticky_positions">Používejte specifické lepivé pozice pro píseň</string>
 </resources>

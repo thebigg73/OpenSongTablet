@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Zoemvlak</string>
     <string name="inline_search">Inlyn soektog</string>
     <string name="inline_search_info">Soek en onttrek inhoud direk in die toepassing</string>
+    <string name="song_sticky_positions">Gebruik liedspesifieke klewerige posisies</string>
 </resources>
