@@ -985,7 +985,7 @@ public class Transpose {
     }
 
     public String getFixedKey(String selectedKey) {
-        if (selectedKey==null) {
+        if (selectedKey==null || selectedKey.isEmpty()) {
             return "";
         }
         String original = selectedKey;
@@ -1032,6 +1032,9 @@ public class Transpose {
     }
 
     public String getOriginalFixedKey(String selectedKey) {
+        if (selectedKey==null || selectedKey.isEmpty()) {
+            return "";
+        }
         if (selectedKey.contains("(")) {
             // Get the bit in brackets as the actual key
             selectedKey = selectedKey.substring(selectedKey.indexOf("("));
