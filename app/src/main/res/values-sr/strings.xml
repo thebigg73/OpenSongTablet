@@ -1534,4 +1534,5 @@
     <string name="worship">Oboћavaju</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="song_sticky_positions">Koristi specifične pozicije za pesme</string>
 </resources>

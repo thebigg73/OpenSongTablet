@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Рівень масштабування</string>
     <string name="inline_search">Вбудований пошук</string>
     <string name="inline_search_info">Шукайте та витягуйте контент безпосередньо в додатку</string>
+    <string name="song_sticky_positions">Використовуйте конкретні для пісні фіксовані позиції</string>
 </resources>

@@ -1534,4 +1534,5 @@
     <string name="zoom_level">Le niveau de zoom</string>
     <string name="inline_search">Recherche en ligne</string>
     <string name="inline_search_info">Rechercher et extraire le contenu directement dans l\'application</string>
+    <string name="song_sticky_positions">Utiliser des positions fixes spécifiques à la chanson</string>
 </resources>

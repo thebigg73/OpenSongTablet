@@ -1928,4 +1928,5 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="song_sticky_positions">Use song specific sticky positions</string>
 </resources>
