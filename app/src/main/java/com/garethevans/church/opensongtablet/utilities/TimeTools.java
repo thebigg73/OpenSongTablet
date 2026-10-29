@@ -94,6 +94,18 @@ public class TimeTools {
         return String.format(locale,"%02d:%02d:%02d", h,m,s);
     }
 
+    /**
+     * Formats the current time or a given timestamp into "YYYY-MM-DD-HH-MM-SS".
+     *
+     * @param millis timestamp in milliseconds (e.g. System.currentTimeMillis())
+     * @return formatted date string
+     */
+    public String getFormattedTimestamp(long millis) {
+        // Note: 'YYYY' represents the week-based year, 'yyyy' is the standard calendar year.
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
+        return sdf.format(new Date(millis));
+    }
+
     public String getDateFromMillis(Locale locale, long millis) {
         DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.DEFAULT, SimpleDateFormat.SHORT, locale);
         return formatter.format(new Date(millis));

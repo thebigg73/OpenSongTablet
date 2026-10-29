@@ -93,6 +93,14 @@ public class AudioRecorderPopUp {
         popupWindow = new PopupWindow(c);
         popupWindow.setBackgroundDrawable(null);
 
+        // FIX: Make the popup window focusable so child EditText views can receive focus and show the keyboard
+        popupWindow.setFocusable(true);
+
+        // Ensure the soft input mode resizes or adjusts properly when the keyboard appears
+        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        popupWindow.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        popupWindow.setOutsideTouchable(false);
+
         // The main layout (FloatWindow is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);
         floatWindow.setAlpha(pageButtonAlpha);
@@ -216,7 +224,6 @@ public class AudioRecorderPopUp {
         floatWindow.setAlpha(pageButtonAlpha);
 
         recordButton.setVisibility(View.GONE);
-        audioFilename.setText(tempFilename.getName());
         dealWithAudioLayout.setVisibility(View.VISIBLE);
     }
     private void stopMediaRecorder() {
@@ -224,6 +231,10 @@ public class AudioRecorderPopUp {
             if (isRecording) {
                 try {
                     mediaRecorder.stop();
+                    String possibleFilename = mainActivityInterface.getSong().getTitle() + "-" +
+                            mainActivityInterface.getTimeTools().getFormattedTimestamp(System.currentTimeMillis()) +
+                                    ".m4a";
+                    audioFilename.setText(possibleFilename);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
