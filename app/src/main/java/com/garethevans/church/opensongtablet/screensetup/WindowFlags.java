@@ -246,7 +246,8 @@ public class WindowFlags {
         }
 
         // true = dark icons (for light backgrounds), false = light icons
-        windowInsetsControllerCompat.setAppearanceLightStatusBars(!mainActivityInterface.getPalette().dark);
+        windowInsetsControllerCompat.setAppearanceLightStatusBars(!mainActivityInterface.getPalette().dark &&
+                !mainActivityInterface.getPalette().amoled);
     }
 
     // Display cutouts
