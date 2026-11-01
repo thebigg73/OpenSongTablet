@@ -10,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.ABCEditorBottomSheet;
+import com.garethevans.church.opensongtablet.abcnotation.ScoreToAbcExtractor;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.EditSongFeaturesBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
@@ -22,6 +26,7 @@ import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterfac
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.metronome.MetronomeTapTempo;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class EditSongFragmentFeatures extends Fragment {
@@ -51,6 +56,9 @@ public class EditSongFragmentFeatures extends Fragment {
 
     private MetronomeTapTempo metronomeTapTempo;
 
+    private ActivityResultLauncher<String[]> filePickerLauncher;
+    private ScoreToAbcExtractor scoreExtractor;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -72,6 +80,22 @@ public class EditSongFragmentFeatures extends Fragment {
 
         });
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Initialize file picker activity launcher
+        filePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(),
+                uri -> {
+                    if (uri != null) {
+                        processSelectedScoreUri(uri);
+                    }
+                }
+        );
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,11 +134,16 @@ public class EditSongFragmentFeatures extends Fragment {
             mainActivityInterface.setTempSong(mainActivityInterface.getSong());
         }
 
+        // Initialize background score extractor
+        if (getContext() != null) {
+            scoreExtractor = new ScoreToAbcExtractor(getContext());
+        }
+
         // The key
         mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());
         if (getContext()!=null && myView!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                if (mainActivityInterface!=null && myView!=null) {
+                if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
                     ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
                             myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
                     myView.key.setAdapter(keyArrayAdapter1);
@@ -171,7 +200,7 @@ public class EditSongFragmentFeatures extends Fragment {
         padfiles.add(off_string);
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
+                if (myView!=null && getContext()!=null) {
                     ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                             myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
                     myView.pad.setAdapter(padArrayAdapter);
@@ -207,7 +236,7 @@ public class EditSongFragmentFeatures extends Fragment {
         }
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
+                if (myView!=null && getContext()!=null) {
                     ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                             myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
                     myView.tempo.setAdapter(tempoArrayAdapter);
@@ -235,11 +264,13 @@ public class EditSongFragmentFeatures extends Fragment {
         }
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
-                myView.timesig.setAdapter(timesigArrayAdapter);
-                //mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getTempSong());
-                myView.timesig.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getTempSong().getTimesig(),false));
+                if (getContext() != null) {
+                    ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
+                    myView.timesig.setAdapter(timesigArrayAdapter);
+                    //mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getTempSong());
+                    myView.timesig.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getTempSong().getTimesig(), false));
+                }
             });
         }
 
@@ -252,7 +283,7 @@ public class EditSongFragmentFeatures extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
+                if (myView!=null && getContext()!=null) {
                     ExposedDropDownArrayAdapter drumKitArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                             myView.drummerKit, R.layout.view_exposed_dropdown_item, drumKits);
                     myView.drummerKit.setAdapter(drumKitArrayAdapter);
@@ -268,7 +299,7 @@ public class EditSongFragmentFeatures extends Fragment {
         // The preferred instrument for the song
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
+                if (myView!=null && getContext()!=null) {
                     // Add the default text temporarily
                     instruments.add(0, use_default_string);
                     ExposedDropDownArrayAdapter instrumentsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.preferredInstrument, R.layout.view_exposed_dropdown_item, instruments);
@@ -330,10 +361,12 @@ public class EditSongFragmentFeatures extends Fragment {
         linkOptions.add(link_file_string);
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
-                myView.linkType.setAdapter(linkArrayAdapter);
-                myView.linkType.setText(link_audio_string);
+                if (getContext()!=null) {
+                    ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
+                    myView.linkType.setAdapter(linkArrayAdapter);
+                    myView.linkType.setText(link_audio_string);
+                }
             });
         }
         setLink();
@@ -379,9 +412,11 @@ public class EditSongFragmentFeatures extends Fragment {
 
             if (getContext() != null) {
                 mainActivityInterface.getMainHandler().post(() -> {
-                    ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                            myView.capo, R.layout.view_exposed_dropdown_item, capos);
-                    myView.capo.setAdapter(capoArrayAdapter);
+                    if (getContext() != null) {
+                        ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                                myView.capo, R.layout.view_exposed_dropdown_item, capos);
+                        myView.capo.setAdapter(capoArrayAdapter);
+                    }
                 });
             }
 
@@ -450,6 +485,17 @@ public class EditSongFragmentFeatures extends Fragment {
     }
     private void setupListeners() {
         mainActivityInterface.getMainHandler().post(() -> {
+            // NEW: Wire up extract score button
+            myView.btnExtractScore.setOnClickListener(v -> {
+                String[] mimeTypes = {
+                        "application/octet-stream",
+                        "text/xml",
+                        "application/xml",
+                        "text/plain"
+                };
+                filePickerLauncher.launch(mimeTypes);
+            });
+
             myView.searchOnline.setOnClickListener(view -> {
                 GetBPMBottomSheet getBPMBottomSheet = new GetBPMBottomSheet(EditSongFragmentFeatures.this);
                 getBPMBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "GetBPMBottomSheet");
@@ -545,19 +591,21 @@ public class EditSongFragmentFeatures extends Fragment {
             
             if (getContext()!=null) {
                 myView.drummer.post(() -> {
-                    ExposedDropDownArrayAdapter drumArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                            myView.drummer, R.layout.view_exposed_dropdown_item, drummerFileNames);
-                    myView.drummer.setAdapter(drumArrayAdapter);
-                    String drummerFilename = mainActivityInterface.getTempSong().getDrummer();
-                    if (drummerFilename==null) {
-                        drummerFilename = "";
-                    }
-                    String niceName = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drummerFilename);
-                    if (drummerFileNames.contains(niceName)) {
-                        myView.drummer.setText(niceName);
-                    } else {
-                        myView.drummer.setText("");
-                        mainActivityInterface.getTempSong().setDrummer("");
+                    if (getContext()!=null) {
+                        ExposedDropDownArrayAdapter drumArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                                myView.drummer, R.layout.view_exposed_dropdown_item, drummerFileNames);
+                        myView.drummer.setAdapter(drumArrayAdapter);
+                        String drummerFilename = mainActivityInterface.getTempSong().getDrummer();
+                        if (drummerFilename == null) {
+                            drummerFilename = "";
+                        }
+                        String niceName = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drummerFilename);
+                        if (drummerFileNames.contains(niceName)) {
+                            myView.drummer.setText(niceName);
+                        } else {
+                            myView.drummer.setText("");
+                            mainActivityInterface.getTempSong().setDrummer("");
+                        }
                     }
                 });
             }
@@ -735,6 +783,32 @@ public class EditSongFragmentFeatures extends Fragment {
                     myView.abc.setText(abc);
                 }
             });
+        }
+    }
+
+    private void processSelectedScoreUri(Uri uri) {
+        if (getContext() == null) return;
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            String fileName = uri.getLastPathSegment();
+
+            mainActivityInterface.getShowToast().doIt("Extracting ABC notation...");
+
+            scoreExtractor.extractFromStream(inputStream, fileName, new ScoreToAbcExtractor.ExtractionCallback() {
+                @Override
+                public void onSuccess(String abcNotation) {
+                    // Automatically update the edit box with the extracted ABC notation
+                    myView.abc.setText(abcNotation);
+                    mainActivityInterface.getShowToast().success();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    mainActivityInterface.getShowToast().doIt("Error: " + errorMessage);
+                }
+            });
+        } catch (Exception e) {
+            mainActivityInterface.getShowToast().doIt("Could not open file stream");
         }
     }
 

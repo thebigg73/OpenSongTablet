@@ -5,55 +5,146 @@
     <title>OpenSongApp ABC Notation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="abcjs-basic-min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="abcjs-audio.css" />
     <style>
-* {
-  box-sizing: border-box;
-}
-:root {
-  --main-color: #000000;
-  --main-chord-color: #000000;
-  --main-size-width: 1px;
-  --main-size-height: 1px;
-  --main-font-size: 18pt;
-}
+        * {
+            box-sizing: border-box;
+        }
+        :root {
+            --main-color: #000000;
+            --main-chord-color: #000000;
+            --main-size-width: 1px;
+            --main-font-size: 18pt;
+        }
 
-svg {
-    fill: var(--main-color);
-    stroke: var(--main-color);
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
 
-.abcjs-chord {
-        fill: var(--main-chord-color);
-        stroke: var(--main-chord-color);
-    }
+        svg {
+            fill: var(--main-color);
+            stroke: var(--main-color);
+        }
 
-#warnings {
-    font-size: var(--main-font-size);
-}
+        .abcjs-chord {
+            fill: var(--main-chord-color);
+            stroke: var(--main-chord-color);
+        }
 
-#top {
-    left: 0px;
-    right: 0px;
-    margin: 0px 0px;
-    width: var(--main-size-width);
-    height: 1px;
-}
+        /* Hide unwanted controls */
+        .abcjs-midi-percent,
+        .abcjs-midi-zoom,
+        .abcjs-midi-loop,
+        .abcjs-midi-warp {
+            display: none !important;
+        }
 
-#abc {
-  display: visible;
-  width: var(--main-size-width);
-  height: 1px;
-  left: 0px;
-  right: 0px;
-  margin: 0px 0px;
-  font-size: var(--main-font-size);
-  outline: none;
-  border: none 0px;
-  overflow: scroll;
-}
+        /* Hide the slider bar and scrubber thumb, but keep the container and clock */
+        .abcjs-midi-progress-background,
+        .abcjs-midi-progress-indicator {
+            display: none !important;
+        }
+
+        /* Style the progress/clock container area */
+        #audio .abcjs-midi-progress {
+            display: flex !important;
+            align-items: center !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            width: auto !important;
+            margin: 0 8px !important;
+        }
+
+        /* Style the time clock text itself */
+        #audio .abcjs-midi-clock {
+            color: #ffffff !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 14px !important;
+            display: inline-block !important;
+            margin-left: 6px !important;
+        }
+
+        #warnings {
+            font-size: var(--main-font-size);
+        }
+
+        #top {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #paper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        #abc {
+            display: none;
+            width: 100%;
+            font-size: var(--main-font-size);
+        }
+
+        /* Draggable Floating Audio Widget Container */
+        #audio.abcjs-inline-audio {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2b2b2b !important;
+            padding: 6px 12px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+            z-index: 9999 !important;
+            cursor: move !important;
+            cursor: grab !important;
+            touch-action: none;
+            user-select: none;
+            display: flex !important;
+            align-items: center !important;
+            height: 40px !important;
+            width: auto !important;
+        }
+
+        #audio.abcjs-inline-audio:active {
+            cursor: grabbing !important;
+        }
+
+        /* Constrain button height and center them nicely */
+        #audio.abcjs-inline-audio button {
+            background: #404040 !important;
+            border: 1px solid #555555 !important;
+            color: #ffffff !important;
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+            border-radius: 4px !important;
+            height: 28px !important;
+            padding: 0 8px !important;
+            margin: 0 4px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        #audio.abcjs-inline-audio button:hover {
+            background: #505050 !important;
+        }
+
+        /* Keep timer text visible and aligned */
+        #audio.abcjs-inline-audio span,
+        #audio.abcjs-inline-audio div {
+            color: #ffffff !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 14px !important;
+            margin-left: 8px !important;
+            flex-shrink: 0 !important;
+        }
+
     </style>
     <script type="text/javascript">
-        // Get the root element
         var root = document.querySelector(':root');
         var whichView = -1;
         var s = "";
@@ -80,6 +171,87 @@ svg {
         var padding = 4;
         var isPopup = false;
 
+        var visualObj = null;
+        var synthControl = null;
+        var audioContext = null;
+        var isDraggableInitialized = false;
+
+        const SOUNDFONT_URL = "https://paulrosen.github.io/midi-js-soundfonts/FluidR3_GM/";
+
+        function preloadSoundFont() {
+            if (ABCJS.synth && ABCJS.synth.supportsAudio()) {
+                try {
+                    var createSynth = new ABCJS.synth.CreateSynth();
+                    createSynth.init({
+                        soundFontUrl: SOUNDFONT_URL,
+                        options: { soundFontVolumeMultiplier: 1.0 }
+                    });
+                } catch (e) {
+                    console.warn("SoundFont preload error:", e);
+                }
+            }
+        }
+
+        var cursorControl = {
+            onStart: function() {},
+            onStop: function() {},
+            highlight: function(abcelem) {},
+            removeHighlight: function() {}
+        };
+
+        // Draggable handler equipped with Logcat debugging logs
+        function makeDraggable(element) {
+            if (!element) return;
+            if (isDraggableInitialized) return;
+            isDraggableInitialized = true;
+
+            let posX = 0, posY = 0, mouseX = 0, mouseY = 0;
+
+            element.onpointerdown = function(e) {
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('button')) {
+                    return;
+                }
+                e.preventDefault();
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                document.onpointermove = elementDrag;
+                document.onpointerup = closeDragElement;
+            };
+
+            function elementDrag(e) {
+                e.preventDefault();
+                posX = mouseX - e.clientX;
+                posY = mouseY - e.clientY;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                // Calculate prospective new position
+                let newTop = element.offsetTop - posY;
+                let newLeft = element.offsetLeft - posX;
+
+                // Define viewport boundaries
+                let maxTop = window.innerHeight - element.offsetHeight;
+                let maxLeft = window.innerWidth - element.offsetWidth;
+
+                // Clamp values so the widget stays strictly on screen
+                newTop = Math.max(0, Math.min(newTop, maxTop));
+                newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+
+                console.log("ABC_DRAG: dragging - clamped top=", newTop, "left=", newLeft);
+
+                element.style.top = newTop + "px";
+                element.style.left = newLeft + "px";
+                element.style.bottom = "auto";
+                element.style.right = "auto";
+            }
+
+            function closeDragElement(e) {
+                document.onpointermove = null;
+                document.onpointerup = null;
+            }
+        }
+
         function updateABC(s) {
             var unencoded = decodeURIComponent(s);
             unencoded = unencoded.replaceAll("&apos;","'");
@@ -97,87 +269,41 @@ svg {
                     note[key] = abcelem[key];
                 }
             }
-            var el = document.getElementById("selection");
-            el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
         }
 
-        function setMainColor(col) {
-            maincolor = col;
-            root.style.setProperty('--main-color', col);
+        function setMainColor(col) { maincolor = col; document.documentElement.style.setProperty('--main-color', col); }
+        function setChordColor(col) { chordcolor = col; document.documentElement.style.setProperty('--main-chord-color', col); }
+        function setResponsive(responsive) { resp = responsive; }
+        function setTranspose(halfSteps) { t = halfSteps; }
+        function setHideTab(hideTab) { my_hideTab = hideTab; }
+        function setInstrument(tabInstrument) { my_instrument = tabInstrument; }
+        function setTuning(s6_in, s5_in, s4_in, s3_in, s2_in, s1_in) {
+            s6 = s6_in; s5 = s5_in; s4 = s4_in; s3 = s3_in; s2 = s2_in; s1 = s1_in;
+            if (s6.length===0 && s5.length===0) { strings_6 = false; strings_5 = false; strings_4 = true; }
+            else if (s6.length===0) { strings_6 = false; strings_5 = true; strings_4 = false; }
+            else { strings_6 = true; strings_5 = false; strings_4 = false; }
         }
-
-        function setChordColor(col) {
-            chordcolor = col;
-            root.style.setProperty('--main-chord-color', col);
-        }
-
-        function setResponsive(responsive) {
-            resp = responsive;
-        }
-
-        function setTranspose(halfSteps) {
-            t = halfSteps;
-        }
-
-        function setHideTab(hideTab) {
-            my_hideTab = hideTab;
-        }
-
-        function setInstrument(tabInstrument) {
-            my_instrument = tabInstrument;
-        }
-
-        function setTuning(string6, string5, string4, string3, string2, string1) {
-            s6 = string6;
-            s5 = string5;
-            s4 = string4;
-            s3 = string3;
-            s2 = string2;
-            s1 = string1;
-            if (string6.length===0 && string5.length===0) {
-                strings_6 = false;
-                strings_5 = false;
-                strings_4 = true;
-            } else if (string6.length===0) {
-                strings_6 = false;
-                strings_5 = true;
-                strings_4 = false;
-            } else {
-                strings_6 = true;
-                strings_5 = false;
-                strings_4 = false;
-            }
-        }
-
-        function setLabel(tabLabel) {
-            my_label = tabLabel;
-        }
-
-        function setIsPopup(p) {
-            isPopup = p;
-        }
+        function setLabel(tabLabel) { my_label = tabLabel; }
+        function setIsPopup(p) { isPopup = p; }
+        function setWidth(wd) { w = wd; document.getElementById("top").style.width = wd+"px"; document.getElementById("abc").style.width = wd+"px"; document.documentElement.style.setProperty('--main-size-width', wd+"px"); }
+        function setWebView(whichWebView) { whichView = whichWebView; }
 
         function displayOnly() {
-            document.getElementById("bottom").style.display = "none";
-            document.getElementById("warnings").style.display = "none";
-            document.getElementById("abc").style.display = "none";
+            var b = document.getElementById("bottom");
+            if (b) b.style.display = "none";
+            var w_el = document.getElementById("warnings");
+            if (w_el) w_el.style.display = "none";
+            var a_el = document.getElementById("abc");
+            if (a_el) a_el.style.display = "none";
         }
 
         function displayAndEdit() {
-            document.getElementById("bottom").style.display = "block";
-            document.getElementById("warnings").style.display = "block";
-            document.getElementById("abc").style.display = "none";
-        }
-
-        function setWidth(wd) {
-            w = wd;
-            document.getElementById("top").style.width = (wd)+"px";
-            document.getElementById("abc").style.width = (wd)+"px";
-            document.querySelector(':root').style.setProperty('--main-size-width', (wd)+"px");
-        }
-
-        function setWebView(whichWebView) {
-            whichView = whichWebView;
+            var b = document.getElementById("bottom");
+            if (b) b.style.display = "block";
+            var w_el = document.getElementById("warnings");
+            if (w_el) w_el.style.display = "block";
+            var a_el = document.getElementById("abc");
+            if (a_el) a_el.style.display = "none";
         }
 
         var ro = new ResizeObserver( entries => {
@@ -186,8 +312,9 @@ svg {
                 var height = entry.contentRect.height;
                 if (height>1 && !reported) {
                     reported = true;
-                    console.log("sending returnSize non secondary");
-                    AndroidApp.returnSize(whichView,width,height+padding,document.getElementById("paper").innerHTML,isPopup);
+                    if (window.AndroidApp && window.AndroidApp.returnSize) {
+                        AndroidApp.returnSize(whichView, width, height + padding, document.getElementById("paper").innerHTML, isPopup);
+                    }
                 }
             }
         });
@@ -211,40 +338,80 @@ svg {
                     render_options: {listener: {highlight: selectionCallback}}};
         }
 
+        function renderAudioController(tune) {
+            if (!ABCJS.synth.supportsAudio() || !tune) return;
+
+            try {
+                if (!audioContext) {
+                    var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    audioContext = new AudioContextClass();
+                }
+
+                if (!synthControl) {
+                    synthControl = new ABCJS.synth.SynthController();
+                }
+
+                synthControl.load("#audio", cursorControl, {
+                    displayRestart: true,
+                    displayPlay: true,
+                    displayProgress: true,
+                    displayLoop: false,
+                    displayWarp: false,
+                    displayClock: true
+                });
+
+                makeDraggable(document.getElementById("audio"));
+
+                synthControl.setTune(tune, false, {
+                    audioContext: audioContext,
+                    soundFontUrl: SOUNDFONT_URL
+                }).catch(function(error) {
+                    console.warn("Audio Synth Warning: ", error);
+                });
+            } catch (err) {
+                console.warn("Failed to initialize audio synth: ", err);
+            }
+        }
+
         function initEditor() {
-            console.log("initEditor() running");
             updateOptions();
             getMyScrollHeight();
-            if (my_hideTab==true) {
-                // We just want the score
-                new ABCJS.Editor("abc", {paper_id: "paper", warnings_id:"warnings", abcjsParams: defaultoptions, midioptions});
-            } else {
-                // Decide how many strings we are using
-                var taboptions;
-                if (strings_6===true) {
-                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
-                                    tuning: [s6,s5,s4,s3,s2,s1]}]};
-                } else if (strings_5===true) {
-                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
-                                    tuning: [s5,s4,s3,s2,s1]}]};
-                } else {
-                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
-                                    tuning: [s4,s3,s2,s1]}]};
-                }
-                var myoptions = {...defaultoptions, ...taboptions};
-                new ABCJS.Editor("abc", {paper_id: "paper", warnings_id:"warnings", abcjsParams: myoptions, midioptions});
+
+            var editor;
+            var myoptions = defaultoptions;
+            if (my_hideTab !== true) {
+                var taboptions = strings_6 === true ?
+                    {tablature: [{instrument: my_instrument, label: my_label, tuning: [s6,s5,s4,s3,s2,s1]}]} :
+                    strings_5 === true ?
+                    {tablature: [{instrument: my_instrument, label: my_label, tuning: [s5,s4,s3,s2,s1]}]} :
+                    {tablature: [{instrument: my_instrument, label: my_label, tuning: [s4,s3,s2,s1]}]};
+                myoptions = {...defaultoptions, ...taboptions};
             }
 
-            // Update the colours to match our preferences
-            document.getElementById("paper").querySelectorAll('.abcjs-chord').forEach((el) => {
-                if (el.getAttribute("fill")) {
-                    el.setAttribute("fill", maincolor);
-                }
-                if (el.getAttribute("stroke")) {
-                    el.setAttribute("stroke", maincolor);
+            editor = new ABCJS.Editor("abc", {
+                paper_id: "paper",
+                warnings_id: "warnings",
+                abcjsParams: myoptions,
+                midioptions,
+                onchange: function(res) {
+                    if (res && res.tunes && res.tunes[0]) {
+                        visualObj = res.tunes[0];
+                        renderAudioController(visualObj);
+                    }
                 }
             });
+
+            setTimeout(function() {
+                if (editor && editor.tunes && editor.tunes[0]) {
+                    visualObj = editor.tunes[0];
+                    renderAudioController(visualObj);
+                }
+            }, 200);
         }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            preloadSoundFont();
+        });
     </script>
 </head>
 <body>
@@ -252,9 +419,11 @@ svg {
     <div id="paper"></div>
     <div id="warnings" style="color:#ffffff; background-color:#ff0000; display:none;"></div>
 </div>
-<p>
-<div id="bottom" style="display:hidden">
-    <textarea name="abc" id="abc" rows="16" oninput="checkKey()"></textarea>
+
+<div id="audio" class="abcjs-inline-audio"></div>
+
+<div id="bottom" style="display:none">
+    <textarea id="abc" name="abc" rows="16"></textarea>
 </div>
 </body>
 </html>

@@ -281,6 +281,15 @@
                     android:layout_gravity="center_vertical"/>
             </LinearLayout>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+                android:id="@+id/btnExtractScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/gp2abc_extract"
+                app:icon="@drawable/upload" />
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

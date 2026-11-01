@@ -261,6 +261,9 @@ public class InlineAbcObject {
                 inlineAbcWebView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor())+"');", null);
                 inlineAbcWebView.evaluateJavascript("javascript:displayOnly();", null);
 
+                // Enable remote SoundFont preloading & audio synthesis in popup mode
+                inlineAbcWebView.evaluateJavascript("javascript:preloadSoundFont();", null);
+
             } else {
                 // ABC editor fragment
                 inlineAbcWebView.evaluateJavascript("javascript:setWidth(" + mainActivityInterface.getAbcNotation().getAbcInlineWidth() + ");", null);
