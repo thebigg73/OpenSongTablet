@@ -67,7 +67,7 @@ public class MyMaterialTextView extends LinearLayout {
         checkBoxHolder = findViewById(R.id.checkBoxHolder);
         checkBox = findViewById(R.id.checkBox);
 
-        if (attrs != null) {
+        /*if (attrs != null) {
             // Look for android:textColor in the XML explicitly
             String textValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "text");
             String hintValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android","hint");
@@ -106,9 +106,58 @@ public class MyMaterialTextView extends LinearLayout {
         } else {
             textView.setVisibility(View.GONE);
             hintView.setVisibility(View.GONE);
+        }*/
+
+        if (attrs != null) {
+            // Read standard Android attributes directly using obtainStyledAttributes
+            int[] androidAttrs = new int[]{android.R.attr.text, android.R.attr.hint};
+            TypedArray stdAttrs = context.obtainStyledAttributes(attrs, androidAttrs, defStyleAttr, 0);
+
+            String textValue = stdAttrs.getString(0);
+            if (textValue != null && !textValue.isEmpty()) {
+                textView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
+                textView.setText(textValue);
+                textView.setVisibility(View.VISIBLE);
+            } else {
+                textView.setVisibility(View.GONE);
+            }
+
+            String hintValue = stdAttrs.getString(1);
+            if (hintValue != null && !hintValue.isEmpty()) {
+                hintView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
+                hintView.setText(hintValue);
+                hintView.setVisibility(View.VISIBLE);
+            } else {
+                hintView.setVisibility(View.GONE);
+            }
+            stdAttrs.recycle();
+
+            // Read custom attrs (your attrs.xml defines these)
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialTextView, defStyleAttr, 0);
+
+            Drawable startIcon = ta.getDrawable(R.styleable.MyMaterialTextView_startIcon);
+            if (startIcon != null) {
+                imageView.setImageDrawable(startIcon);
+                imageView.setVisibility(VISIBLE);
+            }
+
+            boolean showCheckbox = ta.getBoolean(R.styleable.MyMaterialTextView_showCheckBox, false);
+            if (showCheckbox) {
+                checkBoxHolder.setVisibility(VISIBLE);
+            } else {
+                checkBoxHolder.setVisibility(GONE);
+            }
+            ta.recycle();
+
+        } else {
+            textView.setVisibility(View.GONE);
+            hintView.setVisibility(View.GONE);
         }
 
-        setPalette(new Palette(context));
+        // Keep palette setup guarded for layout preview safety
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     // Public setters

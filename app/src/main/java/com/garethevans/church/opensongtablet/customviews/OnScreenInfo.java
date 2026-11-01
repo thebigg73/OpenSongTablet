@@ -74,18 +74,27 @@ public class OnScreenInfo extends LinearLayout {
 
     public OnScreenInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
-        inflate(context, R.layout.view_on_screen_info, this);
+        MainActivityInterface mainActivityInterface = null;
+        if (!isInEditMode()) {
+            mainActivityInterface = (MainActivityInterface) context;
+            inflate(context, R.layout.view_on_screen_info, this);
+
+        } else {
+            inflate(context, R.layout.view_on_screen_info, null);
+
+        }
         info = findViewById(R.id.info);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
-            info.setBackgroundTintList(new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{mainActivityInterface.getPalette().secondary}
-            ));
-        } else {
-            info.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        if (!isInEditMode() && mainActivityInterface!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                info.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondary}
+                ));
+            } else {
+                info.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+            }
         }
         capo = findViewById(R.id.capo);
         capoIcon = findViewById(R.id.capoIcon);

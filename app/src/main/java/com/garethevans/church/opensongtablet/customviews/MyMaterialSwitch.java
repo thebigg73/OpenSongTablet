@@ -21,7 +21,7 @@ public class MyMaterialSwitch extends LinearLayout {
     private final MyMaterialSimpleTextView textView, hintView;
     private final SwitchMaterial switchMaterial;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
-
+    private Palette palette;
     public MyMaterialSwitch(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -71,10 +71,43 @@ public class MyMaterialSwitch extends LinearLayout {
         textView.setOnClickListener(v -> setChecked(!getChecked()));
         hintView.setOnClickListener(v -> setChecked(!getChecked()));
 
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
+    public void setOnPopup() {
+        ColorStateList thumbColors = new ColorStateList(
+                new int[][] {
+                        new int[] { android.R.attr.state_enabled, android.R.attr.state_checked },   // enabled & checked
+                        new int[] { android.R.attr.state_enabled },                                  // enabled & unchecked
+                        new int[] { -android.R.attr.state_enabled }                                  // disabled
+                },
+                new int[] {
+                        palette.textColor,
+                        palette.secondaryFixed,
+                        palette.primaryVariant
+                }
+        );
+        switchMaterial.setThumbTintList(thumbColors);
+
+        ColorStateList trackColors = new ColorStateList(
+                new int[][] {
+                        new int[] { android.R.attr.state_enabled, android.R.attr.state_checked },   // enabled & checked
+                        new int[] { android.R.attr.state_enabled },                                  // enabled & unchecked
+                        new int[] { -android.R.attr.state_enabled }                                  // disabled
+                },
+                new int[] {
+                        palette.secondaryFixed,
+                        palette.secondaryVariant,
+                        palette.primaryVariant
+                }
+        );
+        switchMaterial.setTrackTintList(trackColors);
+
+    }
     public void setPalette(Palette palette) {
+        this.palette = palette;
         textView.setTextColor(palette.textColor);
         hintView.setTextColor(palette.hintColor);
 

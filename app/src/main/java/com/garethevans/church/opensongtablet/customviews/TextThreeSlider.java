@@ -49,6 +49,7 @@ public class TextThreeSlider extends LinearLayout {
         Palette palette = new Palette(context);
         active = palette.onPrimary;
         inactive = palette.hintColor;
+
         textLine = findViewById(R.id.textLine);
         imageLine = findViewById(R.id.imageLine);
         label = findViewById(R.id.label);
@@ -91,14 +92,17 @@ public class TextThreeSlider extends LinearLayout {
 
             // To cope with KitKat not liking vector assets
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                if (leftDrawable != null) {
-                    DrawableCompat.setTint(leftDrawable, palette.textColor);
-                }
-                if (rightDrawable != null) {
-                    DrawableCompat.setTint(rightDrawable, palette.textColor);
-                }
-                if (centerDrawable != null) {
-                    DrawableCompat.setTint(centerDrawable, palette.textColor);
+                if (palette != null) {
+
+                    if (leftDrawable != null) {
+                        DrawableCompat.setTint(leftDrawable, palette.textColor);
+                    }
+                    if (rightDrawable != null) {
+                        DrawableCompat.setTint(rightDrawable, palette.textColor);
+                    }
+                    if (centerDrawable != null) {
+                        DrawableCompat.setTint(centerDrawable, palette.textColor);
+                    }
                 }
 
                 imageLeft.setImageDrawable(leftDrawable);
@@ -114,16 +118,18 @@ public class TextThreeSlider extends LinearLayout {
             imageRight.setOnClickListener(view -> setSliderPos(2));
 
             // Define colors for different states of the slider
-            //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-            slider.setTrackTintList(new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{palette.secondaryFixed}
-            ));
-            //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-            slider.setTrackTintList(new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{palette.secondary}
-            ));
+            if (palette != null) {
+                //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+                slider.setTrackTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{palette.secondaryFixed}
+                ));
+                //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+                slider.setTrackTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{palette.secondary}
+                ));
+            }
             slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
             slider.setValue(position);
         } catch (Exception e) {

@@ -16,7 +16,9 @@ public class MyMaterialButtonToggleGroup extends MaterialButtonToggleGroup {
 
     public MyMaterialButtonToggleGroup(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     public void setPalette(Palette palette) {

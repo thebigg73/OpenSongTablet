@@ -26,7 +26,11 @@ public class TextSlider extends LinearLayout {
         super(context, attrs);
         inflate(context, R.layout.view_text_slider, this);
 
-        palette = new Palette(context);
+        if (!isInEditMode()) {
+            palette = new Palette(context);
+        } else {
+            palette = null;
+        }
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);

@@ -30,8 +30,10 @@ public class MyMaterialCheckbox extends MaterialCheckBox {
     }
 
     private void init(Context context, @Nullable AttributeSet attrs) {
-        palette = new Palette(context);
-        setColors();
+        if (!isInEditMode()) {
+            palette = new Palette(context);
+            setColors();
+        }
     }
 
     private void setColors() {

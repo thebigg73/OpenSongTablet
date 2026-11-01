@@ -79,7 +79,11 @@ public class DrawNotes extends View {
 
     public DrawNotes(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        swipeDrawingInterface = (SwipeDrawingInterface) context;
+        if (!isInEditMode()) {
+            swipeDrawingInterface = (SwipeDrawingInterface) context;
+        } else {
+            swipeDrawingInterface = null;
+        }
         setFocusable(true);
         setFocusableInTouchMode(true);
         initialiseArrays();

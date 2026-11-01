@@ -16,8 +16,9 @@ public class MyImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     public MyImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     public void setPalette(Palette palette) {

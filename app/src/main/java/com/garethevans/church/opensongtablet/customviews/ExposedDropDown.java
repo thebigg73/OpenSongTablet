@@ -100,8 +100,10 @@ public class ExposedDropDown extends FrameLayout {
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
         textInputLayout.setEndIconOnClickListener(v -> doClickAction());
 
-        palette = new Palette(context);
-        setPalette();
+        if (!isInEditMode()) {
+            palette = new Palette(context);
+            setPalette();
+        }
     }
 
     private Context unwrap(Context context) {

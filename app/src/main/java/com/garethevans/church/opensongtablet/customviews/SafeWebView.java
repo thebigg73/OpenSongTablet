@@ -36,12 +36,14 @@ public class SafeWebView extends WebView {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void init() {
-        // Optional: basic settings
-        getSettings().setJavaScriptEnabled(true);
-        getSettings().setDomStorageEnabled(true);
-        setFocusable(true);
-        setFocusableInTouchMode(true);
-        setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
+        if (!isInEditMode()) {
+            // Optional: basic settings
+            getSettings().setJavaScriptEnabled(true);
+            getSettings().setDomStorageEnabled(true);
+            setFocusable(true);
+            setFocusableInTouchMode(true);
+            setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
+        }
     }
 
     @Override

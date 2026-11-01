@@ -87,12 +87,15 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //setLongClickKeyboard();
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         c = getWrappedContext(context);
-        palette = new Palette(c);
+        if (!isInEditMode()) {
+            palette = new Palette(c);
+        } else {
+            palette = null;
+        }
 
         // Ensure inflation happens with the current app theme
         //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
@@ -233,7 +236,9 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             e.printStackTrace();
         }
 
-        setPalette();
+        if (!isInEditMode()) {
+            setPalette();
+        }
 
         // === Keyboard handling fixes (Kindle, pre-Lollipop, etc.) ===
         editText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -312,15 +317,17 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     public void setHint(String hintText) {
         textInputLayout.setHint(hintText);
         // Don't use ColorStateList.valueOf(...) as FireHD devices don't like this!
-        textInputLayout.setHintTextColor(new ColorStateList(
-                new int[][]{new int[0]},
-                new int[]{palette.hintColor}
-        ));
-        //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
-        textInputLayout.setHintTextColor(new ColorStateList(
-                new int[][]{new int[0]},
-                new int[]{palette.hintColor}
-        ));
+        if (!isInEditMode()) {
+            textInputLayout.setHintTextColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.hintColor}
+            ));
+            //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+            textInputLayout.setHintTextColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.hintColor}
+            ));
+        }
     }
 
     public CharSequence getHint() {

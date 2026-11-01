@@ -37,10 +37,20 @@ public final class Palette {
     public String theme;
 
     public Palette(Context c) {
-        theme = c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                        .getString(DISPLAY_MODE,"");
+        if (c == null) {
+            theme = "dark";
+            setDisplayVariables(null);
+            setColors(null);
+            return;
+        }
+        try {
+            theme = c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                            .getString(DISPLAY_MODE,"");
+        } catch (Throwable t) {
+            theme = "";
+        }
         // If the theme hasn't been set, look for the device day/night
-        if (theme.isEmpty()) {
+        if (theme == null || theme.isEmpty()) {
             // Get the default theme based on device setting
             // This then saves this an sets up the colours
             getDefaultTheme(c);
@@ -52,32 +62,47 @@ public final class Palette {
     }
 
     public void getDefaultTheme(Context c) {
-        // Because we haven't set a theme yet, look for the device settings
-        int nightModeFlags = c.getApplicationContext().getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK;
-
         theme = "dark";
-        switch (nightModeFlags) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                // Dark mode is active
+        if (c != null) {
+            try {
+                Context appContext = c.getApplicationContext() != null ? c.getApplicationContext() : c;
+                if (appContext.getResources() != null && appContext.getResources().getConfiguration() != null) {
+                    int nightModeFlags = appContext.getResources().getConfiguration().uiMode
+                            & Configuration.UI_MODE_NIGHT_MASK;
+
+                    switch (nightModeFlags) {
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            // Dark mode is active
+                            theme = "dark";
+                            break;
+                        case Configuration.UI_MODE_NIGHT_NO:
+                            // Light mode is active
+                            theme = "light";
+                            break;
+                        case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                            // Mode is unknown (very rare)
+                            theme = "dark";
+                            break;
+                    }
+                }
+            } catch (Throwable t) {
                 theme = "dark";
-                break;
-            case Configuration.UI_MODE_NIGHT_NO:
-                // Light mode is active
-                theme = "light";
-                break;
-            case Configuration.UI_MODE_NIGHT_UNDEFINED:
-                // Mode is unknown (very rare)
-                theme = "dark";
+            }
         }
-        savePref(c,theme);
+        savePref(c, theme);
     }
 
     public void savePref(Context c, String theme) {
         this.theme = theme;
-        // Save the new preference
-        c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).
-                edit().putString(DISPLAY_MODE,theme).apply();
+        if (c != null) {
+            try {
+                // Save the new preference
+                c.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).
+                        edit().putString(DISPLAY_MODE, theme).apply();
+            } catch (Throwable t) {
+                // SharedPreferences is not supported in edit/preview mode
+            }
+        }
         setDisplayVariables(c);
         setColors(c);
     }
@@ -126,6 +151,22 @@ public final class Palette {
 
     @SuppressWarnings("deprecation")
     public void setColors(Context context) {
+        if (context == null) {
+            background = 0xFF121212;
+            onBackground = 0xFFFFFFFF;
+            surface = 0xFF1E1E1E;
+            onSurface = 0xFFFFFFFF;
+            primary = 0xFFBB86FC;
+            primaryVariant = 0xFF3700B3;
+            onPrimary = 0xFF000000;
+            textColor = 0xFFFFFFFF;
+            hintColor = 0xFF888888;
+            secondary = 0xFF03DAC6;
+            secondaryVariant = 0xFF018786;
+            secondaryFixed = 0xFF03DAC6;
+            errorColor = 0xFFCF6679;
+            return;
+        }
         try {
             background = ResourcesCompat.getColor(context.getResources(), amoled ? R.color.amoled_primary : dark ? R.color.dark_primary : R.color.light_primary, null);
             onBackground = ResourcesCompat.getColor(context.getResources(), amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color, null);
@@ -141,20 +182,36 @@ public final class Palette {
             secondaryFixed = ResourcesCompat.getColor(context.getResources(), amoled ? R.color.amoled_secondary_fixed : dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed, null);
             errorColor = ResourcesCompat.getColor(context.getResources(), amoled ? R.color.amoled_error : dark ? R.color.dark_error : R.color.light_error, null);
         } catch (Throwable t) {
-            // Catches both missing method Errors on API 22 and any runtime Exceptions cleanly
-            background = context.getResources().getColor(amoled ? R.color.amoled_primary : dark ? R.color.dark_primary : R.color.light_primary);
-            onBackground = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
-            surface = context.getResources().getColor(amoled ? R.color.amoled_surface : dark ? R.color.dark_surface : R.color.light_surface);
-            onSurface = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
-            primary = context.getResources().getColor(amoled ? R.color.amoled_primary : dark ? R.color.dark_primary : R.color.light_primary);
-            primaryVariant = context.getResources().getColor(amoled ? R.color.amoled_primary_variant : dark ? R.color.dark_primary_variant : R.color.light_primary_variant);
-            onPrimary = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
-            textColor = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
-            hintColor = context.getResources().getColor(amoled ? R.color.amoled_hint : dark ? R.color.dark_hint : R.color.light_hint);
-            secondary = context.getResources().getColor(amoled ? R.color.amoled_secondary : dark ? R.color.dark_secondary : R.color.light_secondary);
-            secondaryVariant = context.getResources().getColor(amoled ? R.color.amoled_secondary_variant : dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant);
-            secondaryFixed = context.getResources().getColor(amoled ? R.color.amoled_secondary_fixed : dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed);
-            errorColor = context.getResources().getColor(amoled ? R.color.amoled_error : dark ? R.color.dark_error : R.color.light_error);
+            try {
+                // Catches both missing method Errors on API 22 and any runtime Exceptions cleanly
+                background = context.getResources().getColor(amoled ? R.color.amoled_primary : dark ? R.color.dark_primary : R.color.light_primary);
+                onBackground = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
+                surface = context.getResources().getColor(amoled ? R.color.amoled_surface : dark ? R.color.dark_surface : R.color.light_surface);
+                onSurface = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
+                primary = context.getResources().getColor(amoled ? R.color.amoled_primary : dark ? R.color.dark_primary : R.color.light_primary);
+                primaryVariant = context.getResources().getColor(amoled ? R.color.amoled_primary_variant : dark ? R.color.dark_primary_variant : R.color.light_primary_variant);
+                onPrimary = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
+                textColor = context.getResources().getColor(amoled ? R.color.amoled_color : dark ? R.color.dark_color : R.color.light_color);
+                hintColor = context.getResources().getColor(amoled ? R.color.amoled_hint : dark ? R.color.dark_hint : R.color.light_hint);
+                secondary = context.getResources().getColor(amoled ? R.color.amoled_secondary : dark ? R.color.dark_secondary : R.color.light_secondary);
+                secondaryVariant = context.getResources().getColor(amoled ? R.color.amoled_secondary_variant : dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant);
+                secondaryFixed = context.getResources().getColor(amoled ? R.color.amoled_secondary_fixed : dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed);
+                errorColor = context.getResources().getColor(amoled ? R.color.amoled_error : dark ? R.color.dark_error : R.color.light_error);
+            } catch (Throwable t2) {
+                background = 0xFF121212;
+                onBackground = 0xFFFFFFFF;
+                surface = 0xFF1E1E1E;
+                onSurface = 0xFFFFFFFF;
+                primary = 0xFFBB86FC;
+                primaryVariant = 0xFF3700B3;
+                onPrimary = 0xFF000000;
+                textColor = 0xFFFFFFFF;
+                hintColor = 0xFF888888;
+                secondary = 0xFF03DAC6;
+                secondaryVariant = 0xFF018786;
+                secondaryFixed = 0xFF03DAC6;
+                errorColor = 0xFFCF6679;
+            }
         }
     }
 

@@ -22,7 +22,9 @@ public class MyExtendedFloatingActionButton extends ExtendedFloatingActionButton
 
     public MyExtendedFloatingActionButton(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     public void setPalette(Palette palette) {

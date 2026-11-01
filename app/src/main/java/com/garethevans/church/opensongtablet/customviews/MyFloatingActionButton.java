@@ -94,14 +94,16 @@ public class MyFloatingActionButton extends FrameLayout {
         setAnimationListeners();
 
         // Set default colors
-        palette = new Palette(getContext());
-        if (targetButtonColor!=-1) {
-            palette.secondary = targetButtonColor;
+        if (!isInEditMode()) {
+            palette = new Palette(getContext());
+            if (targetButtonColor != -1) {
+                palette.secondary = targetButtonColor;
+            }
+            if (targetIconColor != -1) {
+                palette.onSurface = targetIconColor;
+            }
+            setPalette(palette);
         }
-        if (targetIconColor!=-1) {
-            palette.onSurface = targetIconColor;
-        }
-        setPalette(palette);
     }
 
     @Override

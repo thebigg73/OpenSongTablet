@@ -66,7 +66,9 @@ public class MaterialRadioButtonItem extends LinearLayout {
         } finally {
             a.recycle();
         }
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     public void setText(String text) {

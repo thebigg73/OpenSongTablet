@@ -23,38 +23,44 @@ public class InlineAbcWebView extends WebView {
     // Used when an InlineAbcView is created programmatically
     public InlineAbcWebView(@NonNull Context c) {
         super(c);
-        this.setId(View.generateViewId());
-        setJavaScriptEnabled(c);
+        if (!isInEditMode()) {
+            this.setId(View.generateViewId());
+            setJavaScriptEnabled(c);
+        }
     }
 
     // Used when an InlineAbcView is created in XML
     public InlineAbcWebView(@NonNull Context c, @Nullable AttributeSet attrs) {
         super(c, attrs);
-        setJavaScriptEnabled(c);
+        if (!isInEditMode()) {
+            setJavaScriptEnabled(c);
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setJavaScriptEnabled(Context c) {
-        setAllowTouch(false);
-        this.setScrollContainer(false);
-        this.getSettings().setJavaScriptEnabled(true);
-        this.getSettings().setDomStorageEnabled(true);
-        this.addJavascriptInterface(new ABCWebViewJSInterface(c),"AndroidApp");
-        this.setInitialScale(1);
-        this.getSettings().setDomStorageEnabled(true);
-        this.getSettings().setLoadWithOverviewMode(true);
-        this.getSettings().setUseWideViewPort(true);
-        this.getSettings().setSupportZoom(true);
-        this.getSettings().setBuiltInZoomControls(true);
-        this.getSettings().setDisplayZoomControls(false);
-        this.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        this.setScrollbarFadingEnabled(false);
-        this.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                return super.onConsoleMessage(consoleMessage);
-            }
-        });
+        if (!isInEditMode()) {
+            setAllowTouch(false);
+            this.setScrollContainer(false);
+            this.getSettings().setJavaScriptEnabled(true);
+            this.getSettings().setDomStorageEnabled(true);
+            this.addJavascriptInterface(new ABCWebViewJSInterface(c), "AndroidApp");
+            this.setInitialScale(1);
+            this.getSettings().setDomStorageEnabled(true);
+            this.getSettings().setLoadWithOverviewMode(true);
+            this.getSettings().setUseWideViewPort(true);
+            this.getSettings().setSupportZoom(true);
+            this.getSettings().setBuiltInZoomControls(true);
+            this.getSettings().setDisplayZoomControls(false);
+            this.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            this.setScrollbarFadingEnabled(false);
+            this.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                    return super.onConsoleMessage(consoleMessage);
+                }
+            });
+        }
     }
 
     @Override
@@ -68,10 +74,12 @@ public class InlineAbcWebView extends WebView {
     }
 
     public void setAllowTouch(boolean allowTouch) {
-        this.allowTouch = allowTouch;
-        this.setFocusable(allowTouch);
-        this.setClickable(allowTouch);
-        this.setFocusableInTouchMode(allowTouch);
+        if (!isInEditMode()) {
+            this.allowTouch = allowTouch;
+            this.setFocusable(allowTouch);
+            this.setClickable(allowTouch);
+            this.setFocusableInTouchMode(allowTouch);
+        }
     }
 
 }

@@ -75,7 +75,9 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
             a.recycle(); // Always recycle the TypedArray
         }
 
-        setPalette(new Palette(context));
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
     }
 
     public void setText(String titleText) {

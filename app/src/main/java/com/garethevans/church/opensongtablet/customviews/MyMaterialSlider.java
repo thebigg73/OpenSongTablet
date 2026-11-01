@@ -80,7 +80,10 @@ public class MyMaterialSlider extends LinearLayout {
         <attr name="adjustable" format="boolean"/>
          */
 
-        Palette palette = new Palette(context);
+        Palette palette = null;
+        if (!isInEditMode()) {
+            palette = new Palette(context);
+        }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialSlider);
         String text = a.getString(R.styleable.MyMaterialSlider_android_text);
         String hint = a.getString(R.styleable.MyMaterialSlider_android_hint);
@@ -88,8 +91,6 @@ public class MyMaterialSlider extends LinearLayout {
         float valueTo = a.getFloat(R.styleable.MyMaterialSlider_android_valueTo,10.0f);
         stepSize = a.getFloat(R.styleable.MyMaterialSlider_android_stepSize,1.0f);
         float value = a.getFloat(R.styleable.MyMaterialSlider_android_value,0.0f);
-        int trackColor = a.getColor(R.styleable.MyMaterialSlider_trackColor,palette.secondary);
-        int thumbColor = a.getColor(R.styleable.MyMaterialSlider_thumbColor,palette.secondaryVariant);
         int trackHeight = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_trackHeight,0);
         int thumbRadius = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_thumbRadius,0);
         String infoText = a.getString(R.styleable.MyMaterialSlider_infoText);
@@ -130,6 +131,13 @@ public class MyMaterialSlider extends LinearLayout {
             setValue(value);
         }
 
+        int trackColor = 0;
+        int thumbColor = 0;
+        if (!isInEditMode()) {
+            palette = new Palette(context);
+            trackColor = a.getColor(R.styleable.MyMaterialSlider_trackColor, palette.secondary);
+            thumbColor = a.getColor(R.styleable.MyMaterialSlider_thumbColor, palette.secondaryVariant);
+        }
         if (trackColor!=0) {
             //slider.setTrackTintList(ColorStateList.valueOf(trackColor));
             slider.setTrackTintList(new ColorStateList(
@@ -159,7 +167,9 @@ public class MyMaterialSlider extends LinearLayout {
         }
         setAdjustableButtons(adjustButtons);
 
-        setPalette(palette);
+        if (!isInEditMode() && palette!=null) {
+            setPalette(palette);
+        }
     }
 
     // The getters

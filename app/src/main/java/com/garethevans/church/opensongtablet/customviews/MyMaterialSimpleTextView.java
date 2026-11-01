@@ -5,19 +5,19 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.TextViewCompat;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 @SuppressLint("PrivateResource")
-public class MyMaterialSimpleTextView extends AppCompatTextView {
+public class MyMaterialSimpleTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private Palette palette;
-    private int xmlDrawableResId = 0;
+    private final int xmlDrawableResId = 0;
 
     public MyMaterialSimpleTextView(@NonNull Context context) {
         this(context, null);
@@ -29,18 +29,20 @@ public class MyMaterialSimpleTextView extends AppCompatTextView {
 
     public MyMaterialSimpleTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        palette = new Palette(context);
+        if (!isInEditMode()) {
+            palette = new Palette(context);
 
-        if (attrs != null) {
-            String textColorValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "textColor");
-            if (textColorValue != null) {
-                TypedArray a = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.textColor});
-                palette.textColor = a.getColor(0, palette.textColor);
-                a.recycle();
+            if (attrs != null) {
+                String textColorValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "textColor");
+                if (textColorValue != null) {
+                    TypedArray a = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.textColor});
+                    palette.textColor = a.getColor(0, palette.textColor);
+                    a.recycle();
+                }
             }
-        }
 
-        setPalette(palette);
+            setPalette(palette);
+        }
     }
 
     public void setPalette(@NonNull Palette palette) {

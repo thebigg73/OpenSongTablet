@@ -32,7 +32,11 @@ public class MyListItemCheckbox extends LinearLayout {
     }
 
     private void setup(Context c) {
-        palette = new Palette(c);
+        if (!isInEditMode()) {
+            palette = new Palette(c);
+        } else {
+            palette = null;
+        }
         inflate(c, R.layout.view_checkbox_list_item, this);
         checkBox = findViewById(R.id.checkBoxItem);
         textView = findViewById(R.id.itemName);
@@ -42,7 +46,9 @@ public class MyListItemCheckbox extends LinearLayout {
         extraText.setVisibility(View.GONE);
 
         // Set the palette colours
-        setColors();
+        if (!isInEditMode()) {
+            setColors();
+        }
     }
 
     private void setColors() {

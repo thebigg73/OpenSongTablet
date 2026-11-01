@@ -17,8 +17,10 @@ public class MyMaterialButton extends MaterialButton {
 
     public MyMaterialButton(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        Palette palette = new Palette(context);
-        setPalette(palette);
+        if (!isInEditMode()) {
+            Palette palette = new Palette(context);
+            setPalette(palette);
+        }
     }
 
     public void setPalette(Palette palette) {
