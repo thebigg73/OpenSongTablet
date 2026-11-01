@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,6 +95,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set item views based on your views and data model
+        CardView cardView = holder.cardView;
+        cardView.setCardBackgroundColor(mainActivityInterface.getPalette().secondary);
         MyMaterialCheckbox tagName = holder.tagName;
         MyMaterialSimpleTextView matchingSongs = holder.matchingSongs;
         tagName.setText(tags.get(position));
@@ -115,6 +118,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public CardView cardView;
         public MyMaterialCheckbox tagName;
         public MyMaterialSimpleTextView matchingSongs;
         public MyFloatingActionButton tagDelete;
@@ -124,6 +128,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             tagName = itemView.findViewById(R.id.tagName);
             matchingSongs = itemView.findViewById(R.id.matchingSongs);
             tagDelete = itemView.findViewById(R.id.tagDelete);
+            cardView = itemView.findViewById(R.id.card_view);
         }
     }
 
