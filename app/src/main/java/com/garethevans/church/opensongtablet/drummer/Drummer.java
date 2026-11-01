@@ -27,7 +27,7 @@ public class Drummer {
     private int startStep = -1;
     private boolean sequencerMode = false;
 
-    private DrumSection activeSection = DrumSection.MAIN;
+    DrumSection activeSection = DrumSection.MAIN;
     private DrumSection pendingSection = null;
     private DrumSection sectionBeforeFill = DrumSection.MAIN;
     private DrumSection nextSectionAfterFill = null; // New variable
@@ -88,20 +88,21 @@ public class Drummer {
         }
     }
 
-    /**
-     * Called by the TimerEngine via DrumViewModel on every sequencer step.
-     */
     public void onStep(int totalSteps) {
         if (!isRunning) return;
 
-        // Send the step to the ViewModel so the UI can observe it
         mainActivityInterface.getDrumViewModel().updateStepCount(totalSteps);
 
         int stepsPerBar = mainActivityInterface.getDrumViewModel().getThisStepsPerBar();
         int stepInBar = totalSteps % stepsPerBar;
 
+        Log.d(TAG, "onStep: totalSteps=" + totalSteps + ", stepInBar=" + stepInBar + ", isCountIn=" + isCountIn + ", activeSection=" + activeSection + ", pendingSection=" + pendingSection);
+
         // A. MID-BAR FILL ENTRANCE (Step 8)
-        if (stepInBar == 8 && !sequencerMode && (pendingSection == DrumSection.FILL_MAIN || pendingSection == DrumSection.FILL_VARIATION)) {
+        if (stepInBar == 8 && !sequencerMode && !isCountIn &&
+                activeSection != DrumSection.FILL_MAIN && activeSection != DrumSection.FILL_VARIATION &&
+                (pendingSection == DrumSection.FILL_MAIN || pendingSection == DrumSection.FILL_VARIATION)) {
+            Log.d(TAG, "Triggering mid-bar fill entrance at step 8");
             activeSection = pendingSection;
             pendingSection = null;
             updateActiveMap();
@@ -109,20 +110,25 @@ public class Drummer {
 
         // B. BAR START LOGIC (Step 0)
         if (stepInBar == 0 && !sequencerMode) {
-            // 1. Handle Crash
             if (crashOnNextBar) {
                 triggerSound("Crash", 115);
                 crashOnNextBar = false;
             }
 
-            // 2. Handle Exit from Fill
-            if (activeSection == DrumSection.FILL_MAIN || activeSection == DrumSection.FILL_VARIATION) {
+            // Check if we are currently in a fill and have played it for a full bar duration
+            if ((activeSection == DrumSection.FILL_MAIN || activeSection == DrumSection.FILL_VARIATION)
+                    && fillStartStep >= 0 && totalSteps >= fillStartStep + stepsPerBar) {
+
+                Log.d(TAG, "Full fill bar completed. Transitioning to MAIN with crash.");
                 activeSection = (nextSectionAfterFill != null) ? nextSectionAfterFill : DrumSection.MAIN;
                 nextSectionAfterFill = null;
+                fillStartStep = -1; // Reset
                 updateActiveMap();
+
+                // Trigger crash precisely on the downbeat of the main beat!
+                triggerSound("Crash", 115);
             }
-            // 3. Handle Normal Transitions (Main -> Variation)
-            else if (pendingSection != null) {
+            else if (pendingSection != null && totalSteps > 0 && !isCountIn) {
                 activeSection = pendingSection;
                 pendingSection = null;
                 updateActiveMap();
@@ -130,13 +136,19 @@ public class Drummer {
         }
 
         if (isCountIn && stepInBar == stepsPerBar - 1 && !sequencerMode) {
+            Log.d(TAG, "Count-in ending on last step of bar.");
             isCountIn = false;
-            // IMPORTANT: We need to make sure we are ready for Step 0 of the MAIN pattern
-            activeSection = DrumSection.MAIN;
+            if (pendingSection != null) {
+                activeSection = pendingSection;
+                pendingSection = null;
+                Log.d(TAG, "Handing off from count-in to pendingSection: " + activeSection);
+            } else {
+                activeSection = DrumSection.MAIN;
+                Log.d(TAG, "Handing off from count-in to MAIN.");
+            }
             updateActiveMap();
         }
 
-        // If we are using the sequencer, just stay here
         if (sequencerMode) {
             isCountIn = false;
             activeSection = mainActivityInterface.getDrumViewModel().getActiveSection().getValue();
@@ -402,5 +414,66 @@ public class Drummer {
         } else {
             return "Cajon_";
         }
+    }
+
+    private int fillStartStep = -1;
+
+    public void startOnFill(boolean useCountIn) {
+        DrumSection fillToStore = (activeSection == DrumSection.VARIATION) ? DrumSection.FILL_VARIATION : DrumSection.FILL_MAIN;
+        DrumSection returnTo = (activeSection == DrumSection.VARIATION) ? DrumSection.VARIATION : DrumSection.MAIN;
+
+        int stepsPerBar = mainActivityInterface.getDrumViewModel().getThisStepsPerBar();
+        if (stepsPerBar <= 0) stepsPerBar = 16; // Fallback safeguard
+
+        if (useCountIn) {
+            this.isCountIn = true;
+            this.activeSection = returnTo;
+            this.pendingSection = fillToStore;
+            this.nextSectionAfterFill = returnTo;
+            this.fillStartStep = stepsPerBar; // Fill starts on the second bar after count-in
+            this.crashOnNextBar = false;
+            updateActiveMap();
+        } else {
+            this.isCountIn = false;
+            this.activeSection = fillToStore; // Start immediately on fill
+            this.pendingSection = null;
+            this.nextSectionAfterFill = returnTo;
+            this.sectionBeforeFill = returnTo;
+            this.fillStartStep = 0; // Fill starts immediately at step 0
+            this.crashOnNextBar = false;
+            updateActiveMap();
+        }
+    }
+
+    public void startOnVariation(boolean useCountIn) {
+        Log.d(TAG, "startOnVariation() called. useCountIn: " + useCountIn);
+
+        if (useCountIn) {
+            // Count-in ON: Play count-in first on MAIN, then switch to VARIATION
+            this.isCountIn = true;
+            this.activeSection = DrumSection.MAIN;
+            this.pendingSection = DrumSection.VARIATION;
+            this.nextSectionAfterFill = null;
+            this.crashOnNextBar = false;
+            updateActiveMap();
+        } else {
+            // Count-in OFF: Start immediately on the VARIATION section
+            this.isCountIn = false;
+            this.activeSection = DrumSection.VARIATION;
+            this.pendingSection = null;
+            this.nextSectionAfterFill = null;
+            this.sectionBeforeFill = DrumSection.VARIATION;
+            this.crashOnNextBar = false;
+            updateActiveMap();
+        }
+    }
+    public void resetToMain() {
+        this.activeSection = DrumSection.MAIN;
+        this.pendingSection = null;
+        this.nextSectionAfterFill = null;
+        this.sectionBeforeFill = DrumSection.MAIN;
+        this.crashOnNextBar = false;
+        this.fillStartStep = -1;
+        updateActiveMap();
     }
 }

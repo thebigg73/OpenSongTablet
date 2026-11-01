@@ -15,7 +15,9 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.DialogHeader;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 public class DrummerPopUp {
 
@@ -31,6 +33,7 @@ public class DrummerPopUp {
     private MyFloatingActionButton drummerPlayStop, drummerFill, drummerTransition,
             drummerSettings;
     private FloatWindow floatWindow;
+    private MyMaterialSwitch drummerIntro;
 
     // Initialise the popup class
     public DrummerPopUp(Context c) {
@@ -94,6 +97,9 @@ public class DrummerPopUp {
         drummerFill = myView.findViewById(R.id.drummerFill);
         drummerTransition = myView.findViewById(R.id.drummerTransition);
         drummerSettings = myView.findViewById(R.id.drummerSettings);
+        drummerIntro = myView.findViewById(R.id.drummerIntro);
+        drummerIntro.setOnPopup();
+        drummerIntro.setChecked(mainActivityInterface.getDrumViewModel().getDrummerIntro());
         //drummerPlayStop.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
         drummerPlayStop.setBackgroundTintList(new ColorStateList(
                 new int[][]{new int[0]},
@@ -162,18 +168,32 @@ public class DrummerPopUp {
         });
         drummerFill.setOnClickListener(view -> {
             if (mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning()) {
+                // Already running: execute standard mid-stream fill
                 mainActivityInterface.getDrumViewModel().drummerFill();
+            } else {
+                // Not running: start immediately on the fill with no count-in
+                mainActivityInterface.getDrumViewModel().startDrummerOnFill();
+                // Update play/stop button icon to show it is now playing
+                drummerPlayStop.setImageDrawable(drummerStop);
             }
         });
         drummerTransition.setOnClickListener(view -> {
             if (mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning()) {
+                // Already running: execute standard mid-stream transition
                 mainActivityInterface.getDrumViewModel().drummerTransition();
+            } else {
+                // Not running: start immediately on variation (respecting intro preference)
+                mainActivityInterface.getDrumViewModel().startDrummerOnVariation();
+                // Update play/stop button icon to show it is now playing
+                drummerPlayStop.setImageDrawable(drummerStop);
             }
         });
         drummerSettings.setOnClickListener(view -> {
             destroyPopup();
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_drummer_settings),0);
         });
+        drummerIntro.setOnCheckedChangeListener(((compoundButton, checked) ->
+                mainActivityInterface.getDrumViewModel().setDrummerIntro(checked)));
     }
 
     // Close down the popup and completely stop and release all resources

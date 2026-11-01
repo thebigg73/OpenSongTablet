@@ -44,6 +44,8 @@ public class DrumViewModel extends ViewModel {
     private final MutableLiveData<Boolean> drummerRunning = new MutableLiveData<>(false);
     private DrumPatternJson drumPatternJson;
 
+    private boolean drummerIntro = true;
+
     public void initialiseDrums(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
 
@@ -58,6 +60,7 @@ public class DrumViewModel extends ViewModel {
         checkWearOSValid();
         metronomeWearOS.checkWearOSValid(c);
 
+        drummerIntro = mainActivityInterface.getPreferences().getMyPreferenceBoolean("drummerIntro",true);
         timerEngine.setOnStepListener(totalSteps -> {
             // Check if the song has actually been loaded/initialized
             if (thisStepsPerBar <= 0) {
@@ -95,6 +98,14 @@ public class DrumViewModel extends ViewModel {
             // Update UI for sequencer
             currentStep.postValue(stepInBar);
         });
+    }
+
+    public void setDrummerIntro(boolean drummerIntro) {
+        this.drummerIntro = drummerIntro;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("drummerIntro",drummerIntro);
+    }
+    public boolean getDrummerIntro() {
+        return drummerIntro;
     }
 
     // Get the helper classes
@@ -379,15 +390,17 @@ public class DrumViewModel extends ViewModel {
     }
 
     public void startDrummer() {
-        Log.d(TAG,"startDrummer()");
+        startDrummer(true); // Default behavior
+    }
+
+    public void startDrummer(boolean checkIntroPreference) {
+        Log.d(TAG, "startDrummer()");
 
         if (drummer != null) {
             DrumPatternJson p = getDrumPatternJson();
             drummer.setPattern(p);
         }
 
-        // 💡 CRITICAL: Only prepare song values if we are NOT in sequencer mode!
-        // In the sequencer, we want to play whatever pattern is currently live in memory.
         if (drummer == null || !drummer.getSequencerMode()) {
             prepareSongValues(mainActivityInterface.getSong());
         }
@@ -397,27 +410,23 @@ public class DrumViewModel extends ViewModel {
         }
 
         if (drummer != null) {
-            // 1. Check engine state BEFORE we do anything else
             boolean metronomeAlreadyPlaying = metronome.getIsRunning();
 
-            // 2. Configure Drummer based on that check
+            // Check user preference for introduction count-in
+            boolean useIntro = checkIntroPreference && drummerIntro;
+
             if (!metronomeAlreadyPlaying) {
-                // This is a FRESH START
                 timerEngine.resetTickCounter();
-                drummer.setIsCountIn(!drummer.getSequencerMode());
+                // Respect the drummerIntro preference instead of always defaulting to true
+                drummer.setIsCountIn(useIntro && !drummer.getSequencerMode());
                 drummer.setStartStep(0);
-
             } else {
-                // This is JOINING mid-stream
                 drummer.setIsCountIn(false);
-
-                // Sync logic
                 int currentTotalSteps = timerEngine.getTickCounter() / thisPulsesPerStep;
                 int stepInPulse = currentTotalSteps % thisStepsPerPulse;
                 drummer.setStartStep(currentTotalSteps + (thisStepsPerPulse - stepInPulse));
             }
 
-            // 3. Set standard flags
             drummer.setIsRunning(true);
             isPlaying.postValue(true);
             drummerRunning.postValue(true);
@@ -425,17 +434,107 @@ public class DrumViewModel extends ViewModel {
             timerEngine.setBpm(thisBpm);
             timerEngine.setPulsesPerStep(thisPulsesPerStep);
 
-            // 4. NOW start the engine only if it wasn't already running
             if (!metronomeAlreadyPlaying) {
                 timerEngine.start();
             }
         }
     }
+
+    /**
+     * Starts the drummer playing a fill bar (respecting the intro preference), followed by the main beat.
+     */
+    public void startDrummerOnFill() {
+        Log.d(TAG, "startDrummerOnFill()");
+
+        // 1. Ensure patterns are loaded
+        if (drummer != null) {
+            drummer.setPattern(getDrumPatternJson());
+        }
+        if (!drummer.getSequencerMode()) {
+            prepareSongValues(mainActivityInterface.getSong());
+        }
+
+        if (drummer != null) {
+            drummer.setPattern(getDrumPatternJson());
+        }
+
+        if (drummer != null) {
+            boolean metronomeAlreadyPlaying = metronome.getIsRunning();
+
+            if (!metronomeAlreadyPlaying) {
+                timerEngine.resetTickCounter();
+                timerEngine.setBpm(thisBpm);
+                timerEngine.setPulsesPerStep(thisPulsesPerStep);
+            }
+
+            // 2. Check user preference for introduction count-in
+            boolean useIntro = drummerIntro && !drummer.getSequencerMode();
+
+            // 3. Configure drummer to start with the fill (with or without count-in)
+            drummer.startOnFill(useIntro);
+
+            drummer.setIsRunning(true);
+            isPlaying.postValue(true);
+            drummerRunning.postValue(true);
+
+            if (!metronomeAlreadyPlaying) {
+                timerEngine.start();
+            }
+        }
+    }
+
+    /**
+     * Starts the drummer playing the variation beat directly (respecting the intro preference).
+     */
+    public void startDrummerOnVariation() {
+        Log.d(TAG, "startDrummerOnVariation()");
+
+        if (drummer != null) {
+            drummer.setPattern(getDrumPatternJson());
+        }
+        if (!drummer.getSequencerMode()) {
+            prepareSongValues(mainActivityInterface.getSong());
+        }
+
+        if (drummer != null) {
+            drummer.setPattern(getDrumPatternJson());
+        }
+
+        if (drummer != null) {
+            boolean metronomeAlreadyPlaying = metronome.getIsRunning();
+
+            if (!metronomeAlreadyPlaying) {
+                timerEngine.resetTickCounter();
+                timerEngine.setBpm(thisBpm);
+                timerEngine.setPulsesPerStep(thisPulsesPerStep);
+            }
+
+            boolean useIntro = drummerIntro && !drummer.getSequencerMode();
+
+            // Configure drummer to start on variation
+            drummer.startOnVariation(useIntro);
+
+            drummer.setIsRunning(true);
+            isPlaying.postValue(true);
+            drummerRunning.postValue(true);
+
+            if (!metronomeAlreadyPlaying) {
+                timerEngine.start();
+            }
+        }
+    }
+
     public void stopDrummer() {
         Log.d(TAG, "stopDrummer()");
-        drummer.setIsRunning(false);
+        if (drummer != null) {
+            drummer.setIsRunning(false);
+            drummer.setIsCountIn(!drummer.getSequencerMode());
+
+            // 💡 Ensure it always reverts back to MAIN and clears transient states
+            drummer.activeSection = DrumSection.MAIN;
+            drummer.updateActiveMap();
+        }
         drummerRunning.postValue(false);
-        drummer.setIsCountIn(!drummer.getSequencerMode());
 
         stopTimerEngine();
 
@@ -444,6 +543,9 @@ public class DrumViewModel extends ViewModel {
             isPlaying.postValue(false);
             currentStep.postValue(-1);
         }
+
+        // Reset
+        drummer.resetToMain();
     }
     public void toggleDrummer() {
         boolean newState = !drummer.getIsRunning();
@@ -457,14 +559,25 @@ public class DrumViewModel extends ViewModel {
         }
     }
     public void drummerFill() {
-        int currStep = 0;
-        if (currentStep!=null && currentStep.getValue()!=null) {
-            currStep = currentStep.getValue();
+        if (drummer.getIsRunning()) {
+            // Already running: execute standard mid-stream fill
+            int currStep = 0;
+            if (currentStep!=null && currentStep.getValue()!=null) {
+                currStep = currentStep.getValue();
+            }
+            drummer.fill(currStep);
+        } else {
+            // Not running: start immediately on the fill with no count-in
+            startDrummerOnFill();
         }
-        drummer.fill(currStep);
     }
     public void drummerTransition() {
-        drummer.transition();
+        if (drummer.getIsRunning()) {
+            drummer.transition();
+        } else {
+            // Not running: start immediately on the fill with no count-in
+            startDrummerOnFill();
+        }
     }
     public LiveData<Boolean> getIsDrummerPlaying() {
         return isPlaying;

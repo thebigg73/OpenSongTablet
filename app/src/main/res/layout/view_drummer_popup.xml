@@ -20,7 +20,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="96dp"
+                android:minHeight="64dp"
                 android:orientation="horizontal"
                 android:padding="16dp"
                 android:baselineAligned="true">
@@ -85,6 +85,13 @@
                     app:myFabSize="mini" />
             </FrameLayout>
             </LinearLayout>
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:id="@+id/drummerIntro"
+            android:text="@string/intro"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
