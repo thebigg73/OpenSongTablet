@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
@@ -33,6 +34,9 @@ public class MyMaterialCheckbox extends MaterialCheckBox {
         if (!isInEditMode()) {
             palette = new Palette(context);
             setColors();
+        } else {
+            setUseMaterialThemeColors(false);
+            setTextColor(Color.BLACK);
         }
     }
 

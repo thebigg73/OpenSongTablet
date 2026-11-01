@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +57,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private boolean addUndoStep = true;
     private String success_string="";
     private Bitmap bmp = null;
-    private String guitar_tab = "Guitar", inline_abc;
+    private String guitar_tab = "Guitar", inline_abc, replacements_made_string="", not_found_string="";
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
     private TextWatcher textWatcher;
@@ -129,6 +130,8 @@ public class EditSongFragmentLyrics extends Fragment {
             success_string = getString(R.string.success);
             guitar_tab = getString(R.string.insert_guitar_tab);
             inline_abc = getString(R.string.abc_inline_text);
+            replacements_made_string = getString(R.string.replacements_made);
+            not_found_string = getString(R.string.not_found);
         }
     }
     private void setupValues() {
@@ -166,13 +169,16 @@ public class EditSongFragmentLyrics extends Fragment {
                if (myView!=null) {
                    myView.ocr.setVisibility(View.VISIBLE);
                    myView.imageEdit.setVisibility(View.VISIBLE);
+                   myView.findAndReplace.setVisibility(View.GONE);
                }
+
             });
         } else {
             mainActivityInterface.getMainHandler().post(() -> {
                 if (myView != null) {
                     myView.ocr.setVisibility(View.GONE);
                     myView.imageEdit.setVisibility(View.GONE);
+                    myView.findAndReplace.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -318,6 +324,11 @@ public class EditSongFragmentLyrics extends Fragment {
         };
 
         myView.lyrics.addTextChangedListener(textWatcher);
+
+        myView.findAndReplace.setOnClickListener((button) -> {
+            FindAndReplaceBottomSheet findAndReplaceBottomSheet = new FindAndReplaceBottomSheet(this);
+            findAndReplaceBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"FindAndReplaceBottomSheet");
+        });
 
         myView.ocr.setOnClickListener(v -> {
             if (mainActivityInterface.getSong().getFiletype()==null) {
@@ -759,6 +770,42 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setText(newText);
     }
 
+    public void findNext(String what, boolean matchCase) {
+        if (myView!=null) {
+            int index =myView.lyrics.findNext(what, matchCase, true);
+            if (index == -1) {
+                mainActivityInterface.getShowToast().doIt(not_found_string);
+            }
+        }
+    }
+
+    public void replaceText(String what, String with, boolean matchCase) {
+        if (myView!=null) {
+            boolean replaced = myView.lyrics.replaceCurrent(what, with, matchCase);
+            if (!replaced) {
+                mainActivityInterface.getShowToast().doIt(not_found_string);
+            }
+        }
+    }
+
+    public void replaceAll(String what, String with, boolean matchCase) {
+        if (myView!=null) {
+            int count = myView.lyrics.replaceAll(what, with, matchCase);
+            mainActivityInterface.getShowToast().doIt(count + " " + replacements_made_string);
+        }
+    }
+
+    public String getSelectedText() {
+        if (myView!=null) {
+            int start = myView.lyrics.getSelectionStart();
+            int end = myView.lyrics.getSelectionEnd();
+            Log.d(TAG,"start:"+start+"  end:"+end);
+            if (end > start && start > -1) {
+                return myView.lyrics.getText().toString().substring(start, end);
+            }
+        }
+        return "";
+    }
     @Override
     public void onDetach() {
         super.onDetach();

@@ -52,11 +52,21 @@
                 android:hint="@string/lyrics"
                 android:inputType="text|textMultiLine"
                 android:minLines="25"
+                android:paddingBottom="24dp"
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:useMonospace="true" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                android:id="@+id/findAndReplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabIcon="@drawable/find_replace"
+                app:myFabSize="mini"
+                android:layout_alignBottom="@+id/lyrics"
+                android:layout_alignEnd="@id/lyrics"/>
 
             <ImageView
                 android:id="@+id/previewImage"

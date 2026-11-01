@@ -678,4 +678,107 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         this.setTextDirection(View.TEXT_DIRECTION_RTL);
         this.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
+
+    /**
+     * Finds the next occurrence of the query text and selects it in the editor.
+     * @param query The text to search for.
+     * @param caseSensitive Whether the search is case-sensitive.
+     * @param wrapAround Whether to loop back to the start if reaching the end.
+     * @return The start index of the match, or -1 if not found.
+     */
+    public int findNext(String query, boolean caseSensitive, boolean wrapAround) {
+        if (query == null || query.isEmpty()) return -1;
+        Editable text = getText();
+        if (text == null || text.length() == 0) return -1;
+
+        String content = text.toString();
+        String searchQuery = query;
+        String searchContent = content;
+
+        if (!caseSensitive) {
+            searchQuery = query.toLowerCase();
+            searchContent = content.toLowerCase();
+        }
+
+        // Start searching from the current cursor/selection end position
+        int startPos = getSelectionEnd();
+        if (startPos < 0 || startPos >= content.length()) {
+            startPos = 0;
+        }
+
+        int index = searchContent.indexOf(searchQuery, startPos);
+        if (index == -1 && wrapAround) {
+            // Wrap around to the beginning of the text
+            index = searchContent.indexOf(searchQuery, 0);
+        }
+
+        if (index != -1) {
+            // Highlight the found text by setting selection
+            setSelection(index, index + query.length());
+            editText.requestFocus();
+            return index;
+        }
+        return -1;
+    }
+
+    /**
+     * Finds the next occurrence of the query text and selects it in the editor.
+     * @param what The text to search for.
+     * @param with The text to replace with.
+     * @param caseSensitive Whether the search is case-sensitive.
+     * @return true if successful.
+     */
+    public boolean replaceCurrent(String what, String with, boolean caseSensitive) {
+        int start = getSelectionStart();
+        int end = getSelectionEnd();
+
+        if (start >= 0 && end > start) {
+            CharSequence selectedText = getText().subSequence(start, end);
+            boolean matches = caseSensitive ? selectedText.toString().equals(what)
+                    : selectedText.toString().equalsIgnoreCase(what);
+            if (matches) {
+                getText().replace(start, end, with != null ? with : "");
+                setSelection(start, start + (with != null ? with.length() : 0));
+                return true;
+            }
+        }
+
+        // If nothing is selected or selection doesn't match query, find next first
+        int found = findNext(what, caseSensitive, true);
+        if (found != -1) {
+            return replaceCurrent(what, with, caseSensitive);
+        }
+        return false;
+    }
+
+    /**
+     * Replaces all occurrences of the target string across the entire text.
+     * @param what The text to search for
+     * @param with The text to replace with
+     * @return The number of replacements made.
+     */
+    public int replaceAll(String what, String with, boolean caseSensitive) {
+        if (what == null || what.isEmpty()) return 0;
+        Editable text = getText();
+        if (text == null) return 0;
+
+        String content = text.toString();
+        int flags = caseSensitive ? 0 : java.util.regex.Pattern.CASE_INSENSITIVE;
+
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(java.util.regex.Pattern.quote(what), flags);
+        java.util.regex.Matcher matcher = pattern.matcher(content);
+
+        StringBuffer sb = new StringBuffer();
+        int count = 0;
+        while (matcher.find()) {
+            count++;
+            matcher.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(with != null ? with : ""));
+        }
+        matcher.appendTail(sb);
+
+        if (count > 0) {
+            setText(sb.toString());
+        }
+        return count;
+    }
 }

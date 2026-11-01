@@ -2,11 +2,14 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.button.MaterialButton;
 
@@ -20,6 +23,12 @@ public class MyMaterialButton extends MaterialButton {
         if (!isInEditMode()) {
             Palette palette = new Palette(context);
             setPalette(palette);
+        } else {
+            setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{ResourcesCompat.getColor(context.getResources(),R.color.light_secondary,null)}
+            ));
+            setTextColor(ResourcesCompat.getColor(context.getResources(),R.color.light_color,null));
         }
     }
 
