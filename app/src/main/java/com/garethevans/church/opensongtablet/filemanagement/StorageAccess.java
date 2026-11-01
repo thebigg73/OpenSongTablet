@@ -1171,6 +1171,9 @@ public class StorageAccess {
             case "html":
                 toCheck = ".html";
                 break;
+            case "xml":
+                toCheck = ".xml";
+                break;
         }
         // This is a simple check for file extensions that tell the app which database to use
         if (filename!=null) {

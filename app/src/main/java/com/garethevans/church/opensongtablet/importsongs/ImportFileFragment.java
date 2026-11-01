@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ImportFileFragment extends Fragment {
 
@@ -278,8 +279,14 @@ public class ImportFileFragment extends Fragment {
                 }, 500);
                 newSong.setFiletype("PDF");
             } else {
-                myView.imageView.postDelayed(() -> Glide.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView), 500);
-                newSong.setFiletype("IMG");
+                if (getContext()!=null) {
+                    myView.imageView.postDelayed(() -> {
+                        if (getContext()!=null) {
+                            Glide.with(requireContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView);
+                        }
+                    }, 500);
+                    newSong.setFiletype("IMG");
+                }
             }
         } else if (mainActivityInterface.getImportFilename() != null) {
             // Because ost files aren't normally allowed (BAD extension) in the song folder

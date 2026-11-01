@@ -3498,6 +3498,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else if (getStorageAccess().isSpecificFileExtension("imageorpdf", importFilename) ||
                     getStorageAccess().isSpecificFileExtension("chordpro", importFilename) ||
                     getStorageAccess().isSpecificFileExtension("text", importFilename) ||
+                    getStorageAccess().isSpecificFileExtension("xml", importFilename) ||
                     getStorageAccess().isSpecificFileExtension("onsong", importFilename) ||
                     importFilename.toLowerCase(Locale.ROOT).endsWith(".docx")) {
                 setWhattodo("");
