@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/find_and_replace" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <!-- Find Input -->
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/editFind"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_gravity="start"
+                android:hint="@string/find_what"
+                android:inputType="text"
+                app:endIconMode="clear_text" />
+
+            <!-- Replace Input -->
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/editReplace"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_gravity="start"
+                android:hint="@string/replace_with"
+                android:inputType="text"
+                app:endIconMode="clear_text" />
+            </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
+                android:id="@+id/chkCaseSensitive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/match_case" />
+            </LinearLayout>
+
+            <!-- Action Buttons Row 2: Replace & Replace All -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+                    android:id="@+id/btnFindNext"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/find_next" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+                    android:id="@+id/btnReplace"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/replace" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+                    android:id="@+id/btnReplaceAll"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/replace_all" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
