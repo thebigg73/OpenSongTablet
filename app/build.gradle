@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 506     // Also change in wear if we need to update that as well
-        versionName = '7.0.2' // Also change in wear if we need to update that as well
+        versionCode = 507     // Also change in wear if we need to update that as well
+        versionName = '7.0.3' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -123,7 +123,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.10'
 
     // Activity and fragments
-    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // Lifecycle for fragment control
     // DO NOT UPGRADE UNLESS DROPPING SUPPORT FOR LOLLIPOP
@@ -155,7 +155,7 @@ dependencies {
     // CardView for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     // Constraint layouts with FAB
-    implementation 'androidx.webkit:webkit:1.16.0'
+    implementation 'androidx.webkit:webkit:1.18.0'
 
     // Google Play services (Play store, casting, fonts, etc.)
     implementation 'androidx.mediarouter:mediarouter:1.8.1'
@@ -166,7 +166,7 @@ dependencies {
     // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:19.5.1'
     // For Google Nearby Connect devices
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.2'
     // For OCR text recognition (PDF/Camera)
     implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0'
     // For OCR text straightening when taking photos of text
@@ -208,7 +208,7 @@ dependencies {
     //implementation 'com.google.oboe:oboe:1.7.0'                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.4.2'
     // To get image exif data (orientation for camera)
-    implementation 'com.google.code.gson:gson:2.14.0'
+    implementation 'com.google.code.gson:gson:2.15.0'
     // GSon for JSON conversion of Song/Set objects
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'              // Retrofit for web access
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'        // Retrofit for web access
@@ -223,7 +223,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
     // For scraping online song servers
-    implementation 'org.jsoup:jsoup:1.23.2'
+    implementation 'org.jsoup:jsoup:1.24.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
