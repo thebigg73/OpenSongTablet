@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">חילוץ מקובץ (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">חיפוש והחלפה</string>
-    <string name="match_case">מארז התאמה</string>
-    <string name="find_what">מצא מה</string>
-    <string name="replace_with">החלף עם</string>
-    <string name="find_next">מצא את הבא</string>
-    <string name="replace">לְהַחלִיף</string>
-    <string name="replace_all">החלף הכל</string>
-    <string name="replacements_made">החלפות שבוצעו</string>
-    <string name="not_found">לא נמצא</string>
     <string name="abc_add_to_song">העתקת תווי ABC לשיר</string>
     <string name="abc_editor">עורך אתרים של ABC</string>
     <string name="abc_include_tab">כלול טבלטורה</string>
@@ -154,7 +144,6 @@
     <string name="beats">פעימות</string>
     <string name="before">לִפנֵי</string>
     <string name="bible">כִּתבֵי הַקוֹדֶשׁ</string>
-    <string name="bibleXML">תנ"ך XML של OpenSong</string>
     <string name="bible_browse">עיון/חיפוש בתנ"ך</string>
     <string name="bible_browse_offline">השתמש בתנ"ך במצב לא מקוון/בהורדה</string>
     <string name="bible_download_for_offline">הורד תרגום תנ"ך לשימוש לא מקוון</string>
@@ -164,6 +153,7 @@
     <string name="bible_translation">קוד גרסת התנ"ך (למשל NIV, MSG)</string>
     <string name="bible_verse">פסוק תנ"ך</string>
     <string name="bible_verse_numbers">כלול מספרי פסוקים</string>
+    <string name="bibleXML">תנ"ך XML של OpenSong</string>
     <string name="bigger">גדול יותר</string>
     <string name="black_screen">מסך שחור</string>
     <string name="black_screen_info">הכנס/הסר את כל התצוגות (למעט הלוגו)</string>
@@ -508,7 +498,10 @@
     <string name="filter_songs">סנן את רשימת השירים המוצגים</string>
     <string name="filtering">סִנוּן</string>
     <string name="filters">מסננים</string>
+    <string name="find_and_replace">חיפוש והחלפה</string>
     <string name="find_existing">מצא מיקומי התקנה קודמים עבור קבצי OpenSong</string>
+    <string name="find_next">מצא את הבא</string>
+    <string name="find_what">מצא מה</string>
     <string name="finger">אֶצבַּע</string>
     <string name="fingering">אִצְבּוּעַ</string>
     <string name="first_run">או שזו הפעם הראשונה שאתה מפעיל את האפליקציה, או שמשהו השתנה. עקב הרשאות אנדרואיד, עליך להגדיר את מיקום האחסון הרצוי עבור האפליקציה לאחסון קבצים.</string>
@@ -549,6 +542,7 @@
     <string name="get">לְקַבֵּל</string>
     <string name="github_description">תרומה לפיתוח אפליקציות</string>
     <string name="global">גלוֹבָּלִי</string>
+    <string name="gp2abc_extract">חילוץ מקובץ (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">אפשר זמן חסד לשיר</string>
     <string name="grace_time_info">זה מאפשר לך לדפדף בין שירים במהירות ושולח מידע למכשירים מחוברים אחרים רק לאחר פרק זמן חסד של 2 שניות.</string>
     <string name="green">יָרוֹק</string>
@@ -731,6 +725,7 @@
     <string name="margins_system">שולי מערכת</string>
     <string name="margins_system_info">השארת מקום לבקרות המכשיר שזוהו (סרגל הניווט התחתון ותפריטי הצד)</string>
     <string name="master">לִשְׁלוֹט</string>
+    <string name="match_case">מארז התאמה</string>
     <string name="max_font_size">גודל גופן מקסימלי בקנה מידה אוטומטי</string>
     <string name="max_pdf_scale">גודל קנה מידה מקסימלי של PDF/הדפסה</string>
     <string name="max_pdf_scale_info">קנה המידה המרבי לשימוש. בחר ערכים נמוכים יותר עבור טקסט קטן יותר. גודל הטקסט לא יתאים מעבר לרוחב העמוד. 75% היא נקודת התחלה טובה עבור רוב המשתמשים.</string>
@@ -880,6 +875,7 @@
     <string name="no_suitable_application">אין יישום זמין או מותקן שיכול לפתוח פריט זה.</string>
     <string name="not_allowed">פונקציה זו אינה מותרת עבור פריט זה</string>
     <string name="not_available">לא זמין</string>
+    <string name="not_found">לא נמצא</string>
     <string name="not_saved">לא נשמר</string>
     <string name="not_saved_filename">אנא הזן שם קובץ לשיר שלך</string>
     <string name="not_saved_folder">אנא בחר תיקייה עבור השיר שלך</string>
@@ -1070,6 +1066,10 @@
     <string name="repeat_mode_count">מספר פקודות הקשה שייחשבו ללחיצה ארוכה (בזמן שצוין לעיל)</string>
     <string name="repeat_mode_info">עבור דוושות ששולחות פקודות חוזרות ונשנות של הורדת ועלייה במקש, פעולה זו יכולה לדמות פעולת לחיצה ארוכה.</string>
     <string name="repeat_mode_time">הגיע הזמן להקשיב לפקודות חוזרות ונשנות של הורדת מקש והרמת מקש</string>
+    <string name="replace">לְהַחלִיף</string>
+    <string name="replace_all">החלף הכל</string>
+    <string name="replace_with">החלף עם</string>
+    <string name="replacements_made">החלפות שבוצעו</string>
     <string name="reprise">שְׁנַאי</string>
     <string name="requires_internet">תכונה זו דורשת גישה לאינטרנט</string>
     <string name="reset">אִתחוּל</string>
@@ -1232,6 +1232,7 @@
     <string name="song_select_warning">אתר זה דורש חשבון תקף. עליך להשתמש בכפתור ההורדה בדף האינטרנט של SongSelect כדי להפעיל את ההורדה הנדרשת. הקובץ יובא לתיקיית OpenSong/Songs/ שלך לאחר הורדתו.</string>
     <string name="song_select_warning_more">עקב מגבלות SongSelect, תצטרכו כעת להוריד ידנית את קובץ השיר שלכם ולאחר מכן לייבא אותו לאפליקציה. לאחר הורדת הקובץ, תוחזרו לדף זה ותוכלו ללחוץ על כפתור \'ייבוא הורדה\' כדי לייבא את הקובץ שהורדתם ל-OpenSongApp.</string>
     <string name="song_specific">ספציפי לשיר</string>
+    <string name="song_sticky_positions">השתמש במיקומים דביקים ספציפיים לשיר</string>
     <string name="song_swipe_toggle">אפשר החלקה בין שירים</string>
     <string name="song_title">שם השיר</string>
     <string name="songs">שירים</string>
@@ -1545,5 +1546,4 @@
     <string name="worship">פּוּלחָן</string>
     <string name="zone">אֵזוֹר</string>
     <string name="zoom_level">רמת זום</string>
-    <string name="song_sticky_positions">השתמש במיקומים דביקים ספציפיים לשיר</string>
 </resources>

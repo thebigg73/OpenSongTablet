@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Kivonat fájlból (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Keresés és csere</string>
-    <string name="match_case">Gyufa eset</string>
-    <string name="find_what">Találd meg, mit</string>
-    <string name="replace_with">Cserélje ki erre</string>
-    <string name="find_next">Következő keresése</string>
-    <string name="replace">Csere</string>
-    <string name="replace_all">Összes cseréje</string>
-    <string name="replacements_made">elvégzett cserék</string>
-    <string name="not_found">Nem található</string>
     <string name="abc_add_to_song">ABC kotta másolása dalba</string>
     <string name="abc_editor">ABC webszerkesztő</string>
     <string name="abc_include_tab">Tartalmazza a tabulatúrát</string>
@@ -153,7 +143,6 @@
     <string name="beats">Beats</string>
     <string name="before">Előtt</string>
     <string name="bible">Biblia</string>
-    <string name="bibleXML">OpenSong XML Biblia</string>
     <string name="bible_browse">Biblia böngészése/keresése</string>
     <string name="bible_browse_offline">Offline/letöltött biblia használata</string>
     <string name="bible_download_for_offline">Töltse le a bibliafordítást offline használatra</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Biblia változat kód \n(pl KAR, ERV-HU)</string>
     <string name="bible_verse">Biblia vers</string>
     <string name="bible_verse_numbers">Tartalmazzon versszámokat</string>
+    <string name="bibleXML">OpenSong XML Biblia</string>
     <string name="bigger">Nagyobb</string>
     <string name="black_screen">Fekete képernyő</string>
     <string name="black_screen_info">Az összes nézet be- és kikapcsolása (kivéve a logót)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Szűrje ki a megjelenített dalok listáját</string>
     <string name="filtering">Szűrő</string>
     <string name="filters">Szűrők</string>
+    <string name="find_and_replace">Keresés és csere</string>
     <string name="find_existing">Az OpenSong fájlok korábbi telepítési helyeinek keresése</string>
+    <string name="find_next">Következő keresése</string>
+    <string name="find_what">Találd meg, mit</string>
     <string name="finger">ujj</string>
     <string name="fingering">Ujjozás</string>
     <string name="first_run">Vagy most futtatja először az alkalmazást, vagy valami megváltozott. Az Android engedélyei miatt be kell állítanunk a kívánt tárhelyet az alkalmazás számára a fájlok tárolására.</string>
@@ -548,6 +541,7 @@
     <string name="get">Kap</string>
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>
     <string name="global">Globális</string>
+    <string name="gp2abc_extract">Kivonat fájlból (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Hagyjon türelmi időt a daloknak</string>
     <string name="grace_time_info">Ez lehetővé teszi a dalok gyors böngészését, és csak 2 másodperces türelmi idő után küld információkat más csatlakoztatott eszközökre.</string>
     <string name="green">Zöld</string>
@@ -644,6 +638,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Beágyazott MIDI-parancsok</string>
     <string name="inline_midi_info">MIDI-parancsok, amelyek egy dalszakaszra kattintva indíthatók el</string>
+    <string name="inline_search">Soron belüli keresés</string>
+    <string name="inline_search_info">Keresés és tartalom kinyerése közvetlenül az alkalmazásban</string>
     <string name="inline_set_move_to_next">Dal ugrása a készlet következő elemére</string>
     <string name="inline_set_scroll_to_item">Görgetés az aktuális elemhez</string>
     <string name="insert_guitar_tab">Helyezze be a Gitár fület</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Rendszer margók</string>
     <string name="margins_system_info">Hagyjon helyet az észlelt eszközvezérlőknek (alsó navigációs sáv és oldalsó menük)</string>
     <string name="master">Fő</string>
+    <string name="match_case">Gyufa eset</string>
     <string name="max_font_size">Maximális automatikus átméretezés betűméret</string>
     <string name="max_pdf_scale">A PDF/nyomtatás maximális méretaránya</string>
     <string name="max_pdf_scale_info">A maximálisan használható méretezés.  Kisebb szövegekhez válasszon alacsonyabb értékeket.  A szöveg mérete nem lépi túl az oldal szélességét.  A 75% jó kiindulópont a legtöbb számára.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Nem érhető el vagy nincs telepítve olyan alkalmazás, amely megnyitná ezt az elemet.</string>
     <string name="not_allowed">Ez a funkció nem engedélyezett ehhez a termékhez</string>
     <string name="not_available">Nem elérhető</string>
+    <string name="not_found">Nem található</string>
     <string name="not_saved">Nem mentve</string>
     <string name="not_saved_filename">Kérjük, adjon meg egy fájlnevet a dalhoz</string>
     <string name="not_saved_folder">Kérjük, válasszon mappát a dalhoz</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">A hosszú lenyomásnak minősülő billentyűkombinációs parancsok száma (a fent megadott idő alatt)</string>
     <string name="repeat_mode_info">Azoknál a pedáloknál, amelyek ismételt billentyűle- és felgombolási parancsokat küldenek, ez hosszú lenyomási műveletet szimulálhat</string>
     <string name="repeat_mode_time">Ideje figyelni az ismétlődő billentyű le és billentyű fel parancsokat</string>
+    <string name="replace">Csere</string>
+    <string name="replace_all">Összes cseréje</string>
+    <string name="replace_with">Cserélje ki erre</string>
+    <string name="replacements_made">elvégzett cserék</string>
     <string name="reprise">Ismétlés</string>
     <string name="requires_internet">Ez a funkció internet-hozzáférést igényel</string>
     <string name="reset">Visszaállítása</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Ehhez a webhelyhez érvényes fiók szükséges.  A szükséges letöltés elindításához a SongSelect weboldalon található letöltés gombot kell használnia.  A fájl importálásra kerül az OpenSong/Songs/ mappába a letöltés után.</string>
     <string name="song_select_warning_more">A SongSelect korlátozások miatt most manuálisan kell letöltenie a dalfájlt, majd importálnia kell az alkalmazásba.  A fájl letöltése után visszatér erre az oldalra, és a \'Letöltés importálása\' gombra kattintva importálhatja a letöltött fájlt az OpenSongApp alkalmazásba.</string>
     <string name="song_specific">Dalspecifikus</string>
+    <string name="song_sticky_positions">Használjon dalhoz kötött rögzített pozíciókat</string>
     <string name="song_swipe_toggle">Váltás ellop lépni a dalok között be / ki</string>
     <string name="song_title">Dal címe</string>
     <string name="songs">Dalok</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="inline_search">Soron belüli keresés</string>
-    <string name="inline_search_info">Keresés és tartalom kinyerése közvetlenül az alkalmazásban</string>
-    <string name="song_sticky_positions">Használjon dalhoz kötött rögzített pozíciókat</string>
 </resources>

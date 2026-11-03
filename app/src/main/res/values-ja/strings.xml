@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">ファイル（.gp、.gpx、.xml、.mxl）から抽出</string>
-    <string name="find_and_replace">検索と置換</string>
-    <string name="match_case">マッチケース</string>
-    <string name="find_what">何を見つけるか</string>
-    <string name="replace_with">に置き換える</string>
-    <string name="find_next">次の検索</string>
-    <string name="replace">交換する</string>
-    <string name="replace_all">すべて置換</string>
-    <string name="replacements_made">交換が行われた</string>
-    <string name="not_found">見つかりません</string>
     <string name="abc_add_to_song">楽譜にabc記譜法をコピーする</string>
     <string name="abc_editor">ABCウェブエディター</string>
     <string name="abc_include_tab">タブ譜を含める</string>
@@ -153,7 +143,6 @@
     <string name="beats">ビート</string>
     <string name="before">前</string>
     <string name="bible">聖書</string>
-    <string name="bibleXML">OpenSong XML聖書</string>
     <string name="bible_browse">聖書を閲覧/検索する</string>
     <string name="bible_browse_offline">オフライン/ダウンロードした聖書を使用する</string>
     <string name="bible_download_for_offline">オフラインで使用するために聖書翻訳をダウンロードする</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">聖書のバージョンコード\n（例えばNIV、MSG）</string>
     <string name="bible_verse">聖書の一節</string>
     <string name="bible_verse_numbers">詩の番号を含める</string>
+    <string name="bibleXML">OpenSong XML聖書</string>
     <string name="bigger">大きい</string>
     <string name="black_screen">黒い画面</string>
     <string name="black_screen_info">すべてのビューをフェードイン/フェードアウトします（ロゴを除く）</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">表示される曲のリストをフィルタリングする</string>
     <string name="filtering">フィルタリング</string>
     <string name="filters">フィルタ</string>
+    <string name="find_and_replace">検索と置換</string>
     <string name="find_existing">OpenSongファイルの以前のインストール場所を見つける</string>
+    <string name="find_next">次の検索</string>
+    <string name="find_what">何を見つけるか</string>
     <string name="finger">指</string>
     <string name="fingering">運指</string>
     <string name="first_run">アプリを初めて実行するか、何かが変更されました。 Androidの権限により、アプリがファイルを保存するための希望の保存場所を設定する必要があります。</string>
@@ -548,6 +541,7 @@
     <string name="get">得る</string>
     <string name="github_description">アプリ開発に貢献する</string>
     <string name="global">グローバル</string>
+    <string name="gp2abc_extract">ファイル（.gp、.gpx、.xml、.mxl）から抽出</string>
     <string name="grace_time">曲の猶予時間を許可する</string>
     <string name="grace_time_info">これにより、曲をすばやく閲覧でき、2秒の猶予期間後にのみ、接続されている他のデバイスに情報を送信できます。</string>
     <string name="green">緑</string>
@@ -644,6 +638,8 @@
     <string name="inline">列をなして</string>
     <string name="inline_midi">インライン MIDI コマンド</string>
     <string name="inline_midi_info">曲のセクションをクリックするとトリガーできるMIDIコマンド</string>
+    <string name="inline_search">インライン検索</string>
+    <string name="inline_search_info">アプリ内で直接コンテンツを検索して抽出する</string>
     <string name="inline_set_move_to_next">セットリストの次の曲への合図</string>
     <string name="inline_set_scroll_to_item">現在のアイテムまでスクロールしてください</string>
     <string name="insert_guitar_tab">「ギターを挿入」タブ</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">システムマージン</string>
     <string name="margins_system_info">検出されたデバイス コントロール (下部のナビゲーション バーとサイド メニュー) 用のスペースを残す</string>
     <string name="master">マスター</string>
+    <string name="match_case">マッチケース</string>
     <string name="max_font_size">最大オートスケールフォントサイズ</string>
     <string name="max_pdf_scale">PDF/印刷の最大縮尺サイズ</string>
     <string name="max_pdf_scale_info">使用する最大スケーリング。  テキストを小さくするには、より低い値を選択します。  テキスト サイズはページ幅を超えて拡大縮小されません。  ほとんどの場合、75% が適切な開始点です。</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">このアイテムを開くことができるアプリケーションは利用できないか、インストールされていません。</string>
     <string name="not_allowed">この関数は、この項目のため許可されていません</string>
     <string name="not_available">利用不可</string>
+    <string name="not_found">見つかりません</string>
     <string name="not_saved">保存されません</string>
     <string name="not_saved_filename">曲のファイル名を入力してください</string>
     <string name="not_saved_folder">曲のフォルダを選択してください</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">長押しと見なされるキーアップコマンドの数(上記の時間内)</string>
     <string name="repeat_mode_info">キーを押し下げたり上ったりするコマンドを繰り返すペダルの場合、これは長押しアクションをシミュレートできます</string>
     <string name="repeat_mode_time">キー・ダウン・コマンドとキー・アップ・コマンドの繰り返しをリッスンする時間</string>
+    <string name="replace">交換する</string>
+    <string name="replace_all">すべて置換</string>
+    <string name="replace_with">に置き換える</string>
+    <string name="replacements_made">交換が行われた</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">この機能にはインターネットアクセスが必要です</string>
     <string name="reset">リセット</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">このサイトには有効なアカウントが必要です。 SongSelect Webページ内のダウンロードボタンを使用して、必要なダウンロードをトリガーする必要があります。 ファイルは、ダウンロード後、OpenSong / Songs /フォルダーにインポートされます。</string>
     <string name="song_select_warning_more">SongSelectの制限により、曲ファイルを手動でダウンロードし、アプリにインポートする必要があります。ファイルをダウンロード後、このページに戻り、「ダウンロードをインポート」ボタンをクリックして、ダウンロードしたファイルをOpenSongAppにインポートできます。</string>
     <string name="song_specific">曲特有の</string>
+    <string name="song_sticky_positions">楽曲特有の固定ポジションを使用する</string>
     <string name="song_swipe_toggle">トグルスワイプオフ/上の曲間を移動するには</string>
     <string name="song_title">曲のタイトル</string>
     <string name="songs">曲</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="inline_search">インライン検索</string>
-    <string name="inline_search_info">アプリ内で直接コンテンツを検索して抽出する</string>
-    <string name="song_sticky_positions">楽曲特有の固定ポジションを使用する</string>
 </resources>

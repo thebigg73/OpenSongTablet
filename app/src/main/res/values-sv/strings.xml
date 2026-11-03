@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Utdrag från fil (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Hitta och ersätt</string>
-    <string name="match_case">Matchfodral</string>
-    <string name="find_what">Hitta vad</string>
-    <string name="replace_with">Ersätt med</string>
-    <string name="find_next">Hitta nästa</string>
-    <string name="replace">Ersätta</string>
-    <string name="replace_all">Ersätt alla</string>
-    <string name="replacements_made">ersättningar gjorda</string>
-    <string name="not_found">Inte hittad</string>
     <string name="abc_add_to_song">Kopiera abc-notation till låt</string>
     <string name="abc_editor">Abc webbredaktör</string>
     <string name="abc_include_tab">Inkludera tabulatur</string>
@@ -153,7 +143,6 @@
     <string name="beats">Takter</string>
     <string name="before">Innan</string>
     <string name="bible">Bibeln</string>
-    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Bläddra/sök i Bibeln</string>
     <string name="bible_browse_offline">Använd offline/nedladdade bibel</string>
     <string name="bible_download_for_offline">Ladda ner en bibelöversättning för offlineanvändning</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Bibelversionskod (t.ex. NIV, MSG)</string>
     <string name="bible_verse">Bibelvers</string>
     <string name="bible_verse_numbers">Inkludera versnummer</string>
+    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bigger">Större</string>
     <string name="black_screen">Svart skärm</string>
     <string name="black_screen_info">Tona in/ut alla vyer (utom logotyp)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Filtrera listan över låtar som visas</string>
     <string name="filtering">Filtrering</string>
     <string name="filters">Filter</string>
+    <string name="find_and_replace">Hitta och ersätt</string>
     <string name="find_existing">Hitta tidigare installationsplatser för OpenSong-filer</string>
+    <string name="find_next">Hitta nästa</string>
+    <string name="find_what">Hitta vad</string>
     <string name="finger">finger</string>
     <string name="fingering">Fingrar</string>
     <string name="first_run">Antingen är det första gången du kör appen, eller så har något förändrats. På grund av Android-behörigheter behöver vi ställa in önskad lagringsplats för att appen ska lagra dess filer.</string>
@@ -548,6 +541,7 @@
     <string name="get">Få</string>
     <string name="github_description">Bidra till apputveckling</string>
     <string name="global">Global</string>
+    <string name="gp2abc_extract">Utdrag från fil (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Tillåt låtens nådetid</string>
     <string name="grace_time_info">Detta gör att du kan bläddra bland låtar snabbt och skickar bara information till andra anslutna enheter efter en respitperiod på 2 sekunder.</string>
     <string name="green">Grön</string>
@@ -644,6 +638,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Textbundna MIDI-kommandon</string>
     <string name="inline_midi_info">MIDI-kommandon som kan utlösas genom att klicka på en låtsektion</string>
+    <string name="inline_search">Sökning i linje</string>
+    <string name="inline_search_info">Sök och extrahera innehåll direkt i appen</string>
     <string name="inline_set_move_to_next">Spola låten till nästa objekt i setet</string>
     <string name="inline_set_scroll_to_item">Bläddra till aktuellt objekt</string>
     <string name="insert_guitar_tab">Infoga fliken Gitarr</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Systemmarginaler</string>
     <string name="margins_system_info">Lämna utrymme för upptäckta enhetskontroller (nedre navigeringsfältet och sidomenyer)</string>
     <string name="master">Bemästra</string>
+    <string name="match_case">Matchfodral</string>
     <string name="max_font_size">Maximal skriftstorlek för autoskala</string>
     <string name="max_pdf_scale">Maximal skalstorlek för PDF/Skriv ut</string>
     <string name="max_pdf_scale_info">Den maximala skalningen att använda.  Välj lägre värden för mindre text.  Textstorleken skalas inte längre än sidbredden.  75 % är en bra utgångspunkt för de flesta.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Ingen applikation är tillgänglig eller installerad som kan öppna detta objekt.</string>
     <string name="not_allowed">Den här funktionen är inte tillåten för det här objektet</string>
     <string name="not_available">Inte tillgänglig</string>
+    <string name="not_found">Inte hittad</string>
     <string name="not_saved">Ej sparat</string>
     <string name="not_saved_filename">Ange ett filnamn för din låt</string>
     <string name="not_saved_folder">Välj en mapp för din låt</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Antal tangentkommandon för att kvalificera sig som ett långt tryck (under den tid som anges ovan)</string>
     <string name="repeat_mode_info">För pedaler som skickar upprepade kommandon för tangent ner och upp kan detta simulera en lång tryckning</string>
     <string name="repeat_mode_time">Dags att lyssna efter upprepade kommandon för att stänga och höja tangenten</string>
+    <string name="replace">Ersätta</string>
+    <string name="replace_all">Ersätt alla</string>
+    <string name="replace_with">Ersätt med</string>
+    <string name="replacements_made">ersättningar gjorda</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">Den här funktionen kräver internetåtkomst</string>
     <string name="reset">Återställa</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Den här webbplatsen kräver ett giltigt konto.  Du måste använda nedladdningsknappen på SongSelect web sida för att utlösa den nedladdning som krävs.  Filen kommer att importeras till din OpenSong/Songs/-mapp efter att den har laddats ner.</string>
     <string name="song_select_warning_more">På grund av SongSelect-begränsningar måste du nu ladda ner din låtfil manuellt och sedan importera den till appen.  När du har laddat ner filen kommer du tillbaka till den här sidan och kan klicka på knappen \'Importera nedladdning\' för att importera den nedladdade filen till OpenSongApp.</string>
     <string name="song_specific">Låtspecifik</string>
+    <string name="song_sticky_positions">Använd låtspecifika fasta positioner</string>
     <string name="song_swipe_toggle">Byt svep för att flytta mellan låtar på / av</string>
     <string name="song_title">Sång titel</string>
     <string name="songs">Låtar</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="inline_search">Sökning i linje</string>
-    <string name="inline_search_info">Sök och extrahera innehåll direkt i appen</string>
-    <string name="song_sticky_positions">Använd låtspecifika fasta positioner</string>
 </resources>

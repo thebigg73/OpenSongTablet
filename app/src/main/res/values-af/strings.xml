@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Uittreksel uit lêer (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Vind en vervang</string>
-    <string name="match_case">Pasmaat</string>
-    <string name="find_what">Vind wat</string>
-    <string name="replace_with">Vervang met</string>
-    <string name="find_next">Vind Volgende</string>
-    <string name="replace">Vervang</string>
-    <string name="replace_all">Vervang alles</string>
-    <string name="replacements_made">vervangings gemaak</string>
-    <string name="not_found">Nie gevind nie</string>
+    <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_add_to_song">Kopieer abc-notasie na liedjie</string>
     <string name="abc_editor">Abc webredakteur</string>
     <string name="abc_include_tab">Sluit tablatuur in</string>
@@ -153,7 +143,6 @@
     <string name="beats">Slae</string>
     <string name="before">Voorheen</string>
     <string name="bible">Bybel</string>
-    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Blaai deur/soek Bybel</string>
     <string name="bible_browse_offline">Gebruik vanlyn/afgelaaide Bybel</string>
     <string name="bible_download_for_offline">Laai \'n Bybelvertaling af vir vanlyn gebruik</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Bybel weergawe-kode \n(bv NIV, MSG)</string>
     <string name="bible_verse">Bybelvers</string>
     <string name="bible_verse_numbers">Sluit versnommers in</string>
+    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bigger">Groter</string>
     <string name="black_screen">Swart skerm</string>
     <string name="black_screen_info">Vervaag alle aansigte in/uit (behalwe logo)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Filtreer die lys liedjies wat gewys word</string>
     <string name="filtering">Filtreer</string>
     <string name="filters">Filters</string>
+    <string name="find_and_replace">Vind en vervang</string>
     <string name="find_existing">Vind vorige installasie plekke vir OpenSong lêers</string>
+    <string name="find_next">Vind Volgende</string>
+    <string name="find_what">Vind wat</string>
     <string name="finger">vinger</string>
     <string name="fingering">Vinger</string>
     <string name="first_run">Dit is u eerste keer dat u die program gebruik, of dat iets verander het. As gevolg van Android-toestemmings, moet u die gewenste stoorplek vir die program instel om die lêers daarvan te stoor.</string>
@@ -548,6 +541,7 @@
     <string name="get">Kry</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
     <string name="global">Wêreldwyd</string>
+    <string name="gp2abc_extract">Uittreksel uit lêer (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Laat lied grasietyd toe</string>
     <string name="grace_time_info">Hiermee kan u vinnig deur liedjies blaai en slegs inligting na ander gekoppelde toestelle stuur na \'n grasietydperk van 2\'s.</string>
     <string name="green">Groen</string>
@@ -644,6 +638,8 @@
     <string name="inline">Inlyn</string>
     <string name="inline_midi">Inlyn MIDI opdragte</string>
     <string name="inline_midi_info">MIDI-opdragte wat geaktiveer kan word deur op \'n liedjie-afdeling te klik</string>
+    <string name="inline_search">Inlyn soektog</string>
+    <string name="inline_search_info">Soek en onttrek inhoud direk in die toepassing</string>
     <string name="inline_set_move_to_next">Stuur liedjie na die volgende item in die stel</string>
     <string name="inline_set_scroll_to_item">Blaai na huidige item</string>
     <string name="insert_guitar_tab">Voeg Kitaar-oortjie in</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Los spasie vir bespeurde toestelkontroles (onderste navigasiebalk en sykieslyste)</string>
     <string name="master">Meester</string>
+    <string name="match_case">Pasmaat</string>
     <string name="max_font_size">Maksimum autoscale lettergrootte</string>
     <string name="max_pdf_scale">Maksimum skaalgrootte van PDF/Druk</string>
     <string name="max_pdf_scale_info">Die maksimum skaal om te gebruik.  Kies laer waardes vir kleiner teks.  Teksgrootte sal nie verder as bladsywydte skaal nie.  75% is \'n goeie beginpunt vir die meeste.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Geen toepassing is beskikbaar of geïnstalleer wat hierdie item kan oopmaak nie.</string>
     <string name="not_allowed">Hierdie funksie is nie toegelaat om hierdie item</string>
     <string name="not_available">Nie beskikbaar nie</string>
+    <string name="not_found">Nie gevind nie</string>
     <string name="not_saved">nie gestoor nie</string>
     <string name="not_saved_filename">Voer asseblief \'n lêernaam vir jou liedjie in</string>
     <string name="not_saved_folder">Kies asseblief \'n vouer vir jou liedjie</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Aantal sleutelopdragte om as \'n lang druk te kwalifiseer (in die tyd hierbo genoem)</string>
     <string name="repeat_mode_info">Vir pedale wat herhaalde sleutel-af- en op-opdragte stuur, kan dit \'n lang drukaksie simuleer</string>
     <string name="repeat_mode_time">Tyd om te luister vir herhaalde sleutel af en sleutel opdragte in</string>
+    <string name="replace">Vervang</string>
+    <string name="replace_all">Vervang alles</string>
+    <string name="replace_with">Vervang met</string>
+    <string name="replacements_made">vervangings gemaak</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">Hierdie kenmerk vereis internettoegang</string>
     <string name="reset">Herstel</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Hierdie webwerf benodig \'n geldige rekening.  U moet die aflaai-knoppie op die SongSelect-webblad gebruik om die nodige aflaai te aktiveer.  Die lêer sal in u OpenSong/Songs/ -lêergids ingevoer word nadat dit afgelaai is.</string>
     <string name="song_select_warning_more">As gevolg van SongSelect-beperkings, sal jy nou jou liedjielêer met die hand moet aflaai en dit dan in die toepassing invoer.  Nadat jy die lêer afgelaai het, sal jy na hierdie bladsy teruggekeer word en kan jy op die \'Import download\'-knoppie klik om die afgelaaide lêer in OpenSongApp in te voer.</string>
     <string name="song_specific">Liedjie spesifiek</string>
+    <string name="song_sticky_positions">Gebruik liedspesifieke klewerige posisies</string>
     <string name="song_swipe_toggle">Toggle krap tussen liedjies op / af te beweeg</string>
     <string name="song_title">Song title</string>
     <string name="songs">Liedjies</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="inline_search">Inlyn soektog</string>
-    <string name="inline_search_info">Soek en onttrek inhoud direk in die toepassing</string>
-    <string name="song_sticky_positions">Gebruik liedspesifieke klewerige posisies</string>
 </resources>

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Extrahovat ze souboru (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Najít a nahradit</string>
-    <string name="match_case">Zápas s velkým a malým písmenem</string>
-    <string name="find_what">Najít co</string>
-    <string name="replace_with">Nahradit za</string>
-    <string name="find_next">Najít další</string>
-    <string name="replace">Nahradit</string>
-    <string name="replace_all">Nahradit vše</string>
-    <string name="replacements_made">provedené náhrady</string>
-    <string name="not_found">Nenalezeno</string>
     <string name="abc_add_to_song">Zkopírujte notaci ABC do skladby</string>
     <string name="abc_editor">Webový editor Abc</string>
     <string name="abc_include_tab">Zahrnout tabulaturu</string>
@@ -153,7 +143,6 @@
     <string name="beats">Beats</string>
     <string name="before">Před</string>
     <string name="bible">Bible</string>
-    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Procházet/hledat bibli</string>
     <string name="bible_browse_offline">Používejte offline/staženou bibli</string>
     <string name="bible_download_for_offline">Stáhněte si překlad bible pro použití offline</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Bible verze kód \n(např. NIV, MSG)</string>
     <string name="bible_verse">Biblický verš</string>
     <string name="bible_verse_numbers">Zahrňte čísla veršů</string>
+    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bigger">Větší</string>
     <string name="black_screen">Černá obrazovka</string>
     <string name="black_screen_info">Zatmívání/ztrácení všech zobrazení (kromě loga)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Filtrujte seznam zobrazených skladeb</string>
     <string name="filtering">Filtrování</string>
     <string name="filters">Filtry</string>
+    <string name="find_and_replace">Najít a nahradit</string>
     <string name="find_existing">Najít předchozí umístění instalace pro soubory OpenSong</string>
+    <string name="find_next">Najít další</string>
+    <string name="find_what">Najít co</string>
     <string name="finger">prst</string>
     <string name="fingering">Prstování</string>
     <string name="first_run">Buď aplikaci spouštíte poprvé, nebo se něco změnilo. Z důvodu oprávnění systému Android potřebujeme, abyste aplikaci nastavili požadované umístění úložiště, do kterého se budou ukládat její soubory.</string>
@@ -548,6 +541,7 @@
     <string name="get">Získat</string>
     <string name="github_description">Přispějte k vývoji aplikací</string>
     <string name="global">Globální</string>
+    <string name="gp2abc_extract">Extrahovat ze souboru (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Povolit dobu odkladu skladby</string>
     <string name="grace_time_info">To vám umožní rychle procházet skladby a odesílat informace do jiných připojených zařízení pouze po uplynutí doby odkladu 2 s.</string>
     <string name="green">Zelená</string>
@@ -644,6 +638,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Vložené MIDI příkazy</string>
     <string name="inline_midi_info">MIDI příkazy, které lze spustit kliknutím na sekci skladby</string>
+    <string name="inline_search">Inline vyhledávání</string>
+    <string name="inline_search_info">Hledejte a extrahujte obsah přímo v aplikaci</string>
     <string name="inline_set_move_to_next">Přechod skladby k další položce v sadě</string>
     <string name="inline_set_scroll_to_item">Přejít na aktuální položku</string>
     <string name="insert_guitar_tab">Vložte kartu Guitar</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Systémové marže</string>
     <string name="margins_system_info">Ponechat místo pro ovládací prvky detekovaného zařízení (spodní navigační lišta a boční nabídky)</string>
     <string name="master">Zvládnout</string>
+    <string name="match_case">Zápas s velkým a malým písmenem</string>
     <string name="max_font_size">Maximální autoscale velikost písma</string>
     <string name="max_pdf_scale">Maximální velikost měřítka PDF/Tisk</string>
     <string name="max_pdf_scale_info">Maximální použité měřítko.  Pro menší text zvolte nižší hodnoty.  Velikost textu nepřesáhne šířku stránky.  75 % je pro většinu dobrým výchozím bodem.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Není k dispozici ani nainstalována žádná aplikace, která by tuto položku mohla otevřít.</string>
     <string name="not_allowed">Tato funkce není povolena pro tuto položku</string>
     <string name="not_available">Není dostupný</string>
+    <string name="not_found">Nenalezeno</string>
     <string name="not_saved">neuloženo</string>
     <string name="not_saved_filename">Zadejte název souboru pro vaši skladbu</string>
     <string name="not_saved_folder">Vyberte prosím složku pro vaši skladbu</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Počet příkazů pro stisknutí klávesy, které se kvalifikují jako dlouhé stisknutí (ve výše uvedeném čase)</string>
     <string name="repeat_mode_info">U pedálů, které vysílají opakované příkazy kláves dolů a nahoru, to může simulovat dlouhý stisk</string>
     <string name="repeat_mode_time">Je čas poslouchat opakované příkazy pro stisknutí a stisknutí kláves</string>
+    <string name="replace">Nahradit</string>
+    <string name="replace_all">Nahradit vše</string>
+    <string name="replace_with">Nahradit za</string>
+    <string name="replacements_made">provedené náhrady</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">Tato funkce vyžaduje přístup k internetu</string>
     <string name="reset">Obnovit</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Tato stránka vyžaduje platný účet.  Ke spuštění požadovaného stahování musíte použít tlačítko stahování na webové stránce SongSelect.  Soubor bude po stažení importován do složky OpenSong/Songs/.</string>
     <string name="song_select_warning_more">Kvůli omezením SongSelect si nyní budete muset ručně stáhnout soubor skladby a poté jej importovat do aplikace.  Po stažení souboru se vrátíte na tuto stránku a můžete kliknout na tlačítko \'Importovat stažení\' a importovat stažený soubor do OpenSongApp.</string>
     <string name="song_specific">Skladba specifická</string>
+    <string name="song_sticky_positions">Používejte specifické lepivé pozice pro píseň</string>
     <string name="song_swipe_toggle">Přepnout švihnout pro pohyb mezi skladbami zap / vyp</string>
     <string name="song_title">Název skladby</string>
     <string name="songs">Písně</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Uctívání</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="inline_search">Inline vyhledávání</string>
-    <string name="inline_search_info">Hledejte a extrahujte obsah přímo v aplikaci</string>
-    <string name="song_sticky_positions">Používejte specifické lepivé pozice pro píseň</string>
 </resources>

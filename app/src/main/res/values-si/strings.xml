@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">ගොනුවෙන් උපුටා ගැනීම (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">සොයා ගෙන ප්‍රතිස්ථාපනය කරන්න</string>
-    <string name="match_case">කේස් එක ගලපන්න</string>
-    <string name="find_what">මොකක්ද කියලා හොයාගන්න.</string>
-    <string name="replace_with">සමඟ ප්‍රතිස්ථාපනය කරන්න</string>
-    <string name="find_next">ඊළඟ සොයන්න</string>
-    <string name="replace">ප්‍රතිස්ථාපනය කරන්න</string>
-    <string name="replace_all">සියල්ල ප්‍රතිස්ථාපනය කරන්න</string>
-    <string name="replacements_made">ආදේශන සිදු කරන ලදී</string>
-    <string name="not_found">හමු වුණේ නැහැ</string>
     <string name="abc_add_to_song">ගීතයට abc අංකනය පිටපත් කරන්න</string>
     <string name="abc_editor">ඒබීසී වෙබ් සංස්කාරක</string>
     <string name="abc_include_tab">ටැබ්ලේචර් ඇතුළත් කරන්න</string>
@@ -153,7 +143,6 @@
     <string name="beats">පහර දෙනවා</string>
     <string name="before">කලින්</string>
     <string name="bible">බයිබලය</string>
-    <string name="bibleXML">OpenSong XML බයිබලය</string>
     <string name="bible_browse">බයිබලය පිරික්සන්න/සොයන්න</string>
     <string name="bible_browse_offline">නොබැඳි / බාගත කළ බයිබලය භාවිතා කරන්න</string>
     <string name="bible_download_for_offline">නොබැඳි භාවිතය සඳහා බයිබල් පරිවර්තනයක් බාගන්න</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">බයිබල් අනුවාද කේතය (උදා. NIV, MSG)</string>
     <string name="bible_verse">බයිබල් පදය</string>
     <string name="bible_verse_numbers">පද අංක ඇතුළත් කරන්න</string>
+    <string name="bibleXML">OpenSong XML බයිබලය</string>
     <string name="bigger">විශාලයි</string>
     <string name="black_screen">කළු තිරය</string>
     <string name="black_screen_info">සියලුම දසුන් මැකී යන්න (ලාංඡනය හැර)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">පෙන්වා ඇති ගීත ලැයිස්තුව පෙරහන් කරන්න</string>
     <string name="filtering">පෙරීම</string>
     <string name="filters">පෙරහන්</string>
+    <string name="find_and_replace">සොයා ගෙන ප්‍රතිස්ථාපනය කරන්න</string>
     <string name="find_existing">OpenSong ගොනු සඳහා පෙර ස්ථාපන ස්ථාන සොයන්න</string>
+    <string name="find_next">ඊළඟ සොයන්න</string>
+    <string name="find_what">මොකක්ද කියලා හොයාගන්න.</string>
     <string name="finger">ඇඟිල්ල</string>
     <string name="fingering">ඇඟිලි ගැසීම</string>
     <string name="first_run">එක්කෝ ඔබ යෙදුම ධාවනය කරන පළමු අවස්ථාව මෙය වේ, නැතහොත් යමක් වෙනස් වී ඇත. ඇන්ඩ්‍රොයිඩ් අවසර හේතුවෙන්, යෙදුමට එහි ගොනු ගබඩා කිරීම සඳහා ඔබ කැමති ගබඩා ස්ථානය සැකසීමට අපට අවශ්‍ය වේ.</string>
@@ -548,6 +541,7 @@
     <string name="get">ලබාගන්න</string>
     <string name="github_description">යෙදුම් සංවර්ධනයට දායක වන්න</string>
     <string name="global">ගෝලීය</string>
+    <string name="gp2abc_extract">ගොනුවෙන් උපුටා ගැනීම (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">ගීත ප්‍රසාද කාලයට ඉඩ දෙන්න</string>
     <string name="grace_time_info">මෙය ඔබට ඉක්මනින් ගීත බ්‍රවුස් කිරීමට ඉඩ ලබා දෙන අතර තත්පර 2ක සහන කාල සීමාවකට පසුව පමණක් සම්බන්ධිත අනෙකුත් උපාංග වෙත තොරතුරු යවයි.</string>
     <string name="green">කොළ</string>
@@ -730,6 +724,7 @@
     <string name="margins_system">පද්ධති මායිම්</string>
     <string name="margins_system_info">හඳුනාගත් උපාංග පාලන සඳහා ඉඩ තබන්න (පහළ සංචාලන තීරුව සහ පැති මෙනු)</string>
     <string name="master">මාස්ටර්</string>
+    <string name="match_case">කේස් එක ගලපන්න</string>
     <string name="max_font_size">උපරිම ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය</string>
     <string name="max_pdf_scale">PDF/Print හි උපරිම පරිමාණ ප්‍රමාණය</string>
     <string name="max_pdf_scale_info">භාවිතා කිරීමට උපරිම පරිමාණය.  කුඩා පෙළ සඳහා අඩු අගයන් තෝරන්න.  පෙළ ප්‍රමාණය පිටු පළල ඉක්මවා නොයනු ඇත.  75% බොහෝ දෙනෙකුට හොඳ ආරම්භක ලක්ෂ්‍යයකි.</string>
@@ -879,6 +874,7 @@
     <string name="no_suitable_application">මෙම අයිතමය විවෘත කළ හැකි කිසිදු යෙදුමක් නොමැත.</string>
     <string name="not_allowed">මෙම අයිතමය සඳහා මෙම කාර්යයට ඉඩ නොදේ</string>
     <string name="not_available">ලද නොහැක</string>
+    <string name="not_found">හමු වුණේ නැහැ</string>
     <string name="not_saved">සුරැකි නැත</string>
     <string name="not_saved_filename">කරුණාකර ඔබේ ගීතය සඳහා ගොනු නාමයක් ඇතුළත් කරන්න</string>
     <string name="not_saved_folder">කරුණාකර ඔබේ ගීතය සඳහා ෆෝල්ඩරයක් තෝරන්න</string>
@@ -1069,6 +1065,10 @@
     <string name="repeat_mode_count">දිගු එබීමක් ලෙස සුදුසුකම් ලැබීමට යතුරු උඩු විධාන ගණන (ඉහත සඳහන් කර ඇති කාලය තුළ)</string>
     <string name="repeat_mode_info">නැවත නැවතත් යතුර පහළට සහ ඉහළට යවන පෙඩල් සඳහා මෙය දිගු තද කිරීමේ ක්‍රියාවක් අනුකරණය කළ හැක</string>
     <string name="repeat_mode_time">නැවත නැවතත් යතුර පහළට සහ යතුරු උඩු විධාන සඳහා සවන් දීමට කාලයයි</string>
+    <string name="replace">ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="replace_all">සියල්ල ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="replace_with">සමඟ ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="replacements_made">ආදේශන සිදු කරන ලදී</string>
     <string name="reprise">නැවත නැවත කරන්න</string>
     <string name="requires_internet">මෙම විශේෂාංගයට අන්තර්ජාල ප්‍රවේශය අවශ්‍ය වේ</string>
     <string name="reset">යළි පිහිටුවන්න</string>
@@ -1231,6 +1231,7 @@
     <string name="song_select_warning">මෙම අඩවියට වලංගු ගිණුමක් අවශ්‍ය වේ.  අවශ්‍ය බාගැනීම ප්‍රේරණය කිරීමට ඔබ SongSelect වෙබ් පිටුව තුළ ඇති බාගැනීම් බොත්තම භාවිතා කළ යුතුය.  ගොනුව බාගත කිරීමෙන් පසු ඔබේ OpenSong/Songs/ ෆෝල්ඩරයට ආයාත කරනු ලැබේ.</string>
     <string name="song_select_warning_more">SongSelect සීමා කිරීම් හේතුවෙන්, ඔබට දැන් ඔබගේ ගීත ගොනුව අතින් බාගත කර එය යෙදුමට ආයාත කිරීමට සිදුවේ.  ගොනුව බාගත කිරීමෙන් පසු, ඔබව මෙම පිටුවට ආපසු පැමිණෙන අතර, බාගත කළ ගොනුව OpenSongApp වෙත ආයාත කිරීමට \'ආයාත බාගැනීම\' බොත්තම ක්ලික් කළ හැක.</string>
     <string name="song_specific">ගීතය විශේෂිත</string>
+    <string name="song_sticky_positions">ගීතයට නිශ්චිත ඇලෙන සුළු ස්ථාන භාවිතා කරන්න</string>
     <string name="song_swipe_toggle">ගීත අතර ස්වයිප් කිරීමට ඉඩ දෙන්න</string>
     <string name="song_title">ගීතයේ තේමාව</string>
     <string name="songs">ගීත</string>
@@ -1544,5 +1545,4 @@
     <string name="worship">නමස්කාරය</string>
     <string name="zone">කලාපය</string>
     <string name="zoom_level">විශාලන මට්ටම</string>
-    <string name="song_sticky_positions">ගීතයට නිශ්චිත ඇලෙන සුළු ස්ථාන භාවිතා කරන්න</string>
 </resources>

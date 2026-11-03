@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Εξαγωγή από αρχείο (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Εύρεση και αντικατάσταση</string>
-    <string name="match_case">Ταίριασμα περίπτωσης</string>
-    <string name="find_what">Βρείτε τι</string>
-    <string name="replace_with">Αντικατάσταση με</string>
-    <string name="find_next">Εύρεση επόμενου</string>
-    <string name="replace">Αντικαθιστώ</string>
-    <string name="replace_all">Αντικατάσταση όλων</string>
-    <string name="replacements_made">αντικαταστάσεις που έγιναν</string>
-    <string name="not_found">Δεν βρέθηκε</string>
     <string name="abc_add_to_song">Αντιγραφή σημειογραφίας abc σε τραγούδι</string>
     <string name="abc_editor">Επεξεργαστής ιστού ABC</string>
     <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>
@@ -153,7 +143,6 @@
     <string name="beats">Beats</string>
     <string name="before">Πριν</string>
     <string name="bible">Αγια ΓΡΑΦΗ</string>
-    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Περιήγηση/αναζήτηση Βίβλου</string>
     <string name="bible_browse_offline">Χρησιμοποιήστε τη Βίβλο εκτός σύνδεσης/κατεβασμένη</string>
     <string name="bible_download_for_offline">Κατεβάστε μια μετάφραση της Αγίας Γραφής για χρήση εκτός σύνδεσης</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Κωδικός έκδοσης Βίβλου\n(π.χ. NIV, MSG)</string>
     <string name="bible_verse">Στίχος της Βίβλου</string>
     <string name="bible_verse_numbers">Συμπεριλάβετε αριθμούς στίχων</string>
+    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bigger">Μεγαλύτερος</string>
     <string name="black_screen">Μαύρη οθόνη</string>
     <string name="black_screen_info">Fade in/out όλες οι προβολές (εκτός από το λογότυπο)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Φιλτράρετε τη λίστα των τραγουδιών που εμφανίζονται</string>
     <string name="filtering">Φιλτράρισμα</string>
     <string name="filters">Φίλτρα</string>
+    <string name="find_and_replace">Εύρεση και αντικατάσταση</string>
     <string name="find_existing">Βρείτε προηγούμενες θέσεις εγκατάστασης για αρχεία OpenSong</string>
+    <string name="find_next">Εύρεση επόμενου</string>
+    <string name="find_what">Βρείτε τι</string>
     <string name="finger">δάχτυλο</string>
     <string name="fingering">Δάχτυλο</string>
     <string name="first_run">Είτε αυτή είναι η πρώτη φορά που εκτελείτε την εφαρμογή, είτε κάτι έχει αλλάξει. Λόγω των αδειών Android, πρέπει να ορίσετε την επιθυμητή τοποθεσία αποθήκευσης ώστε η εφαρμογή να αποθηκεύει τα αρχεία της.</string>
@@ -548,6 +541,7 @@
     <string name="get">Παίρνω</string>
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>
     <string name="global">Καθολικός</string>
+    <string name="gp2abc_extract">Εξαγωγή από αρχείο (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Επιτρέψτε χρόνο χάριτος τραγουδιού</string>
     <string name="grace_time_info">Αυτό σας επιτρέπει να περιηγείστε γρήγορα στα τραγούδια και να στέλνετε πληροφορίες μόνο σε άλλες συνδεδεμένες συσκευές μετά από μια χρονική περίοδο χάριτος 2 δευτερολέπτων.</string>
     <string name="green">Πράσινος</string>
@@ -644,6 +638,8 @@
     <string name="inline">Ενσωματωμένη</string>
     <string name="inline_midi">Ενσωματωμένες εντολές MIDI</string>
     <string name="inline_midi_info">Εντολές MIDI που μπορούν να ενεργοποιηθούν κάνοντας κλικ σε μια ενότητα τραγουδιού</string>
+    <string name="inline_search">Αναζήτηση εντός γραμμής</string>
+    <string name="inline_search_info">Αναζήτηση και εξαγωγή περιεχομένου απευθείας στην εφαρμογή</string>
     <string name="inline_set_move_to_next">Μετακίνηση τραγουδιού στο επόμενο στοιχείο στο σετ</string>
     <string name="inline_set_scroll_to_item">Μεταβείτε στο τρέχον στοιχείο</string>
     <string name="insert_guitar_tab">Εισαγάγετε την καρτέλα Κιθάρα</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Περιθώρια συστήματος</string>
     <string name="margins_system_info">Αφήστε χώρο για τα στοιχεία ελέγχου συσκευής που εντοπίστηκαν (κάτω γραμμή πλοήγησης και πλευρικά μενού)</string>
     <string name="master">Κύριος</string>
+    <string name="match_case">Ταίριασμα περίπτωσης</string>
     <string name="max_font_size">Maximum autoscale font size</string>
     <string name="max_pdf_scale">Μέγιστο μέγεθος κλίμακας PDF/Εκτύπωσης</string>
     <string name="max_pdf_scale_info">Η μέγιστη κλιμάκωση προς χρήση.  Επιλέξτε χαμηλότερες τιμές για μικρότερο κείμενο.  Το μέγεθος του κειμένου δεν θα υπερβαίνει το πλάτος της σελίδας.  Το 75% είναι ένα καλό σημείο εκκίνησης για τους περισσότερους.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Δεν υπάρχει διαθέσιμη ή εγκατεστημένη εφαρμογή που να μπορεί να ανοίξει αυτό το στοιχείο.</string>
     <string name="not_allowed">Αυτή η λειτουργία δεν επιτρέπεται για αυτό το αντικείμενο</string>
     <string name="not_available">Μη διαθέσιμος</string>
+    <string name="not_found">Δεν βρέθηκε</string>
     <string name="not_saved">Δεν έχει αποθηκευτεί</string>
     <string name="not_saved_filename">Εισαγάγετε ένα όνομα αρχείου για το τραγούδι σας</string>
     <string name="not_saved_folder">Επιλέξτε ένα φάκελο για το τραγούδι σας</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Αριθμός εντολών key up για να χαρακτηριστείτε ως παρατεταμένο πάτημα (στο χρόνο που αναφέρεται παραπάνω)</string>
     <string name="repeat_mode_info">Για πεντάλ που στέλνουν επαναλαμβανόμενες εντολές πλήκτρων προς τα κάτω και προς τα πάνω, αυτό μπορεί να προσομοιώσει μια ενέργεια παρατεταμένου πατήματος</string>
     <string name="repeat_mode_time">Ώρα να ακούσετε επαναλαμβανόμενες εντολές πατήματος πλήκτρου και πλήκτρου επάνω</string>
+    <string name="replace">Αντικαθιστώ</string>
+    <string name="replace_all">Αντικατάσταση όλων</string>
+    <string name="replace_with">Αντικατάσταση με</string>
+    <string name="replacements_made">αντικαταστάσεις που έγιναν</string>
     <string name="reprise">Επαναλάβετε</string>
     <string name="requires_internet">Αυτή η δυνατότητα απαιτεί πρόσβαση στο Διαδίκτυο</string>
     <string name="reset">Επανακαθορισμός</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Αυτός ο ιστότοπος απαιτεί έγκυρο λογαριασμό.  Πρέπει να χρησιμοποιήσετε το κουμπί λήψης στην ιστοσελίδα SongSelect για να ενεργοποιήσετε την απαιτούμενη λήψη.  Το αρχείο θα εισαχθεί στο φάκελο OpenSong/Songs/ μετά τη λήψη του.</string>
     <string name="song_select_warning_more">Λόγω των περιορισμών SongSelect, θα πρέπει τώρα να κατεβάσετε με μη αυτόματο τρόπο το αρχείο τραγουδιού σας και στη συνέχεια να το εισαγάγετε στην εφαρμογή.  Μετά τη λήψη του αρχείου, θα επιστρέψετε σε αυτήν τη σελίδα και μπορείτε να κάνετε κλικ στο κουμπί \'Εισαγωγή λήψης\' για να εισαγάγετε το ληφθέν αρχείο στο OpenSongApp.</string>
     <string name="song_specific">Το συγκεκριμένο τραγούδι</string>
+    <string name="song_sticky_positions">Χρησιμοποιήστε συγκεκριμένες θέσεις κολλητικής για κάθε τραγούδι</string>
     <string name="song_swipe_toggle">Toggle swipe to move between songs on/off</string>
     <string name="song_title">Song title</string>
     <string name="songs">ΜΟΥΣΙΚΑ ΚΟΜΜΑΤΙΑ</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="inline_search">Αναζήτηση εντός γραμμής</string>
-    <string name="inline_search_info">Αναζήτηση και εξαγωγή περιεχομένου απευθείας στην εφαρμογή</string>
-    <string name="song_sticky_positions">Χρησιμοποιήστε συγκεκριμένες θέσεις κολλητικής για κάθε τραγούδι</string>
 </resources>

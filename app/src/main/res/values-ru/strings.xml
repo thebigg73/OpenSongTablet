@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Извлечение из файла (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Найти и заменить</string>
-    <string name="match_case">Спичечный коробок</string>
-    <string name="find_what">Найдите то, что</string>
-    <string name="replace_with">Заменить на</string>
-    <string name="find_next">Найти Далее</string>
-    <string name="replace">Заменять</string>
-    <string name="replace_all">Заменить все</string>
-    <string name="replacements_made">произведены замены</string>
-    <string name="not_found">Не найдено</string>
     <string name="abc_add_to_song">Скопируйте нотную запись abc в песню.</string>
     <string name="abc_editor">Веб-редактор Abc</string>
     <string name="abc_include_tab">Включить табулатуру</string>
@@ -153,7 +143,6 @@
     <string name="beats">Такты</string>
     <string name="before">До</string>
     <string name="bible">Библия</string>
-    <string name="bibleXML">Библия в формате OpenSong XML</string>
     <string name="bible_browse">Навигация/поиск в Библии</string>
     <string name="bible_browse_offline">Использовать оффлайн/онлайн Библию</string>
     <string name="bible_download_for_offline">Скачать перевод Библии для оффлайн использования</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Код перевода Библии\n(например, NRT, ERV-RU)</string>
     <string name="bible_verse">Библейский стих</string>
     <string name="bible_verse_numbers">Включить номера стихов</string>
+    <string name="bibleXML">Библия в формате OpenSong XML</string>
     <string name="bigger">Больше</string>
     <string name="black_screen">Черный экран</string>
     <string name="black_screen_info">Плавное появление/затухание во всех видах (кроме логотипа)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Фильтр списка отображаемых песен</string>
     <string name="filtering">Фильтрация</string>
     <string name="filters">Фильтры</string>
+    <string name="find_and_replace">Найти и заменить</string>
     <string name="find_existing">Найти расположение файлов OpenSong, оставшихся после предыдущих установок</string>
+    <string name="find_next">Найти Далее</string>
+    <string name="find_what">Найдите то, что</string>
     <string name="finger">палец</string>
     <string name="fingering">Аппликатура</string>
     <string name="first_run">Либо вы впервые запускаете приложение, либо что-то изменилось в структуре папок. Из-за требований Android нам нужно, чтобы вы задали удобное для вас место хранения, чтобы хранить файлы OpenSongApp.</string>
@@ -548,6 +541,7 @@
     <string name="get">Получать</string>
     <string name="github_description">Участвуйте в разработке приложения</string>
     <string name="global">Глобальный</string>
+    <string name="gp2abc_extract">Извлечение из файла (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Отсрочка</string>
     <string name="grace_time_info">С помощью отсрочки можно быстро просматривать песни и отправлять информацию на другие подключенные устройства только по истечении отсрочки в 2 секунды.</string>
     <string name="green">Зеленый</string>
@@ -644,6 +638,8 @@
     <string name="inline">В соответствии</string>
     <string name="inline_midi">Встроенные MIDI-команды</string>
     <string name="inline_midi_info">MIDI-команды, которые можно запустить, щелкнув раздел песни</string>
+    <string name="inline_search">Встроенный поиск</string>
+    <string name="inline_search_info">Искать и извлекать контент прямо в приложении</string>
     <string name="inline_set_move_to_next">Переключение песни на следующий элемент в сет-листе</string>
     <string name="inline_set_scroll_to_item">Прокрутите до текущего элемента</string>
     <string name="insert_guitar_tab">Вкладка «Вставить гитару»</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Системные поля</string>
     <string name="margins_system_info">Оставить место для стандартных элементов управления устройства (нижняя панель навигации и боковые меню).</string>
     <string name="master">Владелец</string>
+    <string name="match_case">Спичечный коробок</string>
     <string name="max_font_size">Максимальный размер шрифта автомасштабирования</string>
     <string name="max_pdf_scale">Максимальный размер PDF/печати</string>
     <string name="max_pdf_scale_info">Максимальное масштабирование для использования.  Выбирайте меньшие значения для меньшего текста.  Размер текста не будет масштабироваться за пределы ширины страницы.  75% — хорошая отправная точка для большинства.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Нет доступных или установленных приложений, которые могут открыть этот элемент.</string>
     <string name="not_allowed">Эта функция не доступна для текущего элемента</string>
     <string name="not_available">Недоступно</string>
+    <string name="not_found">Не найдено</string>
     <string name="not_saved">Не сохранено</string>
     <string name="not_saved_filename">Введите имя файла для вашей песни</string>
     <string name="not_saved_folder">Выберите папку для вашей песни</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Количество нажатий клавиш для длительного нажатия клавиши (за время, указанное выше)</string>
     <string name="repeat_mode_info">Для педалей, которые посылают повторяющиеся команды клавиш вниз и вверх, это может имитировать длительное нажатие</string>
     <string name="repeat_mode_time">Время прослушивания повторяющихся команд нажатия и нажатия клавиши вверх</string>
+    <string name="replace">Заменять</string>
+    <string name="replace_all">Заменить все</string>
+    <string name="replace_with">Заменить на</string>
+    <string name="replacements_made">произведены замены</string>
     <string name="reprise">Реприза</string>
     <string name="requires_internet">Для этой функции требуется доступ в Интернет</string>
     <string name="reset">Сброс</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Для работы с этим сайтом требуется действующая учетная запись.  Вы должны использовать кнопку загрузки на веб-странице SongSelect, чтобы запустить необходимую загрузку.  Файл будет импортирован в папку OpenSong/Songs/ после того, как он будет загружен.</string>
     <string name="song_select_warning_more">Из-за ограничений SongSelect вам теперь придется вручную загрузить файл песни, а затем импортировать его в приложение. После загрузки файла вы вернетесь на эту страницу и сможете нажать кнопку \'Импортировать загрузку\', чтобы импортировать загруженный файл в OpenSongApp.</string>
     <string name="song_specific">Конкретная песня</string>
+    <string name="song_sticky_positions">Использовать специфические для песни фиксированные позиции</string>
     <string name="song_swipe_toggle">Вкл/выкл перелистывание между песнями</string>
     <string name="song_title">Название песни</string>
     <string name="songs">Песни</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="inline_search">Встроенный поиск</string>
-    <string name="inline_search_info">Искать и извлекать контент прямо в приложении</string>
-    <string name="song_sticky_positions">Использовать специфические для песни фиксированные позиции</string>
 </resources>

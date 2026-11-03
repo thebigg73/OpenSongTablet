@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Estratto dal file (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Trova e sostituisci</string>
-    <string name="match_case">Scatola di fiammiferi</string>
-    <string name="find_what">Trova ciò che</string>
-    <string name="replace_with">Sostituire con</string>
-    <string name="find_next">Trova successivo</string>
-    <string name="replace">Sostituire</string>
-    <string name="replace_all">Sostituisci tutto</string>
-    <string name="replacements_made">sostituzioni effettuate</string>
-    <string name="not_found">Non trovato</string>
     <string name="abc_add_to_song">Copia la notazione abc nella canzone</string>
     <string name="abc_editor">Redattore web di ABC</string>
     <string name="abc_include_tab">Includi tablature</string>
@@ -153,7 +143,6 @@
     <string name="beats">Battiti</string>
     <string name="before">Prima</string>
     <string name="bible">Bibbia</string>
-    <string name="bibleXML">Bibbia OpenSong in XML</string>
     <string name="bible_browse">Sfoglia/cerca nella Bibbia</string>
     <string name="bible_browse_offline">Usa la Bibbia offline/scaricata</string>
     <string name="bible_download_for_offline">Scarica una traduzione della Bibbia per l\'uso offline</string>
@@ -163,6 +152,7 @@
     <string name="bible_translation">Tipologia di traduzione Bibbia \n(ad esempio BDG, LND)</string>
     <string name="bible_verse">Versetto biblico</string>
     <string name="bible_verse_numbers">Includi i numeri dei versi</string>
+    <string name="bibleXML">Bibbia OpenSong in XML</string>
     <string name="bigger">Più grande</string>
     <string name="black_screen">Schermo nero</string>
     <string name="black_screen_info">Dissolvenza in apertura/chiusura di tutte le viste (tranne il logo)</string>
@@ -507,7 +497,10 @@
     <string name="filter_songs">Filtrare l\'elenco dei brani visualizzati</string>
     <string name="filtering">Filtraggio</string>
     <string name="filters">Filtri</string>
+    <string name="find_and_replace">Trova e sostituisci</string>
     <string name="find_existing">Trova i percorsi di installazione precedenti per i file OpenSong</string>
+    <string name="find_next">Trova successivo</string>
+    <string name="find_what">Trova ciò che</string>
     <string name="finger">dito</string>
     <string name="fingering">Diteggiatura</string>
     <string name="first_run">Questa è la prima volta che viene eseguita l\'app oppure vi sono state delle modifiche. A causa delle autorizzazioni Android, è necessario impostare il percorso di installazione per i files dell\'app.</string>
@@ -548,6 +541,7 @@
     <string name="get">Ottenere</string>
     <string name="github_description">Contribuisci allo sviluppo di OpensSongApp</string>
     <string name="global">Globale</string>
+    <string name="gp2abc_extract">Estratto dal file (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Consentire un periodo di tolleranza</string>
     <string name="grace_time_info">Consente di sfogliare rapidamente i brani e inviare informazioni solo ad altri dispositivi collegati dopo un periodo di tolleranza di 2 secondi.</string>
     <string name="green">Verde</string>
@@ -644,6 +638,8 @@
     <string name="inline">In linea</string>
     <string name="inline_midi">Comandi MIDI in linea</string>
     <string name="inline_midi_info">Comandi MIDI che possono essere attivati cliccando su una sezione del brano</string>
+    <string name="inline_search">Ricerca inline</string>
+    <string name="inline_search_info">Cerca ed estrai contenuti direttamente nell\'app</string>
     <string name="inline_set_move_to_next">Avviare la canzone per il prossimo elemento del set</string>
     <string name="inline_set_scroll_to_item">Scorri fino all\'elemento corrente</string>
     <string name="insert_guitar_tab">Visualizza la tablature per chitarra</string>
@@ -728,6 +724,7 @@
     <string name="margins_system">Margini di sistema</string>
     <string name="margins_system_info">Regola i margini per visualizzare correttamente i controlli dei dispositivi rilevati (barra di navigazione inferiore e menu laterali)</string>
     <string name="master">Maestro</string>
+    <string name="match_case">Scatola di fiammiferi</string>
     <string name="max_font_size">Dimensione massima del carattere con il ridimensionamento automatico</string>
     <string name="max_pdf_scale">Massima percentuale in scala del PDF creato</string>
     <string name="max_pdf_scale_info">Massima percentuale di auto ridimensionamento da utilizzare.  Scegli valori più bassi per testo più piccolo.  La dimensione del testo non verrà ridimensionata oltre la larghezza della pagina.  Il 75% è un buon punto di partenza.</string>
@@ -877,6 +874,7 @@
     <string name="no_suitable_application">Nessuna applicazione disponibile o installata in grado di aprire questo elemento.</string>
     <string name="not_allowed">Questa funzione non è consentita</string>
     <string name="not_available">Non disponibile</string>
+    <string name="not_found">Non trovato</string>
     <string name="not_saved">Non salvato</string>
     <string name="not_saved_filename">Inserisci un nome file per il tuo brano</string>
     <string name="not_saved_folder">Seleziona una cartella per il tuo brano</string>
@@ -1067,6 +1065,10 @@
     <string name="repeat_mode_count">Numero di comandi tastiera ricevuti dal pedale per identificare una pressione prolungata (nel tempo sopra indicato)</string>
     <string name="repeat_mode_info">Per i pedali che inviano ripetuti comandi di tasti su e giù, questo può simulare un\'azione di pressione prolungata</string>
     <string name="repeat_mode_time">Tempo di ascolto per identificare o meno una pressione prolungata del pedale</string>
+    <string name="replace">Sostituire</string>
+    <string name="replace_all">Sostituisci tutto</string>
+    <string name="replace_with">Sostituire con</string>
+    <string name="replacements_made">sostituzioni effettuate</string>
     <string name="reprise">Riprendere</string>
     <string name="requires_internet">Questa funzione richiede l\'accesso a Internet</string>
     <string name="reset">Reset</string>
@@ -1229,6 +1231,7 @@
     <string name="song_select_warning">Il sito SongSelect richiede un account valido.  È necessario utilizzare il pulsante di download all\'interno della pagina interessata per scaricare il brano ricercato.  Il file verrà quindi salvato nella cartella OpenSong/Songs/.</string>
     <string name="song_select_warning_more">A causa delle restrizioni di SongSelect, ora dovrai scaricare manualmente il file del brano e importarlo nell\'app. Dopo aver scaricato il file, verrai reindirizzato a questa pagina e potrai cliccare sul pulsante "Importa download" per importare il file scaricato in OpenSongApp.</string>
     <string name="song_specific">Specifico del brano</string>
+    <string name="song_sticky_positions">Usa posizioni appiccicose specifiche per la canzone</string>
     <string name="song_swipe_toggle">Attivare/Disattivare la possibilità di strisciata sullo schermo a destra o sinistra, per spostarsi velocemente tra i brani della scaletta</string>
     <string name="song_title">Titolo del brano</string>
     <string name="songs">Brani</string>
@@ -1542,7 +1545,4 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="inline_search">Ricerca inline</string>
-    <string name="inline_search_info">Cerca ed estrai contenuti direttamente nell\'app</string>
-    <string name="song_sticky_positions">Usa posizioni appiccicose specifiche per la canzone</string>
 </resources>

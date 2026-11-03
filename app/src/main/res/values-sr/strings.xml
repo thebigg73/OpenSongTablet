@@ -143,7 +143,6 @@
     <string name="beats">Beats</string>
     <string name="before">Pre nego što</string>
     <string name="bible">Biblija</string>
-    <string name="bibleXML">OpenSong XML Biblija</string>
     <string name="bible_browse">Pregledajte/pretražite bibliju</string>
     <string name="bible_browse_offline">Koristite oflajn/preuzetu bibliju</string>
     <string name="bible_download_for_offline">Preuzmite prevod Biblije za upotrebu van mreže</string>
@@ -153,6 +152,7 @@
     <string name="bible_translation">Verzija biblijskog koda\n(npr. ERV-SR)</string>
     <string name="bible_verse">Biblijski stih</string>
     <string name="bible_verse_numbers">Uključite brojeve stihova</string>
+    <string name="bibleXML">OpenSong XML Biblija</string>
     <string name="bigger">Veжi</string>
     <string name="black_screen">Crni ekran</string>
     <string name="black_screen_info">Fade in/out all vievs (osim logotipa)</string>
@@ -497,7 +497,10 @@
     <string name="filter_songs">Filtrirajte prikazanu listu pesama</string>
     <string name="filtering">Filtriranje</string>
     <string name="filters">Filteri</string>
+    <string name="find_and_replace">Pronađi i zameni</string>
     <string name="find_existing">Pronaći lokacije prethodnih OpenSong datoteka</string>
+    <string name="find_next">Pronađi sledeće</string>
+    <string name="find_what">Pronađi šta</string>
     <string name="finger">Prst</string>
     <string name="fingering">Ukazivanje</string>
     <string name="first_run">Ili prvi put pokrećete aplikaciju ili se nešto promenilo. Zbog Android dozvola, treba da podesite željeno mesto skladištenja za aplikaciju da čuva svoje datoteke.</string>
@@ -538,6 +541,7 @@
     <string name="get">Dobiti</string>
     <string name="github_description">Doprineti razvoju aplikacija</string>
     <string name="global">Globalne</string>
+    <string name="gp2abc_extract">Ekstrakt iz fajla (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Dozvoli vreme za molitvu pesme</string>
     <string name="grace_time_info">Ovo vam omogućava da brzo pregledate pesme i šaljete informacije samo drugim povezanim uređajima nakon grejs vremenskog perioda od 2s.</string>
     <string name="green">Zelena</string>
@@ -720,6 +724,7 @@
     <string name="margins_system">Sistemske margine</string>
     <string name="margins_system_info">Ostavite prostor za detektovane kontrole uređaja (donja traka za navigaciju i bočni meniji)</string>
     <string name="master">Gospodaru</string>
+    <string name="match_case">Uskladi velike i male</string>
     <string name="max_font_size">Najveća moguća veličina fonta za automatsku promenu veličine</string>
     <string name="max_pdf_scale">Maksimalna veličina skala PDF / Print</string>
     <string name="max_pdf_scale_info">Maksimalno skaliranje za korišćenje.  Izaberite niže vrednosti za manji tekst.  Veličina teksta neće biti veća od širine stranice.  75% je dobra polazna tačka za većinu.</string>
@@ -869,6 +874,7 @@
     <string name="no_suitable_application">Nije dostupna niti instalirana aplikacija koja može da otvori ovu stavku.</string>
     <string name="not_allowed">Ta funkcija nije dozvoljena za ovu stavku</string>
     <string name="not_available">Nije dostupno</string>
+    <string name="not_found">Nije pronađeno</string>
     <string name="not_saved">Nije spremljeno</string>
     <string name="not_saved_filename">Unesite naziv datoteke za svoju pesmu</string>
     <string name="not_saved_folder">Izaberite fasciklu za svoju pesmu</string>
@@ -1059,6 +1065,10 @@
     <string name="repeat_mode_count">Broj komandi tastera naviše za kvalifikovanje kao dugačka štampa (u gore navedenom vremenu)</string>
     <string name="repeat_mode_info">Za pedale koje šalju ponovljen taster nadole i na gore komande ovo može da simulira dugu radnju štampe</string>
     <string name="repeat_mode_time">Vreme je da oslušnete ponovljeni taster nadole i tastere na gore</string>
+    <string name="replace">Zameni</string>
+    <string name="replace_all">Zameni sve</string>
+    <string name="replace_with">Zameni sa</string>
+    <string name="replacements_made">zamenjeni</string>
     <string name="reprise">Repriza</string>
     <string name="requires_internet">Ova funkcija zahteva pristup internetu</string>
     <string name="reset">Reset</string>
@@ -1221,6 +1231,7 @@
     <string name="song_select_warning">Ova lokacija zahteva važeći nalog.  Morate da koristite dugme za preuzimanje unutar Web stranice SongSelect da biste pokrenuli potrebno preuzimanje.  Datoteka će biti uvezena u fasciklu OpenSong/Songs/ nakon preuzimanja.</string>
     <string name="song_select_warning_more">Zbog ograničenja SongSelect-a, sada ćete morati ručno da preuzmete datoteku pesme, a zatim je uvezete u aplikaciju.  Nakon preuzimanja datoteke, bićete vraćeni na ovu stranicu i možete kliknuti na dugme \"Uvoz preuzimanja\" da biste uvezli preuzetu datoteku u OpenSongApp.</string>
     <string name="song_specific">Specifična pesma</string>
+    <string name="song_sticky_positions">Koristi specifične pozicije za pesme</string>
     <string name="song_swipe_toggle">Uklj/isklj. swipe za pomeranje između pesama</string>
     <string name="song_title">Ime pesme</string>
     <string name="songs">Pesme</string>
@@ -1534,15 +1545,4 @@
     <string name="worship">Oboћavaju</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="song_sticky_positions">Koristi specifične pozicije za pesme</string>
-    <string name="gp2abc_extract">Ekstrakt iz fajla (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Pronađi i zameni</string>
-    <string name="match_case">Uskladi velike i male</string>
-    <string name="find_what">Pronađi šta</string>
-    <string name="replace_with">Zameni sa</string>
-    <string name="find_next">Pronađi sledeće</string>
-    <string name="replace">Zameni</string>
-    <string name="replace_all">Zameni sve</string>
-    <string name="replacements_made">zamenjeni</string>
-    <string name="not_found">Nije pronađeno</string>
 </resources>
