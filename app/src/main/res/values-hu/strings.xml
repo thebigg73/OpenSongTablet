@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Kivonat fájlból (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Keresés és csere</string>
+    <string name="match_case">Gyufa eset</string>
+    <string name="find_what">Találd meg, mit</string>
+    <string name="replace_with">Cserélje ki erre</string>
+    <string name="find_next">Következő keresése</string>
+    <string name="replace">Csere</string>
+    <string name="replace_all">Összes cseréje</string>
+    <string name="replacements_made">elvégzett cserék</string>
+    <string name="not_found">Nem található</string>
     <string name="abc_add_to_song">ABC kotta másolása dalba</string>
     <string name="abc_editor">ABC webszerkesztő</string>
     <string name="abc_include_tab">Tartalmazza a tabulatúrát</string>

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">ファイル（.gp、.gpx、.xml、.mxl）から抽出</string>
+    <string name="find_and_replace">検索と置換</string>
+    <string name="match_case">マッチケース</string>
+    <string name="find_what">何を見つけるか</string>
+    <string name="replace_with">に置き換える</string>
+    <string name="find_next">次の検索</string>
+    <string name="replace">交換する</string>
+    <string name="replace_all">すべて置換</string>
+    <string name="replacements_made">交換が行われた</string>
+    <string name="not_found">見つかりません</string>
     <string name="abc_add_to_song">楽譜にabc記譜法をコピーする</string>
     <string name="abc_editor">ABCウェブエディター</string>
     <string name="abc_include_tab">タブ譜を含める</string>

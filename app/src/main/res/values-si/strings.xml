@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">ගොනුවෙන් උපුටා ගැනීම (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">සොයා ගෙන ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="match_case">කේස් එක ගලපන්න</string>
+    <string name="find_what">මොකක්ද කියලා හොයාගන්න.</string>
+    <string name="replace_with">සමඟ ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="find_next">ඊළඟ සොයන්න</string>
+    <string name="replace">ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="replace_all">සියල්ල ප්‍රතිස්ථාපනය කරන්න</string>
+    <string name="replacements_made">ආදේශන සිදු කරන ලදී</string>
+    <string name="not_found">හමු වුණේ නැහැ</string>
     <string name="abc_add_to_song">ගීතයට abc අංකනය පිටපත් කරන්න</string>
     <string name="abc_editor">ඒබීසී වෙබ් සංස්කාරක</string>
     <string name="abc_include_tab">ටැබ්ලේචර් ඇතුළත් කරන්න</string>

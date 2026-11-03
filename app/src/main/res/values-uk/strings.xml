@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Витягти з файлу (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Знайти та замінити</string>
+    <string name="match_case">Збіг регістру</string>
+    <string name="find_what">Знайти що</string>
+    <string name="replace_with">Замінити на</string>
+    <string name="find_next">Знайти далі</string>
+    <string name="replace">Замінити</string>
+    <string name="replace_all">Замінити все</string>
+    <string name="replacements_made">зроблені заміни</string>
+    <string name="not_found">Не знайдено</string>
     <string name="abc_add_to_song">Копіювати нотацію ABC до пісні</string>
     <string name="abc_editor">Веб-редактор Abc</string>
     <string name="abc_include_tab">Включіть табулатуру</string>

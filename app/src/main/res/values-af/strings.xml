@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Uittreksel uit lêer (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Vind en vervang</string>
+    <string name="match_case">Pasmaat</string>
+    <string name="find_what">Vind wat</string>
+    <string name="replace_with">Vervang met</string>
+    <string name="find_next">Vind Volgende</string>
+    <string name="replace">Vervang</string>
+    <string name="replace_all">Vervang alles</string>
+    <string name="replacements_made">vervangings gemaak</string>
+    <string name="not_found">Nie gevind nie</string>
     <string name="abc_add_to_song">Kopieer abc-notasie na liedjie</string>
     <string name="abc_editor">Abc webredakteur</string>
     <string name="abc_include_tab">Sluit tablatuur in</string>

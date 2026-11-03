@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Извлечение из файла (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Найти и заменить</string>
+    <string name="match_case">Спичечный коробок</string>
+    <string name="find_what">Найдите то, что</string>
+    <string name="replace_with">Заменить на</string>
+    <string name="find_next">Найти Далее</string>
+    <string name="replace">Заменять</string>
+    <string name="replace_all">Заменить все</string>
+    <string name="replacements_made">произведены замены</string>
+    <string name="not_found">Не найдено</string>
     <string name="abc_add_to_song">Скопируйте нотную запись abc в песню.</string>
     <string name="abc_editor">Веб-редактор Abc</string>
     <string name="abc_include_tab">Включить табулатуру</string>

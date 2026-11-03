@@ -1929,4 +1929,14 @@
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
     <string name="song_sticky_positions">Use song specific sticky positions</string>
+    <string name="gp2abc_extract">Extract from file (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Find and replace</string>
+    <string name="match_case">Match case</string>
+    <string name="find_what">Find what</string>
+    <string name="replace_with">Replace with</string>
+    <string name="find_next">Find Next</string>
+    <string name="replace">Replace</string>
+    <string name="replace_all">Replace All</string>
+    <string name="replacements_made">replacements made</string>
+    <string name="not_found">Not found</string>
 </resources>

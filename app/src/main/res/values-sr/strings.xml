@@ -1535,4 +1535,14 @@
     <string name="zone">Zona</string>
     <string name="zoom_level">Nivo zumiranja</string>
     <string name="song_sticky_positions">Koristi specifične pozicije za pesme</string>
+    <string name="gp2abc_extract">Ekstrakt iz fajla (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Pronađi i zameni</string>
+    <string name="match_case">Uskladi velike i male</string>
+    <string name="find_what">Pronađi šta</string>
+    <string name="replace_with">Zameni sa</string>
+    <string name="find_next">Pronađi sledeće</string>
+    <string name="replace">Zameni</string>
+    <string name="replace_all">Zameni sve</string>
+    <string name="replacements_made">zamenjeni</string>
+    <string name="not_found">Nije pronađeno</string>
 </resources>

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Wyciąg z pliku (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Znajdź i zamień</string>
+    <string name="match_case">Etui na zapałki</string>
+    <string name="find_what">Znajdź co</string>
+    <string name="replace_with">Zastąp przez</string>
+    <string name="find_next">Znajdź następny</string>
+    <string name="replace">Zastępować</string>
+    <string name="replace_all">Zamień wszystko</string>
+    <string name="replacements_made">dokonano zamienników</string>
+    <string name="not_found">Nie znaleziono</string>
     <string name="abc_add_to_song">Skopiuj notację ABC do piosenki</string>
     <string name="abc_editor">Edytor stron internetowych ABC</string>
     <string name="abc_include_tab">Dołącz tabulaturę</string>

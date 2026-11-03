@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Extrahovat ze souboru (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Najít a nahradit</string>
+    <string name="match_case">Zápas s velkým a malým písmenem</string>
+    <string name="find_what">Najít co</string>
+    <string name="replace_with">Nahradit za</string>
+    <string name="find_next">Najít další</string>
+    <string name="replace">Nahradit</string>
+    <string name="replace_all">Nahradit vše</string>
+    <string name="replacements_made">provedené náhrady</string>
+    <string name="not_found">Nenalezeno</string>
     <string name="abc_add_to_song">Zkopírujte notaci ABC do skladby</string>
     <string name="abc_editor">Webový editor Abc</string>
     <string name="abc_include_tab">Zahrnout tabulaturu</string>

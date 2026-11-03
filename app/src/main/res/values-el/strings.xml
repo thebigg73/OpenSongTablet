@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Εξαγωγή από αρχείο (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Εύρεση και αντικατάσταση</string>
+    <string name="match_case">Ταίριασμα περίπτωσης</string>
+    <string name="find_what">Βρείτε τι</string>
+    <string name="replace_with">Αντικατάσταση με</string>
+    <string name="find_next">Εύρεση επόμενου</string>
+    <string name="replace">Αντικαθιστώ</string>
+    <string name="replace_all">Αντικατάσταση όλων</string>
+    <string name="replacements_made">αντικαταστάσεις που έγιναν</string>
+    <string name="not_found">Δεν βρέθηκε</string>
     <string name="abc_add_to_song">Αντιγραφή σημειογραφίας abc σε τραγούδι</string>
     <string name="abc_editor">Επεξεργαστής ιστού ABC</string>
     <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>

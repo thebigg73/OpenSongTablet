@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">חילוץ מקובץ (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">חיפוש והחלפה</string>
+    <string name="match_case">מארז התאמה</string>
+    <string name="find_what">מצא מה</string>
+    <string name="replace_with">החלף עם</string>
+    <string name="find_next">מצא את הבא</string>
+    <string name="replace">לְהַחלִיף</string>
+    <string name="replace_all">החלף הכל</string>
+    <string name="replacements_made">החלפות שבוצעו</string>
+    <string name="not_found">לא נמצא</string>
     <string name="abc_add_to_song">העתקת תווי ABC לשיר</string>
     <string name="abc_editor">עורך אתרים של ABC</string>
     <string name="abc_include_tab">כלול טבלטורה</string>

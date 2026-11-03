@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">从文件（.gp、.gpx、.xml、.mxl）中提取信息</string>
+    <string name="find_and_replace">查找并替换</string>
+    <string name="match_case">匹配案例</string>
+    <string name="find_what">找到什么</string>
+    <string name="replace_with">替换为</string>
+    <string name="find_next">查找下一个</string>
+    <string name="replace">代替</string>
+    <string name="replace_all">全部替换</string>
+    <string name="replacements_made">更换</string>
+    <string name="not_found">未找到</string>
     <string name="abc_add_to_song">将abc记谱法复制到歌曲中</string>
     <string name="abc_editor">ABC网站编辑</string>
     <string name="abc_include_tab">包括指法谱</string>

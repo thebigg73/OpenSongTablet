@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gp2abc_extract">Utdrag från fil (.gp, .gpx, .xml, .mxl)</string>
+    <string name="find_and_replace">Hitta och ersätt</string>
+    <string name="match_case">Matchfodral</string>
+    <string name="find_what">Hitta vad</string>
+    <string name="replace_with">Ersätt med</string>
+    <string name="find_next">Hitta nästa</string>
+    <string name="replace">Ersätta</string>
+    <string name="replace_all">Ersätt alla</string>
+    <string name="replacements_made">ersättningar gjorda</string>
+    <string name="not_found">Inte hittad</string>
     <string name="abc_add_to_song">Kopiera abc-notation till låt</string>
     <string name="abc_editor">Abc webbredaktör</string>
     <string name="abc_include_tab">Inkludera tabulatur</string>
