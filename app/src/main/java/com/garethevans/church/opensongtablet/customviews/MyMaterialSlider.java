@@ -96,8 +96,6 @@ public class MyMaterialSlider extends LinearLayout {
         String infoText = a.getString(R.styleable.MyMaterialSlider_infoText);
         adjustButtons = a.getBoolean(R.styleable.MyMaterialSlider_adjustable,false);
 
-        a.recycle();
-
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
         large = context.getResources().getDimension(R.dimen.text_large);
@@ -170,6 +168,8 @@ public class MyMaterialSlider extends LinearLayout {
         if (!isInEditMode() && palette!=null) {
             setPalette(palette);
         }
+
+        a.recycle();
     }
 
     // The getters
