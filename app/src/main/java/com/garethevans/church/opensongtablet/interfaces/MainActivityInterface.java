@@ -87,6 +87,7 @@ import com.garethevans.church.opensongtablet.sqlite.AnalyticsSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.stickynotes.StickyNoteUtils;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.variations.Variations;
 import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
@@ -145,6 +146,7 @@ public interface MainActivityInterface {
     void setSong(Song song);
     void setTempSong(Song tempSong);
     String getMainfoldername();
+    StickyNoteUtils getStickyNoteUtils();
     MultiTrackPlayer getMultiTrackPlayer();
 
     // Capo

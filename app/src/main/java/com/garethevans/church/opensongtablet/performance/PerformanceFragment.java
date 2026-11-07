@@ -37,14 +37,12 @@ import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
 import com.garethevans.church.opensongtablet.customviews.RecyclerLayoutManager;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
-import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.NearbyAlertPopUp;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
-import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
 import org.apache.commons.io.FileUtils;
 
@@ -54,12 +52,10 @@ public class PerformanceFragment extends Fragment {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PerformanceFragment";
-    private StickyPopUp stickyPopUp;
     private NearbyAlertPopUp nearbyAlertPopUp;
     private ABCPopup abcPopup;
     private Bitmap.Config bmpFormat = Bitmap.Config.ARGB_8888;
     private MainActivityInterface mainActivityInterface;
-    private ActionInterface actionInterface;
     private DisplayInterface displayInterface;
     private int swipeMinimumDistance;
     private int swipeMaxDistanceYError;
@@ -122,7 +118,6 @@ public class PerformanceFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        actionInterface = (ActionInterface) context;
         displayInterface = (DisplayInterface) context;
     }
 
@@ -152,33 +147,31 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        dealWithStickyNotes(false,true);
-        if (mainActivityInterface.getToolbar()!=null) {
-            mainActivityInterface.getToolbar().setPerformanceMode(false);
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getStickyNoteUtils().destroyStickyPopUps();
+            if (mainActivityInterface.getToolbar() != null) {
+                mainActivityInterface.getToolbar().setPerformanceMode(false);
+            }
+            mainActivityInterface.registerFragment(null, "PerformanceFragment");
         }
-        mainActivityInterface.registerFragment(null,"PerformanceFragment");
     }
     @Override
     public void onDestroyView() {
-        try {
-            stickyPopUp.closeSticky();
-            actionInterface.showSticky(false, true);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getStickyNoteUtils().destroyStickyPopUps();
         }
+
         try {
             nearbyAlertPopUp.closeSticky();
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            stickyPopUp.destroyPopup();
             nearbyAlertPopUp.destroyPopup();
         } catch (Exception e) {
             e.printStackTrace();
         }
         myView = null;
-        stickyPopUp = null;
         nearbyAlertPopUp = null;
         // If we had the BeatBuddy popup open, close that too
         mainActivityInterface.forceCloseBeatBuddyControlPopUp();
@@ -306,7 +299,6 @@ public class PerformanceFragment extends Fragment {
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         if (getContext() != null) {
-            stickyPopUp = new StickyPopUp(getContext());
             nearbyAlertPopUp = new NearbyAlertPopUp(getContext());
             abcPopup = new ABCPopup(getContext());
             mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
@@ -627,8 +619,7 @@ public class PerformanceFragment extends Fragment {
                         setupSlideOut();
                         setupSlideIn();
 
-                        // Remove any sticky notes
-                        actionInterface.showSticky(false, true);
+                        mainActivityInterface.getStickyNoteUtils().destroyStickyPopUps();
 
                         // Now reset the song object (doesn't change what's already drawn on the screen)
                         Song songToUse;
@@ -1479,10 +1470,8 @@ public class PerformanceFragment extends Fragment {
             }
         }
 
-        // Load up the sticky notes if the user wants them
-        if (!mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getSong())) {
-            dealWithStickyNotes(mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getSong()), false);
-        }
+        // Prepare the sticky popups (and show if required)
+        mainActivityInterface.getStickyNoteUtils().prepareStickyPopUps(myView.songView);
 
         // Show the audio recorder if we requested it from the settings menu
         mainActivityInterface.displayAudioRecorder();
@@ -1743,7 +1732,7 @@ public class PerformanceFragment extends Fragment {
                     });
                 } else if (myView!=null) {
                     myView.highlighterView.post(() -> {
-                        if (myView!=null) {
+                        if (myView!=null && getContext()!=null) {
                             try {
                                 // Clear the previous highlighter image
                                 Glide.with(getContext()).clear(myView.highlighterView);
@@ -1817,27 +1806,12 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
-    public void dealWithStickyNotes(boolean forceShow, boolean hide) {
-        if (hide) {
-            if (stickyPopUp!=null) {
-                stickyPopUp.closeSticky();
-            }
-            if (abcPopup!=null) {
-                abcPopup.closeScore();
-            }
-        } else {
-            if ((mainActivityInterface != null && mainActivityInterface.getSong() != null &&
-                    mainActivityInterface.getSong().getNotes() != null &&
-                    !mainActivityInterface.getSong().getNotes().isEmpty() &&
-                    mainActivityInterface.getPreferences().
-                            getMyPreferenceBoolean("stickyAuto", true)) || forceShow) {
-                // This is called from the MainActivity when we clicked on the page button
-                if (myView!=null) {
-                    stickyPopUp.floatSticky(myView.pageHolder, forceShow);
-                }
-            }
-        }
+
+    public void toggleStickyPopUps(boolean forceShow, boolean hide) {
+        Log.d(TAG,"forceShow:"+forceShow+"  hide:"+hide);
+        mainActivityInterface.getStickyNoteUtils().toggleStickyPopUps(myView.songView);
     }
+
     public void showNearbyAlertPopUp(String message) {
         // Clear any existing popup
         nearbyAlertPopUp.destroyPopup();

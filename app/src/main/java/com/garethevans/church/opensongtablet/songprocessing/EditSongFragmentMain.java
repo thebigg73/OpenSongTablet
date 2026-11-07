@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.databinding.EditSongMainBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.garethevans.church.opensongtablet.stickynotes.StickyNote;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,11 @@ public class EditSongFragmentMain extends Fragment  {
         super.onResume();
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
+
+            // Parse current list from tempSong
+            mainActivityInterface.getStickyNoteUtils().parseAndMigrate(mainActivityInterface.getTempSong());
+
+            mainActivityInterface.getStickyNoteUtils().populateStickyNoteEditorViews(getContext(),myView.stickyNotesContainer);
 
             // Initialise the views
             setupValues();
@@ -86,16 +92,19 @@ public class EditSongFragmentMain extends Fragment  {
                     myView.title.setText(mainActivityInterface.getTempSong().getTitle());
                     myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
                     myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
-                    myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-                    mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
-                    mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
+
+                    // TODO remove once finished
+                    //myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
+                    //mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
+                    //mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
+
                     myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
 
                     // Check for overrides
-                    if (mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getTempSong())) {
-                        myView.overrideStickySlider.setSliderPos(2);
-                    } else if (mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getTempSong())) {
+                    if (mainActivityInterface.getStickyNoteUtils().hasStickyOnOverride()) {
                         myView.overrideStickySlider.setSliderPos(1);
+                    } else if (mainActivityInterface.getStickyNoteUtils().hasStickyOffOverride()) {
+                        myView.overrideStickySlider.setSliderPos(2);
                     } else {
                         myView.overrideStickySlider.setSliderPos(0);
                     }
@@ -120,25 +129,37 @@ public class EditSongFragmentMain extends Fragment  {
                 myView.filename.addTextChangedListener(new MyTextWatcher("filename"));
                 myView.author.addTextChangedListener(new MyTextWatcher("author"));
                 myView.copyright.addTextChangedListener(new MyTextWatcher("copyright"));
-                myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
+
+                myView.addStickyNoteButton.setOnClickListener(v -> {
+                    Log.d(TAG,"about to add new sticky note.  Original size:"+mainActivityInterface.getStickyNoteUtils().getStickyNotes().size());
+                    // Add a new default sticky note (default position top-right or offset, color 1, empty text)
+                    int screenWidth = getResources().getDisplayMetrics().widthPixels;
+                    int defaultX = Math.max(0, screenWidth - (mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth",400)) - 32);
+                    int defaultY = (int)(mainActivityInterface.getToolbar().getActionBarHeight(false)*1.2f);
+                    mainActivityInterface.getStickyNoteUtils().getStickyNotes().add(new StickyNote(
+                            mainActivityInterface.getStickyNoteUtils().getStickyNotes().size(), defaultX, defaultY, null, 1, " "));
+
+                    // Re-serialize and refresh UI container
+                    mainActivityInterface.getStickyNoteUtils().syncStickyNotesToTempSong();
+                    mainActivityInterface.getStickyNoteUtils().populateStickyNoteEditorViews(getContext(),myView.stickyNotesContainer);
+                    Log.d(TAG,"added new sticky note.  New size:"+mainActivityInterface.getStickyNoteUtils().getStickyNotes().size());
+                });
+
+                // TODO remove once finished
+                //myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
 
                 // The sticky notes override
                 myView.overrideStickySlider.addOnChangeListener((slider, value, fromUser) -> {
-                    // All options should clear existing override value
-                    mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getTempSong(), true);
-                    // Get rid of any existing sticky_off values
-                    mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getTempSong(),false);
-
-                    if (value==1) {
+                    if (value==0) {
+                        mainActivityInterface.getStickyNoteUtils().updateOverrides(null);
+                    } else if (value==1) {
                         // Add the sticky_on override
-                        mainActivityInterface.getProcessSong().addStickyOverride(
-                                mainActivityInterface.getTempSong(),true);
-
+                        mainActivityInterface.getStickyNoteUtils().updateOverrides("sticky_on");
                     } else if (value==2) {
                         // Add the sticky_off override
-                        mainActivityInterface.getProcessSong().addStickyOverride(
-                                mainActivityInterface.getTempSong(), false);
+                        mainActivityInterface.getStickyNoteUtils().updateOverrides("sticky_off");
                     }
+                    mainActivityInterface.getStickyNoteUtils().syncStickyNotesToTempSong();
                     myView.overrideStickySlider.updateAlphas();
                 });
 

@@ -81,7 +81,23 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+            <LinearLayout
+                android:id="@+id/stickyNotesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <!-- Button to add a new sticky note -->
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                android:id="@+id/addStickyNoteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="16dp"
+                android:text="@string/new_something"
+                app:icon="@drawable/plus" />
+
+            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/songNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +112,7 @@
                 app:autoSizeStepGranularity="1sp"
                 app:autoSizeTextType="uniform"
                 app:endIconMode="clear_text" />
+            -->
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 

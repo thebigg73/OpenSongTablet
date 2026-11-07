@@ -191,6 +191,7 @@ import com.garethevans.church.opensongtablet.sqlite.AnalyticsSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.stickynotes.StickyNoteUtils;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.AudioPlayerBottomSheet;
 import com.garethevans.church.opensongtablet.utilities.AudioPlayerPopUp;
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SongListBuildIndex songListBuildIndex;
     private SongSheetHeaders songSheetHeaders;
     private SQLiteHelper sqLiteHelper;
+    private StickyNoteUtils stickyNoteUtils;
     private StorageAccess storageAccess;
     private Swipes swipes;
     private ThemeColors themeColors;
@@ -963,6 +965,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         abcNotation = getAbcNotation();
 
         song = getSong();
+        stickyNoteUtils = getStickyNoteUtils();
         variations = getVariations();
 
         // Loading up songs and the indexing
@@ -1674,7 +1677,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getToolbar().setPerformanceMode(id == R.id.performanceFragment || (deepLink != null && deepLink.equals(getString(R.string.deeplink_performance))));
 
         // Hide the sticky notes if required
-        showSticky(false, true);
+        //showSticky(false, true);
 
         // If we are currently on the song window (performanceFragment or presenterFragment)
         // Make sure the backstack is clear as we are at the root page before going elsewhere
@@ -3290,7 +3293,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Try to show the sticky note
         if (performanceValid()) {
             try {
-                performanceFragment.dealWithStickyNotes(forceshow, hide);
+                performanceFragment.toggleStickyPopUps(forceshow,hide);
+                //performanceFragment.dealWithStickyNotes(forceshow, hide);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3682,6 +3686,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public StickyNoteUtils getStickyNoteUtils() {
+        if (stickyNoteUtils==null) {
+            stickyNoteUtils = new StickyNoteUtils(this);
+        }
+        return stickyNoteUtils;
+    }
+
+    @Override
     public Song getIndexingSong() {
         return indexingSong;
     }
@@ -3980,7 +3992,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean result = false;
             boolean allowToast = true;
 
-            Log.d(TAG,"what:"+what);
             switch (what) {
                 case "chordDetectionStream":
                     // We have decided to record the audio stream for chord detection

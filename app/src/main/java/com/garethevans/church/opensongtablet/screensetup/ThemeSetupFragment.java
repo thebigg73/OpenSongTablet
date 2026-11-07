@@ -32,7 +32,7 @@ public class ThemeSetupFragment extends Fragment {
     private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
             stage_mode_string="", theme_dark_string="", theme_light_string="",
             theme_custom1_string="", theme_custom2_string="", theme_amoled_string="", reset_colours_string="",
-            recreate_string="", this_deeplink="";
+            recreate_string="", this_deeplink="", background_string="";
     private ArrayList<String> themes;
     private String webAddress;
     private String initialTheme;
@@ -85,6 +85,7 @@ public class ThemeSetupFragment extends Fragment {
             theme_custom2_string = getString(R.string.theme_custom2);
             theme_amoled_string = getString(R.string.theme_amoled);
             reset_colours_string = getString(R.string.reset_colours);
+            background_string = getString(R.string.background);
             recreate_string = getString(R.string.restart_auto);
             initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","");
             this_deeplink = getString(R.string.deeplink_theme);
@@ -177,7 +178,6 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     public void updateColors() {
-        Log.d(TAG,"updateColors()  myTheme:"+myTheme+"  initialTheme:"+initialTheme);
         mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
@@ -210,7 +210,11 @@ public class ThemeSetupFragment extends Fragment {
 
         myView.metronomeButton.setColor(mainActivityInterface.getMyThemeColors().getMetronomeColor());
         myView.stickytextButton.setColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
-        myView.stickybackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        myView.stickybackground1Button.setText(background_string + " 1");
+        myView.stickybackground2Button.setText(background_string + " 2");
+        myView.stickybackground3Button.setText(background_string + " 3");
+        myView.stickybackground4Button.setText(background_string + " 4");
+        updateStickyBackgroundColors();
         myView.hotZoneButton.setColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
         myView.abctextButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor());
         myView.abcbackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupColor());
@@ -237,7 +241,10 @@ public class ThemeSetupFragment extends Fragment {
         myView.titleHighlighting.setOnClickListener(v -> chooseColor("highlightHeadingColor"));
         myView.metronomeButton.setOnClickListener(v-> chooseColor("metronomeColor"));
         myView.stickytextButton.setOnClickListener(v-> chooseColor("stickyTextColor"));
-        myView.stickybackgroundButton.setOnClickListener(v-> chooseColor("stickyBackgroundColor"));
+        myView.stickybackground1Button.setOnClickListener(v-> chooseColor("stickyBackgroundColor"));
+        myView.stickybackground2Button.setOnClickListener(v-> chooseColor("stickyBackgroundColor2"));
+        myView.stickybackground3Button.setOnClickListener(v-> chooseColor("stickyBackgroundColor3"));
+        myView.stickybackground4Button.setOnClickListener(v-> chooseColor("stickyBackgroundColor4"));
         myView.hotZoneButton.setOnClickListener(v-> chooseColor("hotZoneColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
         myView.presoCapoButton.setOnClickListener(v -> chooseColor("presoCapoColor"));
@@ -268,13 +275,18 @@ public class ThemeSetupFragment extends Fragment {
         // dark and custom1 are dark based, light and custom2 are light based
         boolean refreshActivity = false;
         String currentTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
-        Log.d(TAG,"currentTheme:"+currentTheme+"  initialTheme:"+initialTheme);
-        if (currentTheme.equals("dark") || currentTheme.equals("custom1")) {
-            refreshActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.equals("amoled") || initialTheme.isEmpty();
-        } else if (currentTheme.equals("light") || currentTheme.equals("custom2")) {
-            refreshActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.equals("amoled") || initialTheme.isEmpty();
-        } else if (currentTheme.equals("amoled")) {
-            refreshActivity = !initialTheme.equals("amoled");
+        switch (currentTheme) {
+            case "dark":
+            case "custom1":
+                refreshActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.equals("amoled") || initialTheme.isEmpty();
+                break;
+            case "light":
+            case "custom2":
+                refreshActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.equals("amoled") || initialTheme.isEmpty();
+                break;
+            case "amoled":
+                refreshActivity = !initialTheme.equals("amoled");
+                break;
         }
         Log.d(TAG,"refreshActivity:"+refreshActivity);
         return refreshActivity;
@@ -310,10 +322,23 @@ public class ThemeSetupFragment extends Fragment {
             myView.metronomeButton.setPalette(mainActivityInterface.getPalette());
             myView.hotZoneButton.setPalette(mainActivityInterface.getPalette());
             myView.stickytextButton.setPalette(mainActivityInterface.getPalette());
-            myView.stickybackgroundButton.setPalette(mainActivityInterface.getPalette());
+            myView.stickybackground1Button.setPalette(mainActivityInterface.getPalette());
+            myView.stickybackground2Button.setPalette(mainActivityInterface.getPalette());
+            myView.stickybackground3Button.setPalette(mainActivityInterface.getPalette());
+            myView.stickybackground4Button.setPalette(mainActivityInterface.getPalette());
             myView.abctextButton.setPalette(mainActivityInterface.getPalette());
             myView.abcbackgroundButton.setPalette(mainActivityInterface.getPalette());
         });
+    }
+
+    public void updateStickyBackgroundColors() {
+        // We use the alpha value of the default button
+        float val = mainActivityInterface.getMyThemeColors().getAlphaFloatFromColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        mainActivityInterface.getStickyNoteUtils().updateStickyAlphas(val);
+        myView.stickybackground1Button.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        myView.stickybackground2Button.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor2());
+        myView.stickybackground3Button.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor3());
+        myView.stickybackground4Button.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor4());
     }
 
 }

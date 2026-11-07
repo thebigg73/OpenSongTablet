@@ -111,8 +111,7 @@ public class ProcessSong {
     private boolean curlyBrackets = true;
     private boolean curlyBracketsDevice = false;
     private StringBuilder htmlLyrics = new StringBuilder();
-    private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
-            sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
+    private final String abc_on_override = "abc_on", abc_off_override = "abc_off";
     private boolean isRtl = false;
     private int gravityToUseForRtl = Gravity.START;
     private int textDirectionForRtl = View.TEXT_DIRECTION_LTR;
@@ -4824,21 +4823,7 @@ public class ProcessSong {
     }
 
 
-    // The functions for overriding autoshow/autohide of sticky notes and music score
-    public boolean getHasStickyOnOverride(Song songToCheck) {
-        return checkOverrideNulls(songToCheck) &&
-                (songToCheck.getUser1().contains(sticky_on_override) ||
-                        songToCheck.getUser2().contains(sticky_on_override) ||
-                        songToCheck.getUser3().contains(sticky_on_override));
-    }
-
-    public boolean getHasStickyOffOverride(Song songToCheck) {
-        return checkOverrideNulls(songToCheck) &&
-                (songToCheck.getUser1().contains(sticky_off_override) ||
-                        songToCheck.getUser2().contains(sticky_off_override) ||
-                        songToCheck.getUser3().contains(sticky_off_override));
-    }
-
+    // The functions for overriding autoshow/autohide of music score
     public boolean getHasAbcOnOverride(Song songToCheck) {
         return checkOverrideNulls(songToCheck) &&
                 (songToCheck.getUser1().contains(abc_on_override) ||
@@ -4870,39 +4855,12 @@ public class ProcessSong {
         }
     }
 
-    public void removeStickyOverrides(Song songToCheck, boolean onoverride) {
-        if (checkOverrideNulls(songToCheck)) {
-            String what = onoverride ? sticky_on_override : sticky_off_override;
-            songToCheck.setUser1(songToCheck.getUser1().replace(what, "").trim());
-            songToCheck.setUser2(songToCheck.getUser2().replace(what, "").trim());
-            songToCheck.setUser3(songToCheck.getUser3().replace(what, "").trim());
-        }
-    }
-
     public void removeAbcOverrides(Song songToCheck, boolean onoverride) {
         if (checkOverrideNulls(songToCheck)) {
             String what = onoverride ? abc_on_override : abc_off_override;
             songToCheck.setUser1(songToCheck.getUser1().replace(what, "").trim());
             songToCheck.setUser2(songToCheck.getUser2().replace(what, "").trim());
             songToCheck.setUser3(songToCheck.getUser3().replace(what, "").trim());
-        }
-    }
-
-    public void addStickyOverride(Song songToCheck, boolean onoverride) {
-        // Where possible we add to the first empty user1, user2 or user3
-        // If none are empty, it gets appended to user1
-        if (checkOverrideNulls(songToCheck)) {
-            String what = onoverride ? sticky_on_override : sticky_off_override;
-            if (songToCheck.getUser1().isEmpty()) {
-                songToCheck.setUser1(what);
-            } else if (songToCheck.getUser2().isEmpty()) {
-                songToCheck.setUser2(what);
-            } else if (songToCheck.getUser3().isEmpty()) {
-                songToCheck.setUser3(what);
-            } else {
-                songToCheck.setUser1(
-                        songToCheck.getUser1().trim() + " " + what);
-            }
         }
     }
 

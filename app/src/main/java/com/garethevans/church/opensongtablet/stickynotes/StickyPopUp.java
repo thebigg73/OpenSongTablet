@@ -41,14 +41,17 @@ public class StickyPopUp {
     private final String TAG = "StickyPopUp";
     private Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable autoCloseStickyRunnable = this::closeSticky;
+    private final StickyNote stickyNote;
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
 
-    public StickyPopUp(Context c) {
+    public StickyPopUp(Context c, StickyNote stickyNote) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        this.stickyNote = stickyNote;
     }
+
     private boolean doingShowSticky = false;
     public void floatSticky(View viewHolder, boolean forceShow) {
         // Make sure there is a delay to avoid double action
@@ -65,7 +68,7 @@ public class StickyPopUp {
                 }
 
                 // If no sticky notes exist for the song, navigate to the edit sticky note fragment
-            } else if (mainActivityInterface.getSong().getNotes() == null || mainActivityInterface.getSong().getNotes().isEmpty()) {
+            } else if (stickyNote == null || stickyNote.getText()== null || stickyNote.getText().isEmpty()) {
                 mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes), 0);
 
                 // Let's display the popup sticky note
@@ -90,6 +93,11 @@ public class StickyPopUp {
         }
     }
 
+    public boolean isShowing() {
+        return popupWindow!=null && popupWindow.isShowing();
+    }
+
+
     private void setupViews() {
         // The popup
         popupWindow = new PopupWindow(c);
@@ -104,8 +112,24 @@ public class StickyPopUp {
                 R.drawable.popup_sticky,null);
 
         if (drawable!=null) {
-            drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
-                    mainActivityInterface.getMyThemeColors().getStickyBackgroundColor()));
+            switch (stickyNote.getColor()) {
+                case 1:
+                    drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
+                            mainActivityInterface.getMyThemeColors().getStickyBackgroundColor()));
+                    break;
+                case 2:
+                    drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
+                            mainActivityInterface.getMyThemeColors().getStickyBackgroundColor2()));
+                    break;
+                case 3:
+                    drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
+                            mainActivityInterface.getMyThemeColors().getStickyBackgroundColor3()));
+                    break;
+                case 4:
+                    drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
+                            mainActivityInterface.getMyThemeColors().getStickyBackgroundColor4()));
+                    break;
+            }
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setBackground(drawable);
@@ -151,13 +175,15 @@ public class StickyPopUp {
         stickyNotes.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
         stickyNotes.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
         stickyNotes.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("stickyTextSize",14f));
-        stickyNotes.setText(mainActivityInterface.getSong().getNotes());
+        if (stickyNote!=null && stickyNote.getText()!=null) {
+            stickyNotes.setText(stickyNote.getText());
+        }
         floatWindow.addView(stickyNotes);
         popupWindow.setContentView(floatWindow);
     }
 
     private void setListeners() {
-        closeButton.setOnClickListener(v -> popupWindow.dismiss());
+        closeButton.setOnClickListener(v -> closeSticky());
     }
 
     private void getPositionAndSize() {
@@ -191,51 +217,19 @@ public class StickyPopUp {
     }
 
     private int[] getStickyPos(int defXPos, int defYPos) {
-        // If we are not using song specific locations, or haven't set them use the defaults
-        if (!stickySongPos || !mainActivityInterface.getSong().getUser3().contains("SN:")) {
-            return new int[]{defXPos, defYPos};
+        // If we have these set, return them
+        if (stickyNote!=null) {
+            return new int[]{stickyNote.getX(), stickyNote.getY()};
         } else {
-            // Try to get the song specific values
-            String existingStickyPos = getExistingSongStickyPos();
-            if (!existingStickyPos.isEmpty()) {
-                existingStickyPos = existingStickyPos.replace("SN:", "");
-                existingStickyPos = existingStickyPos.replace(";", "");
-                String[] pos = existingStickyPos.split("x");
-                if (pos.length == 2) {
-                    String xpos = pos[0].replaceAll("\\D", "");
-                    String ypos = pos[1].replaceAll("\\D", "");
-                    if (!xpos.isEmpty() && !ypos.isEmpty()) {
-                        return new int[]{Integer.parseInt(xpos), Integer.parseInt(ypos)};
-                    }
-                }
-            }
+            return new int[]{defXPos, defYPos};
         }
-        return new int[] {defXPos, defXPos};
     }
 
     private void saveStickyPosToSong(int x, int y) {
-        // Remove the old sticky position
-        String existingStickyPos = getExistingSongStickyPos();
-        if (!existingStickyPos.isEmpty()) {
-            mainActivityInterface.getSong().setUser3(mainActivityInterface.getSong().getUser3().replace(existingStickyPos, ""));
-        }
-        mainActivityInterface.getSong().setUser3(mainActivityInterface.getSong().getUser3() + "SN:" + x + "x" + y + ";");
-        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
-    }
-
-    private String getExistingSongStickyPos() {
-        // Try to get the song specific values
-        int startPos = mainActivityInterface.getSong().getUser3().indexOf("SN:");
-        if (startPos>=0) {
-            int endPos = mainActivityInterface.getSong().getUser3().indexOf(";",startPos);
-            if (endPos>startPos && (endPos - startPos) > 3) {
-                String positions = mainActivityInterface.getSong().getUser3().substring(startPos,endPos);
-                if (positions.length()>=3) {
-                    return positions;
-                }
-            }
-        }
-        return "";
+        // We need to update this sticky note in the song (which may have more than one)
+        stickyNote.setX(x);
+        stickyNote.setY(y);
+        mainActivityInterface.getStickyNoteUtils().updateStickyNote(stickyNote);
     }
 
     private void setupDrag() {
@@ -299,8 +293,10 @@ public class StickyPopUp {
     public void destroyPopup() {
         try {
             if (popupWindow != null) {
-                popupWindow.dismiss();
-                popupWindow = null;
+                mainActivityInterface.getMainHandler().post(() -> {
+                    popupWindow.dismiss();
+                    popupWindow = null;
+                });
             }
             if (closeButton != null) {
                 closeButton = null;

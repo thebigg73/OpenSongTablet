@@ -52,6 +52,9 @@ public class ThemeColors {
     private float pageButtonAlpha;
     private int stickyTextColor;
     private int stickyBackgroundColor;
+    private int stickyBackgroundColor2;
+    private int stickyBackgroundColor3;
+    private int stickyBackgroundColor4;
     private int highlightChordColor;
     private int highlightHeadingColor;
     private int hotZoneColor;
@@ -146,6 +149,15 @@ public class ThemeColors {
     public void setStickyBackgroundColor(int i) {
         this.stickyBackgroundColor = i;
     }
+    public void setStickyBackgroundColor2(int i) {
+        this.stickyBackgroundColor2 = i;
+    }
+    public void setStickyBackgroundColor3(int i) {
+        this.stickyBackgroundColor3 = i;
+    }
+    public void setStickyBackgroundColor4(int i) {
+        this.stickyBackgroundColor4 = i;
+    }
     public void setHighlightChordColor(int i) {
         this.highlightChordColor = i;
     }
@@ -234,6 +246,15 @@ public class ThemeColors {
     }
     public int getStickyBackgroundColor() {
         return stickyBackgroundColor;
+    }
+    public int getStickyBackgroundColor2() {
+        return stickyBackgroundColor2;
+    }
+    public int getStickyBackgroundColor3() {
+        return stickyBackgroundColor3;
+    }
+    public int getStickyBackgroundColor4() {
+        return stickyBackgroundColor4;
     }
     public int getStickyTextColor() {
         return stickyTextColor;
@@ -346,7 +367,10 @@ public class ThemeColors {
         theme = theme + "_";
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"metronomeColor",             darkishred);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyTextColor",            black);
-        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor",      lightyellow);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor",      stickybg);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor2",      stickybg2);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor3",      stickybg3);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor4",      stickybg4);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"extraInfoBgColor",           grey);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"extraInfoTextColor",         white);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCapoColor",            red);
@@ -443,6 +467,9 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_metronomeColor",               darkishred));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyTextColor",             black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyBackgroundColor", stickybg));
+        setStickyBackgroundColor2(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyBackgroundColor2",stickybg2));
+        setStickyBackgroundColor3(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyBackgroundColor3",stickybg3));
+        setStickyBackgroundColor4(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyBackgroundColor4",stickybg4));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTextColor",             white));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_multilingualTextColor", vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCapoColor",             red));
@@ -473,6 +500,9 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_metronomeColor",               darkishred));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyTextColor",             black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyBackgroundColor", stickybg));
+        setStickyBackgroundColor2(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyBackgroundColor2",stickybg2));
+        setStickyBackgroundColor3(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyBackgroundColor3",stickybg3));
+        setStickyBackgroundColor4(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyBackgroundColor4",stickybg4));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTextColor",             black));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_multilingualTextColor", grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCapoColor",             red));
@@ -503,6 +533,9 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_metronomeColor",             darkishred));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyTextColor",           black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyBackgroundColor",stickybg));
+        setStickyBackgroundColor2(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyBackgroundColor2",stickybg2));
+        setStickyBackgroundColor3(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyBackgroundColor3",stickybg3));
+        setStickyBackgroundColor4(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyBackgroundColor4",stickybg4));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTextColor",           white));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_multilingualTextColor",vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCapoColor",           red));
@@ -533,6 +566,9 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_metronomeColor",             darkishred));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyTextColor",           black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyBackgroundColor",stickybg));
+        setStickyBackgroundColor2(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyBackgroundColor2",stickybg2));
+        setStickyBackgroundColor3(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyBackgroundColor3",stickybg3));
+        setStickyBackgroundColor4(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyBackgroundColor4",stickybg4));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTextColor",           black));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_multilingualTextColor",grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCapoColor",           red));
@@ -563,6 +599,9 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_metronomeColor",             darkishred));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyTextColor",           black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyBackgroundColor",stickybg));
+        setStickyBackgroundColor2(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyBackgroundColor2",stickybg2));
+        setStickyBackgroundColor3(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyBackgroundColor3",stickybg3));
+        setStickyBackgroundColor4(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_stickyBackgroundColor4",stickybg4));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsTextColor",           white));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_multilingualTextColor",vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("amoled_lyricsCapoColor",           red));
@@ -822,6 +861,12 @@ public class ThemeColors {
                 return getStickyTextColor();
             case "stickyBackgroundColor":
                 return getStickyBackgroundColor();
+            case "stickyBackgroundColor2":
+                return getStickyBackgroundColor2();
+            case "stickyBackgroundColor3":
+                return getStickyBackgroundColor3();
+            case "stickyBackgroundColor4":
+                return getStickyBackgroundColor4();
             case "highlightChordColor":
                 return getHighlightChordColor();
             case "highlightHeadingColor":
@@ -861,7 +906,10 @@ public class ThemeColors {
     @SuppressWarnings("FieldCanBeLocal")
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
-    private final int stickybg = 0xddddaa00;
+    private final int stickybg = 0xffddaa00;
+    private final int stickybg2 = 0xfff8d7da;
+    private final int stickybg3 = 0xffd1e7dd;
+    private final int stickybg4 = 0xffcfe2ff;
     private final int vdarkyellow = 0xff111100;
     private final int red = 0xffff0000;
     private final int vdarkred = 0xff220000;

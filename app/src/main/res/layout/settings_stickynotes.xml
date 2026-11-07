@@ -12,24 +12,48 @@
         android:paddingBottom="@dimen/extra_scroll_space_large">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-            android:id="@+id/edit"
+            android:id="@+id/settingsLocal"
             style="@style/largeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/edit" />
+            android:layout_marginTop="16dp"
+            android:text="@string/settings" />
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-            android:id="@+id/stickyNotes"
+        <LinearLayout
+            android:id="@+id/stickyNotesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:hint="@string/song_notes"
-            android:imeOptions="actionNone"
-            android:inputType="textMultiLine"
-            android:lines="6"
-            android:minLines="6"
-            app:endIconMode="clear_text" />
+            android:orientation="vertical"/>
+
+        <!-- Button to add a new sticky note -->
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+            android:id="@+id/addStickyNoteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"
+            android:text="@string/new_something"
+            app:icon="@drawable/plus" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/override_sticky" />
+
+        <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+            android:id="@+id/settingsOverrideStickySlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:paddingTop="0dp"
+            app:textC="@string/override_on"
+            app:textL="@string/override_none"
+            app:textR="@string/override_off" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
             android:id="@+id/saveButton"
@@ -104,30 +128,6 @@
                 android:valueFrom="100"
                 android:valueTo="1200" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-                android:id="@+id/settingsLocal"
-                style="@style/largeText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/settings" />
-
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="0dp"
-                android:text="@string/override_sticky" />
-
-            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
-                android:id="@+id/settingsOverrideStickySlider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:paddingTop="0dp"
-                app:textC="@string/override_on"
-                app:textL="@string/override_none"
-                app:textR="@string/override_off" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -280,7 +280,25 @@
                     android:text="@string/text"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
-                    android:id="@+id/stickybackgroundButton"
+                    android:id="@+id/stickybackground1Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/background"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/stickybackground2Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/background"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/stickybackground3Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/background"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/stickybackground4Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/background"/>

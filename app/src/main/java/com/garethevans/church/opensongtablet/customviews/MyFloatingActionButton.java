@@ -280,6 +280,7 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void setFABButtonColor(int color) {
+        palette.secondary = color;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //myFAB.setBackgroundTintList(ColorStateList.valueOf(color));
                 myFAB.setBackgroundTintList(new ColorStateList(
@@ -307,6 +308,7 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void setFABIconColor(int color) {
+        palette.onSurface = color;
         // Tint the icon only if a drawable is present
         Drawable drawable = myFAB.getDrawable();
         if (drawable != null) {

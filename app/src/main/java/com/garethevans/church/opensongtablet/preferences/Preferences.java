@@ -211,6 +211,9 @@ public class Preferences extends Activity {
     // amoled_metronomeColor            int         The color for the metronome background in the amoled theme
     // amoled_stickyTextColor           int         The color for the sticky note text info text in the amoled theme
     // amoled_stickyBackgroundColor     int         The color for the sticky note background info text in the amoled theme
+    // amoled_stickyBackgroundColor2    int         The color for the sticky note background 2 info text in the amoled theme
+    // amoled_stickyBackgroundColor3    int         The color for the sticky note background 3 info text in the amoled theme
+    // amoled_stickyBackgroundColor4    int         The color for the sticky note background 4 info text in the amoled theme
     // amoled_extraInfoTextColor        int         The color for the extra info text in the amoled theme
     // amoled_extraInfoBgColor          int         The color for the extra info background in the amoled theme
     // amoled_highlightChordColor       int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
@@ -297,6 +300,9 @@ public class Preferences extends Activity {
     // custom1_metronomeColor           int         The color for the metronome background in the custom1 theme
     // custom1_stickyTextColor          int         The color for the sticky note text info text in the custom1 theme
     // custom1_stickyBackgroundColor    int         The color for the sticky note background info text in the custom1 theme
+    // custom1_stickyBackgroundColor2   int         The color for the sticky note 2 background info text in the custom1 theme
+    // custom1_stickyBackgroundColor3   int         The color for the sticky note 3 background info text in the custom1 theme
+    // custom1_stickyBackgroundColor4   int         The color for the sticky note 4 background info text in the custom1 theme
     // custom1_extraInfoTextColor       int         The color for the extra info text in the custom1 theme
     // custom1_extraInfoBgColor         int         The color for the extra info background in the custom1 theme
     // custom1_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
@@ -327,6 +333,9 @@ public class Preferences extends Activity {
     // custom2_metronomeColor           int         The color for the metronome background in the custom2 theme
     // custom2_stickyTextColor          int         The color for the sticky note text info text in the custom2 theme
     // custom2_stickyBackgroundColor    int         The color for the sticky note background info text in the custom2 theme
+    // custom2_stickyBackgroundColor2   int         The color for the sticky note background 2 info text in the custom2 theme
+    // custom2_stickyBackgroundColor3   int         The color for the sticky note background 3 info text in the custom2 theme
+    // custom2_stickyBackgroundColor4   int         The color for the sticky note background 4 info text in the custom2 theme
     // custom2_extraInfoTextColor       int         The color for the extra info text in the custom2 theme
     // custom2_extraInfoBgColor         int         The color for the extra info background in the custom2 theme
     // custom2_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
@@ -383,6 +392,9 @@ public class Preferences extends Activity {
     // dark_metronomeColor              int         The color for the metronome background in the dark theme
     // dark_stickyTextColor             int         The color for the sticky note text info text in the dark theme
     // dark_stickyBackgroundColor       int         The color for the sticky note background info text in the dark theme
+    // dark_stickyBackgroundColor2      int         The color for the sticky note background 2 info text in the dark theme
+    // dark_stickyBackgroundColor3      int         The color for the sticky note background 3 info text in the dark theme
+    // dark_stickyBackgroundColor4      int         The color for the sticky note background 4 info text in the dark theme
     // dark_extraInfoTextColor          int         The color for the extra info text in the dark theme
     // dark_extraInfoBgColor            int         The color for the extra info background in the dark theme
     // dark_highlightChordColor         int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
@@ -500,6 +512,9 @@ public class Preferences extends Activity {
     // light_metronomeColor             int         The color for the metronome background in the light theme
     // light_stickyTextColor            int         The color for the sticky note text info text in the light theme
     // light_stickyBackgroundColor      int         The color for the sticky note background info text in the light theme
+    // light_stickyBackgroundColor2     int         The color for the sticky note background 2 info text in the light theme
+    // light_stickyBackgroundColor3     int         The color for the sticky note background 3 info text in the light theme
+    // light_stickyBackgroundColor4     int         The color for the sticky note background 4 info text in the light theme
     // light_extraInfoTextColor         int         The color for the extra info text in the light theme
     // light_extraInfoBgColor           int         The color for the extra info background in the light theme
     // light_highlightChordColor        int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
