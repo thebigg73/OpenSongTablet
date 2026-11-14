@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 
@@ -23,7 +22,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -45,10 +43,6 @@ public class ExposedDropDown extends FrameLayout {
     private boolean dealingWithAlready = false;
     private ArrayList<String> arrayList = null;
     private Palette palette;
-
-    private WindowInsetsCompat windowInsetsCompat;
-    private WindowInsetsControllerCompat windowInsetsControllerCompat;
-    private Window window;
 
     private boolean userEditing = true;
     private boolean programmaticChange = false;
@@ -73,20 +67,11 @@ public class ExposedDropDown extends FrameLayout {
 
         autoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_bg);
 
-        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
-            windowInsetsCompat = insets;
-            return insets;
-        });
-
-        if (window != null && window.getDecorView() != null) {
-            windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
-        }
-
         // Read XML attributes
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExposedDropDown);
         try {
             String text = a.getString(R.styleable.ExposedDropDown_android_text); // In preview
-            autoCompleteTextView.setText(text);                                  // For inflation
+            autoCompleteTextView.setText(text,false);                                  // For inflation
             String hint = a.getString(R.styleable.ExposedDropDown_android_hint); // In preview
             textInputLayout.setHint(hint);                                       // For inflation
         } catch (Exception e) {
@@ -123,10 +108,7 @@ public class ExposedDropDown extends FrameLayout {
                 setPopupSize();
             }
 
-            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
-                    windowInsetsControllerCompat != null) {
-                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
-            }
+            hideKeyboardIfShowing();
 
             if (event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
@@ -140,14 +122,16 @@ public class ExposedDropDown extends FrameLayout {
         if (!dealingWithAlready) {
             dealingWithAlready = true;
 
-            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
-                    windowInsetsControllerCompat != null) {
-                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
-            }
+            hideKeyboardIfShowing();
 
             setPopupSize();
+
+            setPopupSize();
+            setPopupWidth();
+
             if (autoCompleteTextView.isPopupShowing()) {
                 autoCompleteTextView.dismissDropDown();
+                dealingWithAlready = false;
             } else {
                 autoCompleteTextView.postDelayed(() -> {
                     autoCompleteTextView.showDropDown();
@@ -200,7 +184,7 @@ public class ExposedDropDown extends FrameLayout {
     }
 
     public Editable getText() {
-        if (autoCompleteTextView.getText() == null) autoCompleteTextView.setText("");
+        if (autoCompleteTextView.getText() == null) autoCompleteTextView.setText("",false);
         return autoCompleteTextView.getText();
     }
 
@@ -208,7 +192,7 @@ public class ExposedDropDown extends FrameLayout {
         if (autoCompleteTextView != null) {
             autoCompleteTextView.post(() -> {
                 try {
-                    autoCompleteTextView.setText(text);
+                    autoCompleteTextView.setText(text,false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -274,17 +258,14 @@ public class ExposedDropDown extends FrameLayout {
         autoCompleteTextView.invalidate();
 
 
-        //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
         textInputLayout.setHintTextColor(new ColorStateList(
                 new int[][]{new int[0]},
                 new int[]{palette.hintColor}
         ));
-        //textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
         textInputLayout.setDefaultHintTextColor(new ColorStateList(
                 new int[][]{new int[0]},
                 new int[]{palette.hintColor}
         ));
-        //textInputLayout.setEndIconTintList(ColorStateList.valueOf(palette.textColor));
         textInputLayout.setEndIconTintList(new ColorStateList(
                 new int[][]{new int[0]},
                 new int[]{palette.textColor}
@@ -313,5 +294,51 @@ public class ExposedDropDown extends FrameLayout {
     public void setPalette(Palette palette) {
         this.palette = palette;
         setPalette();
+    }
+
+    private int measureContentWidth() {
+        android.widget.ListAdapter adapter = autoCompleteTextView.getAdapter();
+        if (adapter == null || adapter.getCount() == 0) return 0;
+        int unspec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        FrameLayout parent = new FrameLayout(getContext());
+        // Only measure the longest labels, so huge lists stay cheap
+        Integer[] pos = new Integer[adapter.getCount()];
+        for (int i = 0; i < pos.length; i++) pos[i] = i;
+        java.util.Arrays.sort(pos, (a, b) ->
+                String.valueOf(adapter.getItem(b)).length() - String.valueOf(adapter.getItem(a)).length());
+        int max = 0;
+        View recycled = null;
+        for (int i = 0; i < Math.min(pos.length, 15); i++) {
+            recycled = adapter.getView(pos[i], recycled, parent);
+            recycled.measure(unspec, unspec);
+            max = Math.max(max, recycled.getMeasuredWidth());
+        }
+        Drawable bg = autoCompleteTextView.getDropDownBackground();
+        if (bg != null) {
+            android.graphics.Rect r = new android.graphics.Rect();
+            bg.getPadding(r);
+            max += r.left + r.right;
+        }
+        return max;
+    }
+
+    public void setPopupWidth() {
+        int content = measureContentWidth();
+        if (content <= 0) return;
+        int margin = (int) (16 * getResources().getDisplayMetrics().density);
+        int maxWidth = getResources().getDisplayMetrics().widthPixels - 2 * margin;
+        // Never narrower than the field; use Math.min(content, maxWidth) if you want it narrower too
+        autoCompleteTextView.setDropDownWidth(Math.min(Math.max(content, autoCompleteTextView.getWidth()), maxWidth));
+    }
+
+    private void hideKeyboardIfShowing() {
+        WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(this);
+        if (insets != null && insets.isVisible(WindowInsetsCompat.Type.ime())) {
+            Context ctx = unwrap(getContext());
+            if (ctx instanceof Activity) {
+                WindowCompat.getInsetsController(((Activity) ctx).getWindow(), this)
+                        .hide(WindowInsetsCompat.Type.ime());
+            }
+        }
     }
 }
