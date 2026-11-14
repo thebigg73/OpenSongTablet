@@ -126,6 +126,10 @@
         var padding = 4;
         var isPopup = false;
 
+        // ---- Tap a note on the score: sound it, and move playback to that point ----
+        var noteInfo = {};            // ABC text position (startChar) -> { ms, midiPitches }
+        var noteInfoFor = null;       // the tune the map was built for
+
         // Height (CSS px) reserved under the score for the transport bar (44px bar + 8px margin + a little slack).
         // Added to the height reported back to Android in popup mode.
         var AUDIO_BAR_HEIGHT = 56;
@@ -319,6 +323,8 @@
             defaultoptions = {paddingtop:0, paddingbottom:padding, paddingright:0, paddingleft:0,
                                     staffwidth: w, add_classes:true, responsive: 'resize',
                                     afterParsing: window.abcStringMarksAfterParsing,
+                                    clickListener: scoreClickListener,
+                                    selectTypes: ["note"],
                                     foregroundColor: maincolor,
                                     viewportHorizontal: true, viewportVertical: true,
                                     scrollHorizontal:false, scrollVertical:false,
@@ -429,6 +435,62 @@
                     renderAudioController(visualObj);
                 }
             }, 200);
+        }
+
+        function buildNoteInfo(tune) {
+            noteInfo = {};
+            noteInfoFor = tune;
+            try {
+                tune.setUpAudio({});    // fills in each note's midiPitches (empty until the player has loaded)
+                var tc = new ABCJS.TimingCallbacks(tune, {});
+                tc.noteTimings.forEach(function(ev) {
+                    if (!ev || ev.type !== "event") return;
+                    var chars = ev.startCharArray || [ev.startChar];
+                    chars.forEach(function(sc) {
+                        // First occurrence wins (a repeated section keeps its first pass)
+                        if (sc !== undefined && sc !== null && noteInfo[sc] === undefined) {
+                            noteInfo[sc] = { ms: ev.milliseconds, midiPitches: ev.midiPitches };
+                        }
+                    });
+                });
+            } catch (e) {
+                console.warn("Note timing map failed:", e);
+            }
+        }
+
+        function scoreClickListener(abcelem, tuneNumber, classes, analysis, drag, mouseEvent) {
+            if (!isPopup || !showTransport || !visualObj || !abcelem) return;
+            if (noteInfoFor !== visualObj) buildNoteInfo(visualObj);
+            var info = noteInfo[abcelem.startChar];
+            if (!info) return;                                   // bar line, title, etc.
+
+            var playing = !!(synthControl && synthControl.isStarted);
+
+            // 1. Sound the tapped note(s), unless the tune is already playing
+            if (!playing && info.midiPitches && info.midiPitches.length &&
+                    ABCJS.synth && ABCJS.synth.supportsAudio()) {
+               try {
+                    // This build's signature: (pitches, graceNotes, millisecondsPerMeasure, soundFontUrl)
+                    var p = ABCJS.synth.playEvent(info.midiPitches, abcelem.midiGraceNotes,
+                            visualObj.millisecondsPerMeasure(), SOUNDFONT_URL);
+                    if (p && p.catch) p.catch(function(e) { console.warn("Note preview:", e); });
+                } catch (e) {
+                    console.warn("Note preview failed:", e);
+                }
+            }
+
+            // 2. Move the playback position (loads the player first if it has not been started yet)
+            if (synthControl && synthControl.runWhenReady) {
+                synthControl.runWhenReady(function() {
+                    synthControl.seek(info.ms / 1000, "seconds");
+                    // The player only refreshes its progress bar and its stored position when the beat
+                    // changes, so set them explicitly (otherwise Play restarts from the previous beat)
+                    var tm = synthControl.timer;
+                    if (tm && tm.lastMoment) {
+                        synthControl.setProgress(Math.min(1, info.ms / tm.lastMoment), tm.lastMoment);
+                    }
+                }, undefined);
+            }
         }
 
         window.addEventListener('DOMContentLoaded', function() {
