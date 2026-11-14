@@ -107,6 +107,7 @@ import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActio
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
+import com.garethevans.church.opensongtablet.customviews.PopupMenuItem;
 import com.garethevans.church.opensongtablet.customviews.StopRecordingPopUp;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
@@ -218,6 +219,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -1982,8 +1984,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void allowNavigationUp(boolean allow) {
         if (getSupportActionBar() != null) {
             mainLooper.post(() -> {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
-                getSupportActionBar().setHomeButtonEnabled(allow);
+                try {
+                    if (getSupportActionBar()!=null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
+                        getSupportActionBar().setHomeButtonEnabled(allow);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
     }
@@ -2452,6 +2460,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
         updateCastIcon();
         checkToolbarMenuIcons();
+
+        // Intercept the overflow click to trigger your custom palette-themed popup
+        myView.myToolbar.setupCustomOverflowClickListener(() -> {
+            // Find the overflow view itself to use as the anchor for your custom popup
+            View anchor = myView.myToolbar.findViewById(R.id.settings_menu_item); // or fallback to the toolbar
+            if (anchor == null) {
+                anchor = myView.myToolbar;
+            }
+            openCustomMenu(anchor);
+        });
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -2525,17 +2544,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         tintDrawerLayout();
     }
 
-    private void tintMenuIcons(Menu menu, @ColorInt int color) {
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            if (item.getIcon() != null) {
-                Drawable icon = DrawableCompat.wrap(item.getIcon());
-                DrawableCompat.setTint(icon, color);
-                item.setIcon(icon);
-            }
-        }
-    }
-
     @Override
     public void refreshToolbarMenu() {
         // This is called when we change the theme when running the app
@@ -2596,15 +2604,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menuScreenMirror.setVisible(!settingsOpen);
 
             // Target the overflow icon in the Toolbar
+            // 1. Target and tint the overflow icon in the Toolbar
             Drawable overflowIcon = getToolbar().getOverflowIcon();
             if (overflowIcon != null) {
-                // Wrap and mutate to avoid affecting other drawables
                 Drawable wrappedIcon = DrawableCompat.wrap(overflowIcon).mutate();
                 DrawableCompat.setTint(wrappedIcon, tint);
                 getToolbar().setOverflowIcon(wrappedIcon);
             }
 
-            tintMenuIcons(menu, tint);
+            tintMenuIconsAndText(menu, tint);
 
             myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
             updateCastIcon();
@@ -2614,6 +2622,46 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
             return false;
         }
+    }
+
+    private void tintMenuIconsAndText(Menu menu, @ColorInt int color) {
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+
+            // 1. Tint icon if present
+            if (item.getIcon() != null) {
+                Drawable icon = DrawableCompat.wrap(item.getIcon()).mutate();
+                DrawableCompat.setTint(icon, color);
+                item.setIcon(icon);
+            }
+
+            // 2. Tint text title for overflow items using a Spannable
+            CharSequence title = item.getTitle();
+            if (title != null && !title.toString().isEmpty()) {
+                android.text.SpannableString spannableTitle = new android.text.SpannableString(title);
+                spannableTitle.setSpan(new android.text.style.ForegroundColorSpan(color), 0, spannableTitle.length(), 0);
+                item.setTitle(spannableTitle);
+            }
+        }
+    }
+
+    // Example of how to trigger your custom popup from MainActivity
+    private void openCustomMenu(View anchorView) {
+        List<PopupMenuItem> menuItems = new ArrayList<>();
+        if (getAppPermissions().hasGooglePlay()) {
+            menuItems.add(new PopupMenuItem(R.id.mirror_menu_item, getString(R.string.chromecast), getCastIcon()));
+        }
+        menuItems.add(new PopupMenuItem(R.id.search_menu_item, getString(R.string.search), R.drawable.search));
+        //menuItems.add(new PopupMenuItem(R.id.help_menu_item, getString(R.string.help), R.drawable.help_outline));
+        menuItems.add(new PopupMenuItem(R.id.settings_menu_item, getString(R.string.settings), R.drawable.settings_outline));
+
+        myView.myToolbar.showCustomOverflowPopup(anchorView, menuItems, itemId -> {
+            // Route the click straight into your existing onOptionsItemSelected logic!
+            MenuItem simulatedItem = globalMenuItem.findItem(itemId);
+            if (simulatedItem != null) {
+                onOptionsItemSelected(simulatedItem);
+            }
+        });
     }
 
     // The drawers and actionbars
@@ -5534,6 +5582,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Update the action (will check if not already doing this within 1 sec)
         doCastUpdateHandler.post(doCastUpdateRunnable);
         doCastUpdateHandler.postDelayed(allowCastUpdateRunnable, 1000);
+    }
+    public int getCastIcon() {
+        if (connectedDisplays!=null && connectedDisplays.length>0) {
+            return R.drawable.cast_connected;
+        } else {
+            return R.drawable.cast;
+        }
     }
 
     private void setupDisplays() {

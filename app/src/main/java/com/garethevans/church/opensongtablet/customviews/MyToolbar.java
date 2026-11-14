@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Moved away from MaterialToolbar due to FireHD crashes
 public class MyToolbar extends Toolbar {
@@ -97,6 +100,9 @@ public class MyToolbar extends Toolbar {
         this.setContentInsetsRelative(0,0);
         this.setContentInsetStartWithNavigation(0);
         this.setContentInsetEndWithActions(0);
+
+        // Assign our custom popup theme to the toolbar programmatically
+        this.setPopupTheme(R.style.DynamicPopupTheme);
 
         this.setPadding(0,0,0,0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -678,9 +684,22 @@ public class MyToolbar extends Toolbar {
     }
 
     public void changeTheme() {
+        Log.d(TAG,"changeTheme() called");
         this.setTitleTextColor(mainActivityInterface.getPalette().textColor);
         this.setSubtitleTextColor(mainActivityInterface.getPalette().textColor);
         this.setBackgroundColor(mainActivityInterface.getPalette().primary);
+
+        // Safely style any active ActionMenuView children inside the toolbar
+        this.post(() -> {
+            for (int i = 0; i < this.getChildCount(); i++) {
+                View child = this.getChildAt(i);
+                if (child instanceof androidx.appcompat.widget.ActionMenuView) {
+                    // ActionMenuView hosts the overflow menu items
+                    child.setBackgroundColor(Color.TRANSPARENT); // Keep container clean
+                }
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.setElevation(0);
         }
@@ -695,4 +714,112 @@ public class MyToolbar extends Toolbar {
         mainActivityInterface.refreshToolbarMenu();
     }
 
+    public void showCustomOverflowPopup(View anchorView, List<PopupMenuItem> items, OnItemClickListener listener) {
+        if (c == null || mainActivityInterface == null) return;
+
+        android.widget.ListPopupWindow popupWindow = new android.widget.ListPopupWindow(c);
+
+        popupWindow.setAnchorView(anchorView);
+        popupWindow.setModal(true);
+
+        // Set width (e.g., 200dp converted to pixels)
+        int widthInPx = (int) (200 * getResources().getDisplayMetrics().density);
+        popupWindow.setWidth(widthInPx);
+
+        // Align to the top right
+        if (anchorView != null) {
+            int xOffset = anchorView.getWidth() - widthInPx;
+            popupWindow.setHorizontalOffset(xOffset);
+        }
+        popupWindow.setVerticalOffset(0);
+
+        int secondaryColor = mainActivityInterface.getPalette().secondary;
+        int textColor = mainActivityInterface.getPalette().textColor;
+
+        // -----------------------------------------------------------------
+        // CREATE ROUNDED CORNER BACKGROUND PROGRAMMATICALLY
+        // -----------------------------------------------------------------
+        android.graphics.drawable.GradientDrawable roundedBackground = new android.graphics.drawable.GradientDrawable();
+        roundedBackground.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+        roundedBackground.setColor(secondaryColor);
+
+        // Set corner radius (e.g., 8dp converted to pixels)
+        float radiusInPx = 8 * getResources().getDisplayMetrics().density;
+        roundedBackground.setCornerRadius(radiusInPx);
+
+        popupWindow.setBackgroundDrawable(roundedBackground);
+        // -----------------------------------------------------------------
+
+        android.widget.ArrayAdapter<PopupMenuItem> adapter = new android.widget.ArrayAdapter<PopupMenuItem>(
+                c,
+                android.R.layout.simple_list_item_1,
+                items
+        ) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull android.view.ViewGroup parent) {
+                android.widget.TextView view = (android.widget.TextView) super.getView(position, convertView, parent);
+
+                PopupMenuItem item = getItem(position);
+                if (item != null) {
+                    view.setText(item.title);
+                }
+                view.setTextColor(textColor);
+                view.setPadding(32, 24, 32, 24);
+                view.setTextSize(16.0f);
+
+                return view;
+            }
+        };
+
+        popupWindow.setAdapter(adapter);
+
+        popupWindow.setOnItemClickListener((parent, view, position, id) -> {
+            PopupMenuItem clickedItem = items.get(position);
+            if (listener != null) {
+                listener.onItemClick(clickedItem.id);
+            }
+            popupWindow.dismiss();
+        });
+
+        popupWindow.show();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int itemId);
+    }
+
+    public void setupCustomOverflowClickListener(Runnable onOverflowClicked) {
+        this.post(() -> {
+            View overflowButton = findOverflowButton(this);
+            if (overflowButton != null) {
+                // Override the default click behavior
+                overflowButton.setOnClickListener(v -> {
+                    onOverflowClicked.run();
+                });
+            }
+        });
+    }
+
+    private View findOverflowButton(ViewGroup viewGroup) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof androidx.appcompat.widget.ActionMenuView) {
+                ViewGroup actionMenuView = (ViewGroup) child;
+                for (int j = 0; j < actionMenuView.getChildCount(); j++) {
+                    View actionChild = actionMenuView.getChildAt(j);
+                    // The overflow button is typically an ImageView inside the ActionMenuView
+                    if (actionChild instanceof ImageView || actionChild.getClass().getSimpleName().contains("OverflowMenuButton")) {
+                        return actionChild;
+                    }
+                }
+            } else if (child instanceof ViewGroup) {
+                View found = findOverflowButton((ViewGroup) child);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
 }
