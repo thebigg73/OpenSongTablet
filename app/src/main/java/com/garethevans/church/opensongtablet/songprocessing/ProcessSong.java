@@ -4523,8 +4523,12 @@ public class ProcessSong {
                 bits.add(stringBuilder.toString());   // The file
 
                 // Get rid of underscores
-                bits.set(0, bits.get(0).substring(0, bits.get(0).lastIndexOf("_")));
-                bits.set(1, bits.get(1).substring(0, bits.get(1).lastIndexOf("_")));
+                if (bits.get(0).lastIndexOf("_")>-1) {
+                    bits.set(0, bits.get(0).substring(0, bits.get(0).lastIndexOf("_")));
+                }
+                if (bits.get(1).lastIndexOf("_")>-1) {
+                    bits.set(1, bits.get(1).substring(0, bits.get(1).lastIndexOf("_")));
+                }
             } else {
                 bits.add(0, "");
                 bits.add(1, filename);

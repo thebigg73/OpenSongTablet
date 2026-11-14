@@ -23,6 +23,7 @@ import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -43,13 +44,24 @@ public class BackupOSBFragment extends Fragment {
     private final String TAG = "BackupOSB";
     private String backupFilename;
     private ArrayList<String> checkedFolders;
-    private boolean error = false;
-    private boolean alive = true;
+    // alive is written on the main thread and (optionally) read from the worker
+    private volatile boolean alive = true;
     private String string_backup="", string_backup_info="", string_website_backup="", string_export="",
-            string_processing="", string_mainfoldername="", string_error="";
+            string_processing="", string_mainfoldername="", string_error="", backup_complete_string="",
+            backup_incomplete_string="", backup_error_string="", songs_string="", highlighter_string="",
+            database_string="", not_added_string="";
     boolean wantHighlighter, wantPersistentDB;
 
     private String webAddress;
+
+    // Everything the worker thread learns, handed back to the main thread in one go
+    private static class BackupResult {
+        int songsAdded = 0;
+        int highlighterAdded = 0;
+        boolean databaseAdded = false;
+        final ArrayList<String> failed = new ArrayList<>();
+        String fatal = null;   // set if the backup could not be completed
+    }
 
     @Override
     public void onResume() {
@@ -92,23 +104,42 @@ public class BackupOSBFragment extends Fragment {
             string_processing = getString(R.string.processing);
             string_mainfoldername = getString(R.string.mainfoldername);
             string_error = getString(R.string.error);
+            backup_complete_string = getString(R.string.backup_complete);
+            backup_incomplete_string = getString(R.string.backup_incomplete);
+            backup_error_string = getString(R.string.backup_error);
+            songs_string = getString(R.string.songs);
+            highlighter_string = getString(R.string.highlight);
+            database_string = getString(R.string.persistent_database);
+            not_added_string = getString(R.string.not_added);
         }
     }
 
     private void setupViews() {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Hide the progress text view for new
-            mainActivityInterface.getMainHandler().post(() -> myView.progressText.setVisibility(View.GONE));
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (alive && myView!=null) {
+                    myView.progressText.setVisibility(View.GONE);
+                }
+            });
 
             // Get the default file name
             String deffilename = defaultFilename();
-            mainActivityInterface.getMainHandler().post(() -> myView.backupName.setText(deffilename));
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (alive && myView!=null) {
+                    myView.backupName.setText(deffilename);
+                }
+            });
 
             // Get a list of available folders in the app
             ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
 
             // Create a new checkbox entry (default to ticked) for each one
             mainActivityInterface.getMainHandler().post(() -> {
+                // The user may have left the page while the folders were being listed
+                if (!alive || myView==null) {
+                    return;
+                }
                 for (String folder:folders) {
                     MyMaterialCheckbox checkBox = new MyMaterialCheckbox(getContext());
                     checkBox.setText(folder);
@@ -163,215 +194,289 @@ public class BackupOSBFragment extends Fragment {
     }
 
     private void doSave() {
-        // Get the checked folders
+        if (myView == null) {
+            return;
+        }
+
+        // Everything the worker needs is read HERE, on the main thread, before it starts.
+        // (Previously the file name was set in a post() that the worker could outrun.)
         wantHighlighter = myView.includeHighlighter.isChecked();
         wantPersistentDB = myView.includePersistentDB.getChecked();
-
         getCheckedFolders();
 
+        String typedName = "";
+        if (myView.backupName.getText() != null) {
+            typedName = myView.backupName.getText().toString().trim();
+        }
+        backupFilename = typedName.isEmpty() ? defaultFilename() : typedName;
+
+        // Local copies, so the worker never depends on fields that can change under it
+        final String filename = backupFilename;
+        final ArrayList<String> folders = new ArrayList<>(checkedFolders);
+        final boolean doHighlighter = wantHighlighter;
+        final boolean doDatabase = wantPersistentDB;
+
+        myView.progressText.setVisibility(View.VISIBLE);
+        myView.progressBar.setVisibility(View.VISIBLE);
+        myView.createBackupFAB.setEnabled(false);
+
+        // execute() (unlike submit()) hands an uncaught exception to the default handler,
+        // which ends the whole app. So NOTHING may escape this Runnable.
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            // Get the backup file name and checked folders
-            mainActivityInterface.getMainHandler().post(() -> {
-                if (alive) {
-                    // Check the backup file name
-                    if (myView.backupName.getText()!=null) {
-                        backupFilename = myView.backupName.getText().toString();
-                    } else {
-                        backupFilename = defaultFilename();
-                    }
-                    // Make the progressText Visible
-                    myView.progressText.setVisibility(View.VISIBLE);
-                    myView.progressBar.setVisibility(View.VISIBLE);
-                    myView.createBackupFAB.setEnabled(false);
-                }
-            });
-
-            // Check the file list is up to date
-            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(false);
-
-            // Prepare the uris, inputStreams and outputStreams
-            Uri fileUriToCopy;
-            InputStream inputStream;
-
-            // The zip stuff
-            byte[] tempBuff = new byte[1024];
-            // Check the temp folder exists
-            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Backups/"+backupFilename+"  deleteOld=true");
-            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Backups","",backupFilename,true);
-            OutputStream outputStream;
-            ZipOutputStream zipOutputStream = null;
+            BackupResult result = new BackupResult();
             try {
-                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
-                zipOutputStream = new ZipOutputStream(outputStream);
-            } catch (Exception e) {
-                e.printStackTrace();
-                error = true;
-                mainActivityInterface.getStorageAccess().updateCrashLog("Creating outputstream\n"+e);
-            }
-            ZipEntry ze;
-
-            // Now go through each one in turn and check if we want it backed up
-            // Include the database
-            if (wantPersistentDB) {
-                // Copy the current appDB to the userDB (the one in Settings)
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (myView!=null) {
-                        String message = string_processing + ": " + SQLite.NON_OS_DATABASE_NAME;
-                        myView.progressText.setText(message);
-                    }
-                });
-                Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
-                        copyUserDatabase());
-                Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem("Settings","", SQLite.NON_OS_DATABASE_NAME);
-                InputStream dbInputStream = mainActivityInterface.getStorageAccess().getInputStream(uriDB);
-                ze = new ZipEntry(SQLite.NON_OS_DATABASE_NAME);
+                runBackup(filename, folders, doHighlighter, doDatabase, result);
+            } catch (Throwable t) {
+                Log.e(TAG, "Backup failed", t);
+                result.fatal = t.toString();
                 try {
-                    if (zipOutputStream != null) {
-                        zipOutputStream.putNextEntry(ze);
-                        if (!ze.isDirectory()) {
-                            int len;
-                            while ((len = dbInputStream.read(tempBuff)) > 0) {
-                                zipOutputStream.write(tempBuff, 0, len);
-                            }
-                        }
-                        zipOutputStream.closeEntry();
-                        dbInputStream.close();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateCrashLog("Backup failed\n" + t);
+                } catch (Throwable ignored) {
+                    // Nothing more we can do
                 }
             }
+            mainActivityInterface.getMainHandler().post(() -> showResult(result));
+        });
+    }
 
-            // Now deal with the songs
-            for (String file:allFiles) {
+    // Runs on the worker thread. Deliberately does NOT stop if the user leaves the page:
+    // stopping half way is what used to leave an incomplete (and unclosed) zip behind.
+    private void runBackup(String filename, ArrayList<String> folders, boolean doHighlighter,
+                           boolean doDatabase, BackupResult result) throws Exception {
+        // Check the file list is up to date
+        ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(false);
+        if (allFiles == null) {
+            allFiles = new ArrayList<>();
+        }
+
+        // Check the backup file exists
+        Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",filename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Backups/"+filename+"  deleteOld=true");
+        mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Backups","",filename,true);
+
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
+        if (outputStream == null) {
+            throw new IOException("Could not open Backups/" + filename + " for writing");
+        }
+        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
+        byte[] tempBuff = new byte[8192];
+
+        try {
+            if (doDatabase) {
+                addDatabase(zipOutputStream, tempBuff, result);
+            }
+            addSongs(zipOutputStream, allFiles, folders, tempBuff, result);
+            if (doHighlighter) {
+                addHighlighterFiles(zipOutputStream, folders, tempBuff, result);
+            }
+        } finally {
+            // Always runs, even after an unexpected exception, so the central directory
+            // is written and the .osb is a readable zip.
+            try {
+                zipOutputStream.close();
+            } catch (Exception e) {
+                Log.e(TAG, "Closing zip failed", e);
+                result.fatal = "Could not finish the backup file";
+                mainActivityInterface.getStorageAccess().updateCrashLog("Close outputstream\n" + e);
+            }
+        }
+    }
+
+    private void addDatabase(ZipOutputStream zos, byte[] buf, BackupResult result) {
+        postProgress(string_processing + ": " + SQLite.NON_OS_DATABASE_NAME);
+        try {
+            // Copy the current appDB to the userDB (the one in Settings)
+            Log.d(TAG, "DB copied: " + mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase());
+            Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", SQLite.NON_OS_DATABASE_NAME);
+            if (addEntry(zos, SQLite.NON_OS_DATABASE_NAME, uriDB, buf)) {
+                result.databaseAdded = true;
+            } else {
+                result.failed.add(SQLite.NON_OS_DATABASE_NAME);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Adding database failed", e);
+            result.failed.add(SQLite.NON_OS_DATABASE_NAME);
+            mainActivityInterface.getStorageAccess().updateCrashLog("Adding database\n" + e);
+        }
+    }
+
+    private void addSongs(ZipOutputStream zos, ArrayList<String> allFiles, ArrayList<String> folders,
+                          byte[] buf, BackupResult result) {
+        for (String file : allFiles) {
+            try {
+                if (file == null || !file.contains("/")) {
+                    continue;
+                }
                 // Get folder from file string
-                try {
-                    if (file.contains("/")) {
-                        String thisFolder = file.substring(0, file.lastIndexOf("/"));
-                        String thisFile = file.replace(thisFolder+"/","");
-                        // Now check if we want it added
-                        for (String folder : checkedFolders) {
-                            if (alive && folder.equals(thisFolder)) {
-                                // Get the uri for this item
-                                fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisFolder, thisFile);
-                                inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
-                                if (thisFolder.equals(string_mainfoldername) || thisFolder.equals("MAIN")) {
-                                    ze = new ZipEntry(thisFile);
-                                } else {
-                                    ze = new ZipEntry(thisFolder + "/" + thisFile);
-                                }
-                                if (zipOutputStream != null) {
-                                    // Update the screen
-                                    mainActivityInterface.getMainHandler().post(() -> {
-                                        String message = string_processing + ": " + file;
-                                        if (myView!=null) {
-                                            myView.progressText.setText(message);
-                                        }
-                                    });
-                                    try {
-                                        zipOutputStream.putNextEntry(ze);
-                                        if (!ze.isDirectory()) {
-                                            int len;
-                                            while ((len = inputStream.read(tempBuff)) > 0) {
-                                                zipOutputStream.write(tempBuff, 0, len);
-                                            }
-                                        }
-                                        zipOutputStream.closeEntry();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        error = true;
-                                        mainActivityInterface.getStorageAccess().updateCrashLog("Adding item "+ze.getName()+"\n"+e);
-                                    }
-                                }
-                                inputStream.close();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                int split = file.lastIndexOf("/");
+                String thisFolder = file.substring(0, split);
+                String thisFile = file.substring(split + 1);
+
+                // Now check if we want it added
+                if (!folders.contains(thisFolder)) {
+                    continue;
                 }
-            }
 
-            // Now add the matching highligher files
-            if (wantHighlighter) {
-                ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder("Highlighter", "");
-                for (String file : highlighterFiles) {
-                    ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);
-                    String thisFolder = bits.get(0).replace("_","/");
-                    String fileName = bits.get(1);
-                    // The folder is the first bit of the filename
-                    if (file.contains("_")) {
-
-                        // Now check if we want it added
-                        for (String wantedFolder : checkedFolders) {
-                            if (alive && wantedFolder.equals(thisFolder)) {
-                                try {
-                                    // Get the uri for this item
-                                    fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", file);
-                                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
-                                    ze = new ZipEntry("_Highlighter/" + file);
-                                    if (zipOutputStream != null) {
-                                        // Update the screen
-                                        mainActivityInterface.getMainHandler().post(() -> {
-                                            String message = string_processing + ": " + file;
-                                            myView.progressText.setText(message);
-                                        });
-                                        try {
-                                            zipOutputStream.putNextEntry(ze);
-                                            if (!ze.isDirectory()) {
-                                                int len;
-                                                while ((len = inputStream.read(tempBuff)) > 0) {
-                                                    zipOutputStream.write(tempBuff, 0, len);
-                                                }
-                                            }
-                                            zipOutputStream.closeEntry();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            error = true;
-                                            mainActivityInterface.getStorageAccess().updateCrashLog("Writing item "+ze.getName()+"\n"+e);
-                                        }
-                                    }
-                                    inputStream.close();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                                }
-                            }
-                        }
-                    }
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisFolder, thisFile);
+                String entryName;
+                if (thisFolder.equals(string_mainfoldername) || thisFolder.equals("MAIN")) {
+                    entryName = thisFile;
+                } else {
+                    entryName = thisFolder + "/" + thisFile;
                 }
-            }
-
-            try {
-                if (zipOutputStream!=null) {
-                    zipOutputStream.close();
+                postProgress(string_processing + ": " + file);
+                if (addEntry(zos, entryName, uri, buf)) {
+                    result.songsAdded++;
+                } else {
+                    result.failed.add(file);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                error = true;
-                mainActivityInterface.getStorageAccess().updateCrashLog("Close outputstrean\n"+e);
+                Log.e(TAG, "Adding song failed: " + file, e);
+                result.failed.add(String.valueOf(file));
+                mainActivityInterface.getStorageAccess().updateCrashLog("Adding item " + file + "\n" + e);
             }
+        }
+    }
 
-            // Update the view
-            if (alive) {
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (alive) {
-                        myView.progressBar.setVisibility(View.GONE);
-                        if (error) {
-                            String message = string_processing + ": " + string_error;
-                            myView.progressText.setText(message);
+    private void addHighlighterFiles(ZipOutputStream zos, ArrayList<String> folders,
+                                     byte[] buf, BackupResult result) {
+        ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder("Highlighter", "");
+        if (highlighterFiles == null) {
+            return;
+        }
+        for (String file : highlighterFiles) {
+            // Each file is handled on its own: one bad file is skipped and reported,
+            // it can no longer take the rest (or the whole app) down.
+            try {
+                // A highlighter file name is folder_song..., so anything without an
+                // underscore can't be one of ours (e.g. a .nomedia). Ignore it quietly.
+                if (file == null || !file.contains("_")) {
+                    continue;
+                }
 
-                        } else {
-                            myView.progressText.setText("");
-                            myView.progressText.setVisibility(View.GONE);
-                            exportBackup();
-                        }
-                        myView.createBackupFAB.setEnabled(true);
-                    }
-                });
+                ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);
+                if (bits == null || bits.size() < 2 || bits.get(0) == null) {
+                    // Looks like an overlay but can't be understood: report it
+                    result.failed.add("Highlighter/" + file);
+                    continue;
+                }
+
+                // The folder is the first bit of the filename
+                String thisFolder = bits.get(0).replace("_", "/");
+
+                // Now check if we want it added
+                if (!folders.contains(thisFolder)) {
+                    continue;
+                }
+
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", file);
+                postProgress(string_processing + ": " + file);
+                if (addEntry(zos, "_Highlighter/" + file, uri, buf)) {
+                    result.highlighterAdded++;
+                } else {
+                    result.failed.add("Highlighter/" + file);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Adding highlighter file failed: " + file, e);
+                result.failed.add("Highlighter/" + file);
+                mainActivityInterface.getStorageAccess().updateCrashLog("Writing highlighter item " + file + "\n" + e);
+            }
+        }
+    }
+
+    // Copies one file into the zip. Returns false (and writes nothing) if the file can't be opened.
+    // If reading fails part way through, the entry is closed so the zip stays valid
+    // (that one file will be truncated, and is reported as failed).
+    private boolean addEntry(ZipOutputStream zos, String entryName, Uri uri, byte[] buf) {
+        InputStream in = null;
+        boolean entryOpen = false;
+        try {
+            in = mainActivityInterface.getStorageAccess().getInputStream(uri);
+            if (in == null) {
+                return false;
+            }
+            zos.putNextEntry(new ZipEntry(entryName));
+            entryOpen = true;
+            int len;
+            while ((len = in.read(buf)) != -1) {
+                zos.write(buf, 0, len);
+            }
+            zos.closeEntry();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Adding entry failed: " + entryName, e);
+            mainActivityInterface.getStorageAccess().updateCrashLog("Adding item " + entryName + "\n" + e);
+            if (entryOpen) {
+                try {
+                    zos.closeEntry();
+                } catch (Exception ignored) {
+                    // The zip itself is in trouble; close() later will report it
+                }
+            }
+            return false;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception ignored) {
+                    // Nothing useful to do
+                }
+            }
+        }
+    }
+
+    private void postProgress(String message) {
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (alive && myView != null) {
+                myView.progressText.setText(message);
             }
         });
+    }
+
+    // Main thread. If the user has left the page there is nothing to update; the finished
+    // backup is simply sitting in the Backups folder.
+    private void showResult(BackupResult result) {
+        if (!alive || myView == null) {
+            return;
+        }
+        myView.progressBar.setVisibility(View.GONE);
+        myView.createBackupFAB.setEnabled(true);
+        myView.progressText.setVisibility(View.VISIBLE);
+        myView.progressText.setText(buildSummary(result));
+
+        // Only offer to share a backup that was completed
+        if (result.fatal == null) {
+            exportBackup();
+        }
+    }
+
+    private String buildSummary(BackupResult result) {
+        StringBuilder sb = new StringBuilder();
+        if (result.fatal != null) {
+            sb.append(string_error).append(": ").append(backup_error_string);
+        } else if (result.failed.isEmpty()) {
+            sb.append(backup_complete_string);
+        } else {
+            sb.append(backup_incomplete_string);
+        }
+        sb.append("\n").append(songs_string).append(": ").append(result.songsAdded);
+        if (wantHighlighter) {
+            sb.append("\n").append(highlighter_string).append(": ").append(result.highlighterAdded);
+        }
+        if (wantPersistentDB) {
+            sb.append("\n").append(database_string).append(": ").append(result.databaseAdded ? "yes" : "no");
+        }
+        if (!result.failed.isEmpty()) {
+            sb.append("\n").append(not_added_string).append(" (").append(result.failed.size()).append("):");
+            int shown = Math.min(result.failed.size(), 5);
+            for (int i = 0; i < shown; i++) {
+                sb.append("\n  ").append(result.failed.get(i));
+            }
+            if (result.failed.size() > shown) {
+                sb.append("\n  ...");
+            }
+        }
+        return sb.toString();
     }
 
     private void exportBackup() {
