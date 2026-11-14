@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -145,6 +146,9 @@ public class MusicScoreFragment extends Fragment {
             setTheStringValues();
             myView.tabLayout.setVisibility(mainActivityInterface.getAbcNotation().getAbcIncludeTab() ? View.VISIBLE : View.GONE);
         }
+
+        // Set up the popup window transport bar option
+        myView.abcShowTransport.setChecked(mainActivityInterface.getAbcNotation().getAbcShowTransport());
 
         // Set up the inline staff width
         myView.abcInlineWidth.setValue(mainActivityInterface.getAbcNotation().getAbcInlineWidth());
@@ -287,6 +291,11 @@ public class MusicScoreFragment extends Fragment {
             myView.tabLayout.setVisibility(b ? View.VISIBLE:View.GONE);
             mainActivityInterface.getAbcNotation().setAbcIncludeTab(b);
             setTheStringValues();
+            // Update the webview with the new values
+            inlineAbcObject.updateContent();
+        });
+        myView.abcShowTransport.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getAbcNotation().setAbcShowTransport(b);
             // Update the webview with the new values
             inlineAbcObject.updateContent();
         });

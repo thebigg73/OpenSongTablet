@@ -102,6 +102,13 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/abcShowTransport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/abc_show_transport"
+                android:hint="@string/abc_show_transport_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/abcIncludeTab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

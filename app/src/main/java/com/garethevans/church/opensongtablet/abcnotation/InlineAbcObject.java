@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
@@ -131,7 +132,8 @@ public class InlineAbcObject {
             inlineAbcWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                    return super.onConsoleMessage(consoleMessage);
+                    android.util.Log.d("WebViewConsole", consoleMessage.message() + " -- Line: " + consoleMessage.lineNumber());
+                    return true;
                 }
             });
             inlineAbcWebView.setWebViewClient(new MyWebViewClient(getIsInline()));
@@ -254,30 +256,25 @@ public class InlineAbcObject {
                 inlineAbcWebView.evaluateJavascript("javascript:displayOnly();", null);
 
             } else if (isPopup) {
-                // PopUp ABC window
                 inlineAbcWebView.evaluateJavascript("javascript:setWidth(" + mainActivityInterface.getAbcNotation().getAbcInlineWidth() + ");", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setMainColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor())+"');", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor())+"');", null);
                 inlineAbcWebView.evaluateJavascript("javascript:displayOnly();", null);
-
-                // Enable remote SoundFont preloading & audio synthesis in popup mode
                 inlineAbcWebView.evaluateJavascript("javascript:preloadSoundFont();", null);
-
+                inlineAbcWebView.evaluateJavascript("javascript:setShowTransport(" + mainActivityInterface.getAbcNotation().getAbcShowTransport() + ");", null);
             } else {
-                // ABC editor fragment
                 inlineAbcWebView.evaluateJavascript("javascript:setWidth(" + mainActivityInterface.getAbcNotation().getAbcInlineWidth() + ");", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setMainColor('#000000');", null);
                 inlineAbcWebView.evaluateJavascript("javascript:setChordColor('#000000');", null);
+                inlineAbcWebView.evaluateJavascript("javascript:setShowTransport(" + mainActivityInterface.getAbcNotation().getAbcShowTransport() + ");", null);
                 inlineAbcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
             }
 
-            // This sends the final information to start the rendering process
-            // The default settings
+            // Pass parameters and inject the ABC text
             inlineAbcWebView.evaluateJavascript("javascript:setIsPopup("+isPopup+");", null);
             inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');", null);
-            inlineAbcWebView.evaluateJavascript("javascript:updateABC('" + getJSReadyAbcText() + "');", null);
             inlineAbcWebView.evaluateJavascript("javascript:setHideTab(" + !mainActivityInterface.getAbcNotation().getAbcIncludeTab() + ");", null);
             inlineAbcWebView.evaluateJavascript("javascript:setTranspose(" + mainActivityInterface.getAbcNotation().getSongAbcTranspose() + ");", null);
             inlineAbcWebView.evaluateJavascript("javascript:setInstrument('" + mainActivityInterface.getAbcNotation().getAbcIntrumentTabForABCJS() + "');", null);
@@ -285,8 +282,8 @@ public class InlineAbcObject {
             inlineAbcWebView.evaluateJavascript("javascript:setTuning('" + strings[6] + "','" + strings[5] + "','" + strings[4] + "','" + strings[3] + "','" + strings[2] + "','" + strings[1] + "');", null);
             inlineAbcWebView.evaluateJavascript("javascript:setLabel('" + mainActivityInterface.getAbcNotation().getAbcInstrumentLabelABCJS() + "');", null);
 
-            inlineAbcWebView.evaluateJavascript("javascript:initEditor()", null);
+            inlineAbcWebView.evaluateJavascript("javascript:updateABC('" + getJSReadyAbcText() + "');", null);
+
         });
     }
-
 }

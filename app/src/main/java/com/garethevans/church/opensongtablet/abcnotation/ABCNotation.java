@@ -26,6 +26,7 @@ public class ABCNotation {
     private boolean abcAutoTranspose;
     private boolean autoshowMusicScore;
     private boolean abcIncludeTab;
+    private boolean abcShowTransport;
     private boolean abcWebViewsDrawn = false;
     private final MainActivityInterface mainActivityInterface;
     private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
@@ -62,6 +63,7 @@ public class ABCNotation {
         abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.5f);
         autoshowMusicScore = mainActivityInterface.getPreferences().getMyPreferenceBoolean("autoshowMusicScore",false);
         abcIncludeTab = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcIncludeTab",false);
+        abcShowTransport = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcShowTransport", true);
         abcInstrumentTab = mainActivityInterface.getPreferences().getMyPreferenceString("abcInstrumentTab","guitar");
         abcInlineWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("abcInlineWidth",480);
     }
@@ -338,6 +340,9 @@ public class ABCNotation {
     public boolean getAbcIncludeTab() {
         return abcIncludeTab;
     }
+    public boolean getAbcShowTransport() {
+        return abcShowTransport;
+    }
     public String getAbcInstrumentNice() {
         // The preference is a non translated simple text string
         // Get a nice translated string from this
@@ -487,6 +492,10 @@ public class ABCNotation {
     public void setAbcIncludeTab(boolean abcIncludeTab) {
         this.abcIncludeTab = abcIncludeTab;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcIncludeTab",abcIncludeTab);
+    }
+    public void setAbcShowTransport(boolean abcShowTransport) {
+        this.abcShowTransport = abcShowTransport;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcShowTransport",abcShowTransport);
     }
     public void setAbcInstrumentTab(String abcInstrumentTab) {
         this.abcInstrumentTab = abcInstrumentTab;
