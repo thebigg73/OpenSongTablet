@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -36,14 +34,14 @@ public class HighlighterEditFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsHighlighterEditBinding myView;
-    private Drawable whiteCheck, blackCheck;
     private int drawingPenSize, drawingHighlighterSize, drawingEraserSize,
-            drawingPenColor, drawingHighlighterColor, availableWidth,
-            availableHeight, scaledWidth, scaledHeight;
+            drawingPenColor, drawingHighlighterColor, drawingTextColor, drawingTextSize,
+            availableWidth, availableHeight, scaledWidth, scaledHeight;
     private Bitmap screenShotBitmap, highlighterBitmap;
     private Uri highlighterUri;
 
     // The colours used in drawing
+    // pen and text use the same colours
     private final int penBlack = 0xff000000;
     private final int penWhite = 0xffffffff;
     private final int penBlue = 0xff0000ff;
@@ -118,11 +116,9 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private void setupViews() {
-        if (getContext() != null) {
-            // Load two completely separate instances from the resources
-            whiteCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_white, null);
-            blackCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_black, null);
-        }
+        myView.scrollView.setScrollEnabled(false);
+        // Initially hide the scroll lock toggle button
+        myView.draggableToolbox.setScrollButtonVisibility(false);
 
         mainActivityInterface.setDrawNotes(myView.drawNotes);
         mainActivityInterface.getDrawNotes().resetVars();
@@ -164,6 +160,9 @@ public class HighlighterEditFragment extends Fragment {
                 RequestOptions requestOptions = new RequestOptions().override(scaledWidth, scaledHeight);
                 Glide.with(myView.glideImage).load(screenShotBitmap).apply(requestOptions).
                         into(myView.glideImage);
+
+                // Show the scroll lock toggle button if we need the scroll view
+                myView.draggableToolbox.setScrollButtonVisibility(scaledHeight>availableHeight);
 
                 // Set the original highlighter file if it exists
                 mainActivityInterface.getDrawNotes().loadExistingHighlighter(
@@ -226,10 +225,8 @@ public class HighlighterEditFragment extends Fragment {
 
     private void setScale(int bitmapWidth, int bitmapHeight) {
         float maxScaleX = (float) availableWidth / (float) bitmapWidth;
-        float maxScaleY = (float) availableHeight / (float) bitmapHeight;
-        float maxScale = Math.min(maxScaleX, maxScaleY);
-        scaledWidth = (int) (bitmapWidth * maxScale);
-        scaledHeight = (int) (bitmapHeight * maxScale);
+        scaledWidth = (int) (bitmapWidth * maxScaleX);
+        scaledHeight = (int) (bitmapHeight * maxScaleX);
     }
 
     private void setImageSize() {
@@ -249,9 +246,11 @@ public class HighlighterEditFragment extends Fragment {
     private void setToolPreferences() {
         activeTool = mainActivityInterface.getPreferences().getMyPreferenceString("drawingTool", "pen");
         drawingPenSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingPenSize", 20);
+        drawingTextSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingTextSize", 12);
         drawingHighlighterSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingHighlighterSize", 20);
         drawingEraserSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingEraserSize", 20);
         drawingPenColor = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingPenColor", penRed);
+        drawingTextColor = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingTextColor", penRed);
         drawingHighlighterColor = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingHighlighterColor", highlighterYellow);
         setActiveTool();
         setColors();
@@ -261,25 +260,35 @@ public class HighlighterEditFragment extends Fragment {
     private void setActiveTool() {
         myView.draggableToolbox.changeDrawable(activeTool);
 
-        if (activeTool.equals("pen")) {
-            currentColor = drawingPenColor;
-            currentSize = drawingPenSize;
-            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingPenSize, drawingPenColor);
-            mainActivityInterface.getDrawNotes().setErase(false);
-
-        } else if (activeTool.equals("highlighter")) {
-            currentColor = drawingHighlighterColor;
-            currentSize = drawingHighlighterSize;
-            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingHighlighterSize, drawingHighlighterColor);
-            mainActivityInterface.getDrawNotes().setErase(false);
-
-        } else {
-            currentColor = highlighterBlack;
-            currentSize = drawingEraserSize;
-            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingEraserSize, highlighterBlack);
-            mainActivityInterface.getDrawNotes().setErase(true);
+        switch (activeTool) {
+            case "pen":
+                currentColor = drawingPenColor;
+                currentSize = drawingPenSize;
+                mainActivityInterface.getDrawNotes().setCurrentPaint(drawingPenSize, drawingPenColor);
+                mainActivityInterface.getDrawNotes().setErase(false);
+                break;
+            case "highlighter":
+                currentColor = drawingHighlighterColor;
+                currentSize = drawingHighlighterSize;
+                mainActivityInterface.getDrawNotes().setCurrentPaint(drawingHighlighterSize, drawingHighlighterColor);
+                mainActivityInterface.getDrawNotes().setErase(false);
+                break;
+            case "text":
+                currentColor = drawingTextColor;
+                currentSize = drawingTextSize;
+                mainActivityInterface.getDrawNotes().setCurrentPaint(drawingTextSize, drawingTextColor);
+                mainActivityInterface.getDrawNotes().setErase(false);
+                break;
+            case "move":
+                mainActivityInterface.getDrawNotes().setErase(false);
+                break;
+            default:
+                currentColor = highlighterBlack;
+                currentSize = drawingEraserSize;
+                mainActivityInterface.getDrawNotes().setCurrentPaint(drawingEraserSize, highlighterBlack);
+                mainActivityInterface.getDrawNotes().setErase(true);
+                break;
         }
-        hideColors();
     }
 
     private void setColors() {
@@ -314,44 +323,37 @@ public class HighlighterEditFragment extends Fragment {
         }
         if (activeTool.equals("highlighter")) {
             currentColor = drawingHighlighterColor;
+        } else if (activeTool.equals("text")) {
+            currentColor = drawingTextColor;
         } else {
             currentColor = drawingPenColor;
         }
-        myView.draggableToolbox.setColor(colorChosen, getBestCheck());
-    }
-
-    private void hideColors() {
-        myView.draggableToolbox.hideColors(activeTool.equals("eraser"));
-    }
-
-    private Drawable getBestCheck() {
-        Log.d(TAG,"activeTool:"+activeTool+"  drawingPenColor:"+drawingPenColor+"  drawingHighlighterColor:"+drawingHighlighterColor);
-        if (activeTool.equals("pen") && (drawingPenColor == penWhite || drawingPenColor == penYellow || drawingPenColor == penGreen)) {
-            Log.d(TAG,"blackCheck");
-            return blackCheck;
-        } else if (activeTool.equals("highlighter") && (drawingHighlighterColor == highlighterWhite ||
-                drawingHighlighterColor == highlighterYellow || drawingHighlighterColor == highlighterGreen)) {
-            Log.d(TAG,"whiteCheck");
-            return blackCheck;
-        } else {
-            return whiteCheck;
-        }
+        myView.draggableToolbox.setColor(colorChosen);
     }
 
     private void setSizes() {
-        if (activeTool.equals("pen")) {
-            myView.draggableToolbox.setSizeSlider(drawingPenSize);
-        } else if (activeTool.equals("highlighter")) {
-            myView.draggableToolbox.setSizeSlider(drawingHighlighterSize);
-        } else {
-            myView.draggableToolbox.setSizeSlider(drawingEraserSize);
+        switch (activeTool) {
+            case "pen":
+                myView.draggableToolbox.setSizeSlider(drawingPenSize);
+                break;
+            case "highlighter":
+                myView.draggableToolbox.setSizeSlider(drawingHighlighterSize);
+                break;
+            case "text":
+                myView.draggableToolbox.setSizeSlider(drawingTextSize);
+                break;
+            case "eraser":
+                myView.draggableToolbox.setSizeSlider(drawingEraserSize);
+                break;
         }
     }
 
     private void setListeners() {
         myView.draggableToolbox.setPenOnClickListener(v -> changeTool("pen"));
         myView.draggableToolbox.setHighlighterOnClickListener(v -> changeTool("highlighter"));
+        myView.draggableToolbox.setTextOnClickListener(v -> changeTool("text"));
         myView.draggableToolbox.setEraserOnClickListener(v -> changeTool("eraser"));
+        myView.draggableToolbox.setMoveOnClickListener(v -> changeTool("move"));
         myView.draggableToolbox.setUndoOnClickListener(v -> undo());
         myView.draggableToolbox.setRedoOnClickListener(v -> redo());
         myView.draggableToolbox.setDeleteOnClickListener(v -> delete());
@@ -381,6 +383,10 @@ public class HighlighterEditFragment extends Fragment {
                     case "highlighter":
                         prefName = "drawingHighlighterSize";
                         drawingHighlighterSize = size;
+                        break;
+                    case "text":
+                        prefName = "drawingTextSize";
+                        drawingTextSize = size;
                         break;
                     case "eraser":
                         prefName = "drawingEraserSize";
@@ -464,14 +470,22 @@ public class HighlighterEditFragment extends Fragment {
 
     private void changeColor(int colorPen, int colorHighlighter) {
         Log.d(TAG,"activeTool:"+activeTool);
-        if (activeTool.equals("pen")) {
-            drawingPenColor = colorPen;
-            currentColor = colorPen;
-            mainActivityInterface.getPreferences().setMyPreferenceInt("drawingPenColor", colorPen);
-        } else if (activeTool.equals("highlighter")) {
-            drawingHighlighterColor = colorHighlighter;
-            currentColor = colorHighlighter;
-            mainActivityInterface.getPreferences().setMyPreferenceInt("drawingHighlighterColor", colorHighlighter);
+        switch (activeTool) {
+            case "pen":
+                drawingPenColor = colorPen;
+                currentColor = colorPen;
+                mainActivityInterface.getPreferences().setMyPreferenceInt("drawingPenColor", colorPen);
+                break;
+            case "text":
+                drawingTextColor = colorPen;
+                currentColor = colorPen;
+                mainActivityInterface.getPreferences().setMyPreferenceInt("drawingTextColor", colorPen);
+                break;
+            case "highlighter":
+                drawingHighlighterColor = colorHighlighter;
+                currentColor = colorHighlighter;
+                mainActivityInterface.getPreferences().setMyPreferenceInt("drawingHighlighterColor", colorHighlighter);
+                break;
         }
         setColors();
         mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize, currentColor);
@@ -492,6 +506,14 @@ public class HighlighterEditFragment extends Fragment {
             setupViews();
             myView.draggableToolbox.setPDF(true,mainActivityInterface.getSong().getPdfPageCount(),newPage+1);
         }
+    }
+
+    public void setScrollModeActive(boolean isScrollActive) {
+        // Enable/disable the scroll view touch interception
+        myView.scrollView.setScrollEnabled(isScrollActive);
+
+        // Disable/enable drawing input so touches go to the scroll view instead
+        mainActivityInterface.getDrawNotes().setEnabled(!isScrollActive);
     }
 
     private void saveFile() {
@@ -533,6 +555,26 @@ public class HighlighterEditFragment extends Fragment {
                 });
             });
         }
+    }
+
+    public boolean getIsMoveTool() {
+        return activeTool.equals("move");
+    }
+
+    public boolean getIsEraserTool() {
+        return activeTool.equals("eraser");
+    }
+
+    public boolean getIsTextTool() {
+        return activeTool.equals("text");
+    }
+
+    public int getDrawingTextSize() {
+        return drawingTextSize;
+    }
+
+    public void insertText(String text) {
+        mainActivityInterface.getDrawNotes().setText(text);
     }
 
     @Override

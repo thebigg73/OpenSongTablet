@@ -30,23 +30,25 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
     private float downRawX, downRawY;
     private float dX, dY;
-    private LinearLayout toolSettings, colorsLayout;
+    private LinearLayout toolSettings, colorsLayout, sizeLayout;
     private MyFloatingActionButton currentTool, saveButton, penFAB, highlighterFAB, eraserFAB,
             undoFAB, redoFAB, deleteFAB, blackFAB, whiteFAB, yellowFAB, redFAB, greenFAB, blueFAB,
-            prevPage, nextPage;
+            textFAB, prevPage, nextPage, scrollFAB, moveFAB;
     private MyMaterialSimpleTextView currentPage;
     private ImageView dragIcon;
     private MyMaterialSlider sizeSlider;
-    private Drawable penDrawable, highlighterDrawable, eraserDrawable;
+    private Drawable penDrawable, highlighterDrawable, eraserDrawable, textDrawable,
+            scrollActiveDrawable, scrollLockedDrawable, moveDrawable, whiteCheck, blackCheck;
     private boolean settingsVisible = false;
+    private Palette palette;
+    private int pdfCurrentPage = 0;
+    private HighlighterEditFragment highlighterEditFragment = null;
+    private boolean scrollModeActive = false;
+
     public HighlighterToolBox(Context context) {
         super(context);
         initialise(context);
     }
-    private Palette palette;
-    private boolean isPDF = false;
-    private int pdfPages = 0, pdfCurrentPage = 0;
-    private HighlighterEditFragment highlighterEditFragment = null;
 
     public HighlighterToolBox(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -60,6 +62,10 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
         palette = new Palette(context);
 
+        // Load two completely separate instances from the resources
+        whiteCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_white, null);
+        blackCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_black, null);
+
         LinearLayout mainTools = findViewById(R.id.mainTools);
         mainTools.setBackgroundColor(palette.surface);
 
@@ -71,12 +77,15 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         prevPage = findViewById(R.id.prevPage);
         nextPage = findViewById(R.id.nextPage);
         currentPage = findViewById(R.id.currentPage);
+        scrollFAB = findViewById(R.id.scrollButton);
         penFAB = findViewById(R.id.penFAB);
         highlighterFAB = findViewById(R.id.highlighterFAB);
+        textFAB = findViewById(R.id.textFAB);
         eraserFAB = findViewById(R.id.eraserFAB);
         undoFAB = findViewById(R.id.undoFAB);
         redoFAB = findViewById(R.id.redoFAB);
         deleteFAB = findViewById(R.id.deleteFAB);
+        moveFAB = findViewById(R.id.moveFAB);
         colorsLayout = findViewById(R.id.colorsLayout);
         blackFAB = findViewById(R.id.color_black);
         whiteFAB = findViewById(R.id.color_white);
@@ -84,6 +93,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         redFAB = findViewById(R.id.color_red);
         greenFAB = findViewById(R.id.color_green);
         blueFAB = findViewById(R.id.color_blue);
+        sizeLayout = findViewById(R.id.sizeLayout);
         sizeSlider = findViewById(R.id.sizeSlider);
 
         setColorChoosers();
@@ -97,8 +107,6 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     }
 
     public void setPDF(boolean isPDF, int pdfPages, int pdfCurrentPage) {
-        this.isPDF = isPDF;
-        this.pdfPages = pdfPages;
         this.pdfCurrentPage = pdfCurrentPage;
         if (isPDF) {
             String pageText = pdfCurrentPage + "/" + pdfPages;
@@ -115,15 +123,16 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
             prevPage.setVisibility(View.VISIBLE);
             nextPage.setVisibility(View.VISIBLE);
         }
-
-
     }
-
 
     private void setDrawables(Context context) {
         penDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.pen,context.getTheme());
         highlighterDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.highlighter,context.getTheme());
+        textDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.title, context.getTheme());
         eraserDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.eraser,context.getTheme());
+        moveDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.cursor,context.getTheme());
+        scrollActiveDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.arrow_up_down,context.getTheme());
+        scrollLockedDrawable = VectorDrawableCompat.create(context.getResources(),R.drawable.arrow_vertical_lock,context.getTheme());
     }
 
     public void changeDrawable(String which) {
@@ -134,6 +143,12 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
             case "eraser":
                 currentTool.setImageDrawable(eraserDrawable);
                 break;
+            case "text":
+                currentTool.setImageDrawable(textDrawable);
+                break;
+            case "move":
+                currentTool.setImageDrawable(moveDrawable);
+                break;
             case "pen":
             default:
                 currentTool.setImageDrawable(penDrawable);
@@ -142,26 +157,43 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         currentTool.setFABIconColor(palette.textColor);
         penFAB.setAlpha(which.equals("pen") ? 1f:0.5f);
         highlighterFAB.setAlpha(which.equals("highlighter") ? 1f:0.5f);
+        textFAB.setAlpha(which.equals("text") ? 1f : 0.5f);
         eraserFAB.setAlpha(which.equals("eraser") ? 1f:0.5f);
+        moveFAB.setAlpha(which.equals("move") ? 1f:0.5f);
+        checkForHides();
     }
 
     public void setColorChoosers() {
+        // Set the FAB button colors
         blackFAB.setFABButtonColor(Color.BLACK);
         whiteFAB.setFABButtonColor(Color.WHITE);
         yellowFAB.setFABButtonColor(Color.YELLOW);
         redFAB.setFABButtonColor(Color.RED);
         greenFAB.setFABButtonColor(Color.GREEN);
         blueFAB.setFABButtonColor(Color.BLUE);
+
+        // Set the check mark colors
+        blackFAB.setFABIconColor(Color.WHITE);
+        whiteFAB.setFABIconColor(Color.BLACK);
+        yellowFAB.setFABIconColor(Color.BLACK);
+        redFAB.setFABIconColor(Color.WHITE);
+        greenFAB.setFABIconColor(Color.BLACK);
+        blueFAB.setFABIconColor(Color.WHITE);
     }
 
-    public void setColor(String which, Drawable check) {
-        blackFAB.setImageDrawable(which.equals("black") ? check:null);
-        whiteFAB.setImageDrawable(which.equals("white") ? check:null);
-        yellowFAB.setImageDrawable(which.equals("yellow") ? check:null);
-        redFAB.setImageDrawable(which.equals("red") ? check:null);
-        greenFAB.setImageDrawable(which.equals("green") ? check:null);
-        blueFAB.setImageDrawable(which.equals("blue") ? check:null);
+    public void setColor(String which) {
+        Log.d(TAG,"which:"+which);
 
+        // Check the colours are ok (button and check)
+        setColorChoosers();
+
+        // Make sure we use the correct color check
+        blackFAB.setImageDrawable(which.equals("black") ? whiteCheck:null);
+        whiteFAB.setImageDrawable(which.equals("white") ? blackCheck:null);
+        yellowFAB.setImageDrawable(which.equals("yellow") ? blackCheck:null);
+        redFAB.setImageDrawable(which.equals("red") ? whiteCheck:null);
+        greenFAB.setImageDrawable(which.equals("green") ? blackCheck:null);
+        blueFAB.setImageDrawable(which.equals("blue") ? whiteCheck:null);
     }
 
     private void setListeners() {
@@ -180,8 +212,21 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
                 highlighterEditFragment.changePage(pdfCurrentPage+1);
             }
         });
+        scrollFAB.setOnClickListener(view -> setScrollModeActive(!scrollModeActive));
     }
 
+    private void checkForHides() {
+        if (highlighterEditFragment!=null && highlighterEditFragment.getIsMoveTool()) {
+            hideColors(true);
+            hideSize(true);
+        } else if (highlighterEditFragment!=null && highlighterEditFragment.getIsEraserTool()) {
+            hideColors(true);
+            hideSize(false);
+        } else {
+            hideColors(false);
+            hideSize(false);
+        }
+    }
     public void checkShowcase(Context c, MainActivityInterface mainActivityInterface) {
         // Add showcase info for the main toolbar options
         ArrayList<View> views = new ArrayList<>();
@@ -277,8 +322,16 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         highlighterFAB.setOnClickListener(onClickListener);
     }
 
+    public void setTextOnClickListener(OnClickListener onClickListener) {
+        textFAB.setOnClickListener(onClickListener);
+    }
+
     public void setEraserOnClickListener(OnClickListener onClickListener) {
         eraserFAB.setOnClickListener(onClickListener);
+    }
+
+    public void setMoveOnClickListener(OnClickListener onClickListener) {
+        moveFAB.setOnClickListener(onClickListener);
     }
 
     public void setUndoOnClickListener(OnClickListener onClickListener) {
@@ -313,7 +366,19 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     }
 
     public void hideColors(boolean hide) {
-        colorsLayout.setVisibility(hide ? View.GONE:View.VISIBLE);
+        colorsLayout.post(() -> {
+           if (colorsLayout!=null) {
+               colorsLayout.setVisibility(hide ? View.GONE:View.VISIBLE);
+           }
+        });
+
+    }
+    public void hideSize(boolean hide) {
+        sizeLayout.post(() -> {
+            if (sizeLayout!=null) {
+                sizeLayout.setVisibility(hide ? View.GONE:View.VISIBLE);
+            }
+        });
     }
 
     public void setSizeSlider(int size) {
@@ -331,5 +396,19 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     }
     public void setRedoFABEnabled(boolean enabled) {
         redoFAB.setEnabled(enabled);
+    }
+
+    public void setScrollModeActive(boolean scrollModeActive) {
+        this.scrollModeActive = scrollModeActive;
+        Log.d(TAG,"settingScrollModeActive to "+scrollModeActive);
+        scrollFAB.setImageDrawable(scrollModeActive ? scrollActiveDrawable:scrollLockedDrawable);
+        currentTool.setAlpha(scrollModeActive ? 0.5f:1f);
+        if (highlighterEditFragment!=null) {
+            highlighterEditFragment.setScrollModeActive(scrollModeActive);
+        }
+    }
+
+    public void setScrollButtonVisibility(boolean visibile) {
+        scrollFAB.setVisibility(visibile ? View.VISIBLE:View.GONE);
     }
 }

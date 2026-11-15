@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,9 +19,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
 
@@ -30,6 +34,8 @@ public class DrawNotes extends View {
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "DrawNotes";
 
+    private final String highlight_string, text_string;
+
     // The inteface to communication with the main activity
     private final SwipeDrawingInterface swipeDrawingInterface;
 
@@ -37,8 +43,6 @@ public class DrawNotes extends View {
     boolean loadExisting = false;
     Bitmap existingHighlighterFile;
     Paint bitmapPaint;
-
-    // Background screenshot
 
     // Values for the current drawing
     private boolean currentlyDrawing = false;
@@ -61,6 +65,14 @@ public class DrawNotes extends View {
     // For onTouch events
     private float startX;
     private float startY;
+    private float textX = 0;
+    private float textY = 0;
+
+    // For moving
+    private int selectedPathIndex = -1;
+    private float lastTouchX, lastTouchY;
+    private final RectF selectionBounds = new RectF();
+    private final Paint selectionPaint = new Paint();
 
     // Values for swipe
     private boolean startSwipe = true;
@@ -79,6 +91,14 @@ public class DrawNotes extends View {
 
     public DrawNotes(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        text_string = context.getString(R.string.text);
+        highlight_string = context.getString(R.string.highlight);
+
+        selectionPaint.setColor(0xFF0088FF); // Blue selection box
+        selectionPaint.setStyle(Paint.Style.STROKE);
+        selectionPaint.setStrokeWidth(3f);
+        selectionPaint.setPathEffect(new android.graphics.DashPathEffect(new float[]{10f, 10f}, 0f));
+
         if (!isInEditMode()) {
             swipeDrawingInterface = (SwipeDrawingInterface) context;
         } else {
@@ -117,10 +137,6 @@ public class DrawNotes extends View {
         currentSwipePaint.setStyle(Paint.Style.STROKE);
         currentSwipePaint.setStrokeJoin(Paint.Join.ROUND);
         currentSwipePaint.setStrokeCap(Paint.Cap.ROUND);
-        post(() -> {
-            setLayerType(View.LAYER_TYPE_SOFTWARE, currentPaint);
-            setLayerType(View.LAYER_TYPE_SOFTWARE, bitmapPaint);
-        });
     }
 
     public void resetVars() {
@@ -211,18 +227,34 @@ public class DrawNotes extends View {
                 Paint thisPaint = allPaints.get(x);
                 canvas.drawPath(thisPath, thisPaint);
             }
+            if (selectedPathIndex != -1 && selectedPathIndex < allPaths.size()) {
+                selectionBounds.setEmpty();
+                allPaths.get(selectedPathIndex).computeBounds(selectionBounds, true);
+
+                // Optional: add a little padding to the selection box so it doesn't hug the text/strokes too tightly
+                selectionBounds.inset(-30, -30);
+
+                canvas.drawRect(selectionBounds, selectionPaint);
+            }
         }
         updateUndoRedo();
     }
 
-
     // Deal with the touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!enabled) {
+            return false; // Let the ScrollView handle touches when not in drawing mode
+        }
         int action = event.getAction();
         float touchX = event.getX();
         float touchY = event.getY();
         int tolerance = 4;
+
+        // Prevent ScrollView from intercepting while we are actively drawing
+        if (getParent() != null) {
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
 
         // For stylus pens
         if (event.getToolType(0)==MotionEvent.TOOL_TYPE_ERASER) {
@@ -232,31 +264,81 @@ public class DrawNotes extends View {
         }
 
         if (enabled) {
-            if (action == MotionEvent.ACTION_DOWN) {
-                currentlyDrawing = true;
-                updateStartXY(touchX, touchY);
-                checkSwipeClearStart(touchX, touchY);
-                if (currentPath == null) {
-                    currentPath = new Path();
+            // Check for move tool first
+            // If it is, this consumes the event
+            if (highlighterEditFragment!=null && highlighterEditFragment.getIsMoveTool()) {
+                if (action == MotionEvent.ACTION_DOWN) {
+                    // Check if we tapped an existing path to select it
+                    // Tapped blank space, deselect current object
+                    selectedPathIndex = findPathAt(touchX, touchY); // Pick up the tapped object
+                    lastTouchX = touchX;
+                    lastTouchY = touchY;
+                    postInvalidate(); // Redraw to optionally show a selection highlight box if desired
+                    return true;
+                } else if (action == MotionEvent.ACTION_MOVE && selectedPathIndex != -1) {
+                    float dx = touchX - lastTouchX;
+                    float dy = touchY - lastTouchY;
+
+                    // Translate the selected path
+                    android.graphics.Matrix matrix = new android.graphics.Matrix();
+                    matrix.setTranslate(dx, dy);
+                    allPaths.get(selectedPathIndex).transform(matrix);
+
+                    lastTouchX = touchX;
+                    lastTouchY = touchY;
+                    postInvalidate();
+                    return true;
+                } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                    // KEEP selectedPathIndex so it stays selected until you tap somewhere empty or select another tool!
+                    // (Remove selectedPathIndex = -1 here, or only clear it if they tapped empty space)
+                    return true;
                 }
-                currentPath.moveTo(touchX, touchY);
+            }
+
+            if (action == MotionEvent.ACTION_DOWN) {
+                if (highlighterEditFragment!=null && highlighterEditFragment.getIsTextTool()) {
+                    textX = touchX;
+                    textY = touchY;
+                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(highlighterEditFragment,
+                            "HighlighterEditFragment",highlight_string,text_string,null,null,null,false);
+                    textInputBottomSheet.show(highlighterEditFragment.getChildFragmentManager(),"TextInputBottomSheet");
+
+                } else {
+                    currentPaint.setStyle(Paint.Style.STROKE);
+                    currentlyDrawing = true;
+                    updateStartXY(touchX, touchY);
+                    checkSwipeClearStart(touchX, touchY);
+                    if (currentPath == null) {
+                        currentPath = new Path();
+                    }
+                    currentPath.moveTo(touchX, touchY);
+                }
 
             } else if (action == MotionEvent.ACTION_UP) {
-                // Check for clear swipe
-                checkClearSwipe(touchX, touchY);
-                currentPath.quadTo(startX,startY,(startX+touchX)/2,(startY+touchY)/2);
-                updateStartXY(touchX, touchY);
-                currentlyDrawing = false;
-                addToArrays();
+                if (highlighterEditFragment!=null && highlighterEditFragment.getIsTextTool()) {
+                    return true;
+                } else {
+
+                    // Check for clear swipe
+                    checkClearSwipe(touchX, touchY);
+                    currentPath.quadTo(startX, startY, (startX + touchX) / 2, (startY + touchY) / 2);
+                    updateStartXY(touchX, touchY);
+                    currentlyDrawing = false;
+                    addToArrays();
+                }
 
             } else if (MotionEvent.ACTION_MOVE == event.getAction()) {
-                float dx = Math.abs(touchX - startX);
-                float dy = Math.abs(touchY - startY);
+                if (highlighterEditFragment!=null && highlighterEditFragment.getIsTextTool()) {
+                    return true;
+                } else {
+                    float dx = Math.abs(touchX - startX);
+                    float dy = Math.abs(touchY - startY);
 
-                if (dx >= tolerance || dy >= tolerance) {
-                    // Accept move
-                    currentPath.quadTo(startX, startY, (startX + touchX) / 2, (startY + touchY) / 2);
-                    updateStartXY(touchX,touchY);
+                    if (dx >= tolerance || dy >= tolerance) {
+                        // Accept move
+                        currentPath.quadTo(startX, startY, (startX + touchX) / 2, (startY + touchY) / 2);
+                        updateStartXY(touchX, touchY);
+                    }
                 }
 
             } else if (MotionEvent.ACTION_CANCEL == event.getAction()) {
@@ -265,6 +347,12 @@ public class DrawNotes extends View {
                 startSwipe = true;
                 // Check for clear swipe
                 checkClearSwipe(touchX, touchY);
+            }
+
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
             }
 
             // Indicate view should be redrawn
@@ -326,7 +414,52 @@ public class DrawNotes extends View {
         }
     }
 
+    // Check for moving paint paths
+    private int findPathAt(float x, float y) {
+        // Loop backwards so we check top-most (newest) paths first
+        for (int i = allPaths.size() - 1; i >= 0; i--) {
+            Path path = allPaths.get(i);
 
+            // Create a region bounding box check first for performance
+            android.graphics.RectF bounds = new android.graphics.RectF();
+            path.computeBounds(bounds, true);
+
+            // Expand bounds slightly to make it easier to tap thin lines/strokes
+            bounds.inset(-60, -60);
+
+            if (bounds.contains(x, y)) {
+                // Optional: Do a precise Region check for complex curves
+                Region region = new Region();
+                region.setPath(path, new Region(0, 0, canvasWidth, canvasHeight));
+                if (region.contains((int) x, (int) y)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    // The text tool
+    public void setText(String text) {
+        Path textPath = new Path();
+
+        // Generate path coordinates from the text string
+        if (highlighterEditFragment!=null) {
+            // Size is arbritary around 20pt
+            // We increase this value to make it sensible without changing the slider
+            currentPaint.setTextSize(highlighterEditFragment.getDrawingTextSize() * 5);
+        }
+        currentPaint.getTextPath(text, 0, text.length(), textX, textY, textPath);
+        currentPaint.setStyle(Paint.Style.FILL);
+
+        // Add it directly to your existing path and paint arrays!
+        allPaths.add(textPath);
+        allPaints.add(new Paint(currentPaint));
+        postInvalidate();
+
+        // Reset paint for normal writing
+        currentPaint.setStyle(Paint.Style.STROKE);
+    }
 
     // Undo and redo
     public ArrayList<Path> getUndoPaths() {
@@ -335,6 +468,7 @@ public class DrawNotes extends View {
     public ArrayList<Path> getAllPaths() {
         return allPaths;
     }
+
     public void undo() {
         int pathpos = allPaths.size()-1;
         int paintpos = allPaints.size()-1;
@@ -397,4 +531,5 @@ public class DrawNotes extends View {
             highlighterEditFragment.checkRedos();
         }
     }
+
 }

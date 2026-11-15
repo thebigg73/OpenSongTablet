@@ -176,6 +176,7 @@ public class Preferences extends Activity {
     // abcInstrumentTab                 String      Which instrument for guitar tab (guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle) (def:guitar)
     // abcPopupWidth                    float       The percentage of the screen width for the abc score popup (def:0.95f)
     // abcInlineWidth                   int         The number of pixels width for any inline abc notation (def:480)
+    // abcShowTransport                 boolean     Should the playback bar be shown on popup windows (def:true)
     // abcTranspose                     int         The visual transposing of abc notation
     // abcXPosition                     int         The x position of the popup sticky note (def: -1 which means figure it out first)
     // abcYPosition                     int         The y position of the popup sticky note (def: -1 which means figure it out first)
@@ -419,6 +420,8 @@ public class Preferences extends Activity {
     // drawingHighlighterSize           int         The default size of the highlighter (def:20)
     // drawingPenColor                  int         The colour of the pen (def:StaticVariables.black)
     // drawingPenSize                   int         The default size of the pen (def:20)
+    // drawingTextColor                 int         The color of the text took (def: set in HighlighterNotesEditFragment)
+    // drawingTextSize                  int         The default size of the text (def:14)
     // drawingTool                      String      The current drawing tool (def:hghlighter)
     // drummerIntro                     boolean     Should starting the drummer include a 1 bar count in (def:true)
     // editAsChordPro                   boolean     Should the song edit window be ChordPro format (def:false)

@@ -112,24 +112,6 @@ public class MyFloatingActionButton extends FrameLayout {
         applyState();
     }
 
-    /*private void applyState() {
-        // 1. Apply Alpha
-        myFAB.setAlpha(targetAlpha);
-
-        // 2. Apply Flat logic
-        if (isFlat) {
-            makeFlat();
-        }
-
-        // 3. Apply Color
-        if (targetButtonColor != -1) {
-            setFABButtonColor(targetButtonColor);
-        }
-        if (targetIconColor != -1) {
-            setFABIconColor(targetIconColor);
-        }
-    }*/
-
     private void applyState() {
         // 1. Apply Alpha
         myFAB.setAlpha(targetAlpha);
@@ -146,6 +128,7 @@ public class MyFloatingActionButton extends FrameLayout {
         if (isFlat) {
             makeFlat();
         }
+
     }
 
 
@@ -280,35 +263,40 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void setFABButtonColor(int color) {
-        palette.secondary = color;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //myFAB.setBackgroundTintList(ColorStateList.valueOf(color));
-                myFAB.setBackgroundTintList(new ColorStateList(
-                        new int[][]{new int[0]},
-                        new int[]{color}
-                ));
-                //myFAB.setRippleColor(ColorStateList.valueOf(color));
-                myFAB.setRippleColor(new ColorStateList(
-                        new int[][]{new int[0]},
-                        new int[]{color}
-                ));
-            } else {
-                //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
-                myFAB.setSupportBackgroundTintList(new ColorStateList(
-                        new int[][]{new int[0]},
-                        new int[]{color}
-                ));
-                myFAB.setRippleColor(color);
-            }
+        if (!isInEditMode() && palette != null) {
+            palette.secondary = color;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //myFAB.setBackgroundTintList(ColorStateList.valueOf(color));
+            myFAB.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{color}
+            ));
+            //myFAB.setRippleColor(ColorStateList.valueOf(color));
+            myFAB.setRippleColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{color}
+            ));
+        } else {
             //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
             myFAB.setSupportBackgroundTintList(new ColorStateList(
                     new int[][]{new int[0]},
                     new int[]{color}
             ));
+            myFAB.setRippleColor(color);
+        }
+        //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
+        myFAB.setSupportBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{color}
+        ));
     }
 
     public void setFABIconColor(int color) {
-        palette.onSurface = color;
+        if (!isInEditMode() && palette!=null) {
+            palette.onSurface = color;
+            palette.textColor = color;
+        }
         // Tint the icon only if a drawable is present
         Drawable drawable = myFAB.getDrawable();
         if (drawable != null) {
