@@ -212,9 +212,6 @@ public class StickyNoteUtils {
         checkIndexes();
         return stickyNotes;
     }
-    public ArrayList<StickyPopUp> getStickyPopUps() {
-        return stickyPopUps;
-    }
 
     public void destroyStickyPopUps() {
         checkIndexes();
