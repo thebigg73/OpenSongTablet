@@ -46,6 +46,7 @@ public class SetActions {
     private final String folderScripture = "Scripture";
     private final String folderExport = "Export";
     private final String folderImages = "Images";
+    private final String folderDivider = "Divider";
     private final String TAG = "SetActions";
     private final String cache = "_cache";
     private final String customLocStart = "**";
@@ -752,12 +753,11 @@ public class SetActions {
     private StringBuilder buildDivider(Song tempSong) {
         StringBuilder sb = new StringBuilder();
         // Adding a divider
-        sb.append("    <slide_group name=\"# ")
+        sb.append("  <slide_group name=\"# ")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getResources().getString(R.string.divider)))
                 .append(" # - ")
                 .append(tempSong.getFilename())
-                .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
-                .append("    </slide_group>\n");
+                .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\"/>\n");
         return sb;
     }
     private StringBuilder buildImage(Song tempSong) {
@@ -886,7 +886,7 @@ public class SetActions {
                                     }
                                     break;
                                 case "custom":
-                                    // Get Custom (Note or slide or variation)
+                                    // Get Custom (Note or slide or variation or divider)
                                     try {
                                         getCustom(xpp,currentSet,asExport);
                                     } catch (Exception e) {
@@ -1093,6 +1093,7 @@ public class SetActions {
         // Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
+        // Dividers have # Divider # - in the name
         String custom_name = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"));
         String custom_seconds = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "seconds"));
         String custom_loop = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "loop"));
@@ -1147,13 +1148,16 @@ public class SetActions {
 
             try {
                 if (xpp.getEventType() == XmlPullParser.END_TAG) {
-                    if (xpp.getName().equals("slides")) {
+                    Log.d(TAG,"xpp.getName():"+xpp.getName());
+                    if (xpp.getName().equals("slides") || xpp.getName().equals("slide_group")) {
                         custom_finished = true;
                     }
-                    try {
-                        xpp.nextTag();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (!custom_finished) {
+                        try {
+                            xpp.nextTag();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else if (xpp.getEventType() == XmlPullParser.TEXT) {
                     xpp.nextTag();
@@ -1183,14 +1187,17 @@ public class SetActions {
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
                 customLocStart + folderSlides, new_title);
 
-        if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
+        Log.d(TAG,"custom_name:"+custom_name);
+        if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ") || custom_name.contains("# Note # - ")) {
             // Prepare for a note
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
+            custom_name = custom_name.replace("# Note # - ", "");
             tempSong.setFolder(customLocStart + folderNotes);
 
-        } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
+        } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ") || custom_name.contains("# Variation # -")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
+            custom_name = custom_name.replace("# Variation # - ", "");
             // Check we have a folder, but if not add one
             if (!custom_name.contains("_")) {
                 custom_name = mainActivityInterface.getMainfoldername() + "_" + custom_name;
@@ -1199,6 +1206,13 @@ public class SetActions {
             tempSong.setFolder(customLocStart + folderVariations);
             tempSong.setKey(custom_key);
             tempcache = "";
+
+        } else if (custom_name.contains("# " + c.getResources().getString(R.string.divider) + " # -") || custom_name.contains("# Divider # -")) {
+            // Prepare for a divider
+            custom_name = custom_name.replace("# " + c.getResources().getString(R.string.divider) + " # - ", "");
+            custom_name = custom_name.replace("# Divider # - ", "");
+            tempSong.setTitle(custom_name);
+            tempSong.setFolder(customLocStart + folderDivider); // Doesn't actuall exist
         }
 
         if (custom_text.toString().trim().isEmpty()) {
@@ -1255,7 +1269,7 @@ public class SetActions {
 
                 // Now create the file in the appropriate location /_cache folder
                 writeTempSlide(
-                        tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong);
+                            tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong);
 
             }
         }
@@ -1880,9 +1894,6 @@ public class SetActions {
         }
         return openChordsSetListItem;
     }
-
-
-
 
     private OpenChordsSetListItem getOpenChordsEventItem(SetSlideGroupObject setSlideGroupObject) {
         /* An event with detail is a custom slide that needs the following info

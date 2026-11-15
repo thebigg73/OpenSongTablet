@@ -100,6 +100,7 @@ public class CustomSlideFragment extends Fragment {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.content,8);
 
+        myView.addPage.setVisibility(View.VISIBLE);
         switch (mainActivityInterface.getCustomSlide().getCreateType()) {
             case "slide":
                 myView.customSlide.setChecked(true);
@@ -109,6 +110,11 @@ public class CustomSlideFragment extends Fragment {
                 break;
             case "divider":
                 myView.customDivider.setChecked(true);
+                myView.addPage.post(() -> {
+                    if (myView!=null) {
+                        myView.addPage.setVisibility(View.GONE);
+                    }
+                });
                 break;
             case "note":
             default:
@@ -229,6 +235,7 @@ public class CustomSlideFragment extends Fragment {
         showView(myView.content,showContent);
         showView(myView.slideImageTable,showImageContent);
         showView(myView.addReusable,!myView.customDivider.isChecked());
+        showView(myView.addPage,!myView.customDivider.isChecked());
     }
 
     private void showView(View view, boolean showView) {
