@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/link_info" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+                <LinearLayout
+                    android:id="@+id/linkAudioLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                    <com.garethevans.church.opensongtablet.customviews.MyImageView
+                        android:id="@+id/audioImage"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/music_note"/>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkAudio"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/text_medium"
+                        android:gravity="center_vertical"
+                        android:text="@string/link_audio" />
+                    </LinearLayout>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkAudioText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_xsmall"
+                        tools:text="This is the location of the file that might not fit"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linkYouTubeLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <com.garethevans.church.opensongtablet.customviews.MyImageView
+                            android:id="@+id/youTubeImage"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/youtube"/>
+
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                            android:id="@+id/linkYouTube"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/link_youtube" />
+                    </LinearLayout>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkYouTubeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_xsmall"
+                        tools:text="This is the location of the file that might not fit"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow>
+                <LinearLayout
+                    android:id="@+id/linkOnlineLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <com.garethevans.church.opensongtablet.customviews.MyImageView
+                            android:id="@+id/onlineImage"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/web"/>
+
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                            android:id="@+id/linkOnline"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/link_web" />
+                    </LinearLayout>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkOnlineText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_xsmall"
+                        tools:text="This is the location of the file that might not fit"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linkOtherLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <com.garethevans.church.opensongtablet.customviews.MyImageView
+                            android:id="@+id/otherImage"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/list_bullet"/>
+
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                            android:id="@+id/linkOther"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/link_file" />
+                    </LinearLayout>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkOtherText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_xsmall"
+                        tools:text="This is the location of the file that might not fit"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow>
+                <LinearLayout
+                    android:id="@+id/linkMultiTrackLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <com.garethevans.church.opensongtablet.customviews.MyImageView
+                            android:id="@+id/multiTrackImage"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/multitrack"/>
+
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                            android:id="@+id/linkMultiTrack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/multitrack" />
+                    </LinearLayout>
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:id="@+id/linkMultiTrackText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_xsmall"
+                        tools:text="This is the location of the file that might not fit"/>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+
+      </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

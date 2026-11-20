@@ -225,7 +225,7 @@ public class PageButtons {
         prepareOption("editsong",c.getString(R.string.edit) + " " + c.getString(R.string.song),c.getString(R.string.open),"",R.drawable.set_edit);
         prepareOption("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song),c.getString(R.string.select),"",R.drawable.share);
         prepareOption("import",c.getString(R.string.import_basic),c.getString(R.string.online_services),c.getString(R.string.import_main),R.drawable.database_import);
-        prepareOption("link",c.getString(R.string.link),c.getString(R.string.open),"",R.drawable.link);
+        prepareOption("link",c.getString(R.string.link),c.getString(R.string.open),c.getString(R.string.edit),R.drawable.link);
         prepareOption("stickynotes",c.getString(R.string.song_notes),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.note_text);
         prepareOption("highlight",c.getString(R.string.highlight),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.highlighter);
         prepareOption("abc",c.getString(R.string.music_score),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.clef);

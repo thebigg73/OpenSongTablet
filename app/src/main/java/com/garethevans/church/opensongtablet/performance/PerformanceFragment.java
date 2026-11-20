@@ -619,7 +619,10 @@ public class PerformanceFragment extends Fragment {
                         setupSlideOut();
                         setupSlideIn();
 
+                        // Hide any sticky notes
                         mainActivityInterface.getStickyNoteUtils().destroyStickyPopUps();
+                        // Hide the abc notes if required
+                        dealWithAbc(false, true);
 
                         // Now reset the song object (doesn't change what's already drawn on the screen)
                         Song songToUse;
@@ -1677,13 +1680,15 @@ public class PerformanceFragment extends Fragment {
                                         } else if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
                                             // If the bitmap doesn't match the view, scale it
-                                            float bmpXScale = (float) w / (float) highlighterBitmap.getWidth();
-                                            float bmpYScale = (float) h / (float) highlighterBitmap.getHeight();
+                                            //float bmpXScale = (float) w / (float) highlighterBitmap.getWidth();
+                                            //float bmpYScale = (float) h / (float) highlighterBitmap.getHeight();
 
                                             myView.highlighterView.setVisibility(View.VISIBLE);
                                             ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                                            rlp.width = (int) ((float) w * bmpXScale);
-                                            rlp.height = (int) ((float) h * bmpYScale);
+                                            rlp.width = w;
+                                            rlp.height = h;
+                                            //rlp.width = (int) ((float) w * bmpXScale*10);
+                                            //rlp.height = (int) ((float) h * bmpYScale*10);
 
                                             myView.highlighterView.setLayoutParams(rlp);
                                             RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
@@ -102,7 +103,34 @@
                         app:myFabSize="mini"
                         app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/linkButtonLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/linkButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/link_audio"
+                        android:src="@drawable/link"
+                        app:myFabSize="mini"
+                        app:backgroundTint="?attr/colorSecondaryVariant" />
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+        android:id="@+id/floatMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/popup_bg"
+        android:padding="32dp"
+        app:elevation="32dp"
+        tools:text="@string/success"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

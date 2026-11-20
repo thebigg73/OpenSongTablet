@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsSongactionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.links.LinksViewBottomSheet;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
@@ -28,7 +29,12 @@ public class SongActionsMenuFragment extends Fragment {
     private SettingsSongactionsBinding myView;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongActionsMenuFrag";
-    private String song_actions_string="", search_index_wait_string="";
+    private String song_actions_string="", search_index_wait_string="", not_allowed_string="",
+        edit_song_string="", delete_string="", export_song_string="", search_string="",
+    youtube_string="", music_string="", duplicate_string="", filename_string="",
+    song_new_name_string="", deeplink_backup_string="", delete_song_warning_string="",
+    deeplink_tags_string="", success_string="", song_name_already_taken_string="",
+    error_song_not_saved_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,6 +88,22 @@ public class SongActionsMenuFragment extends Fragment {
         if (getContext()!=null) {
             song_actions_string = getString(R.string.song_actions);
             search_index_wait_string = getString(R.string.index_songs_wait);
+            not_allowed_string = getString(R.string.not_allowed);
+            edit_song_string = getString(R.string.edit_song);
+            export_song_string = getString(R.string.export_current_song);
+            search_string = getString(R.string.search);
+            youtube_string = getString(R.string.youtube);
+            music_string = getString(R.string.music);
+            duplicate_string = getString(R.string.duplicate);
+            filename_string = getString(R.string.filename);
+            song_new_name_string = getString(R.string.song_new_name);
+            deeplink_backup_string = getString(R.string.deeplink_backup);
+            delete_song_warning_string = getString(R.string.delete_song_warning);
+            deeplink_tags_string = getString(R.string.deeplink_tags);
+            success_string = getString(R.string.success);
+            song_name_already_taken_string = getString(R.string.song_name_already_taken);
+            error_song_not_saved_string = getString(R.string.error_song_not_saved);
+            delete_string = getString(R.string.delete);
         }
     }
 
@@ -94,17 +116,17 @@ public class SongActionsMenuFragment extends Fragment {
         String currentSong = mainActivityInterface.getSong().getTitle();
         if (currentSong!=null && !currentSong.isEmpty()) {
             currentSong = " (" + currentSong + ")";
-            String newText = getString(R.string.edit_song) + currentSong;
+            String newText = edit_song_string + currentSong;
             myView.edit.setHint(newText);
-            newText = getString(R.string.delete) + currentSong;
+            newText = delete_string + currentSong;
             myView.delete.setHint(newText);
-            newText = getString(R.string.export_current_song) + currentSong;
+            newText = export_song_string + currentSong;
             myView.share.setHint(newText);
-            newText = getString(R.string.search) + currentSong;
+            newText = search_string + currentSong;
             myView.youTube.setHint(newText);
             myView.youTubeMusic.setHint(newText);
             myView.spotify.setHint(newText);
-            newText = getString(R.string.youtube) + " " + getString(R.string.music);
+            newText = youtube_string + " " + music_string;
             myView.youTubeMusic.setText(newText);
         }
         // GE - hidden this option, but reserving the right to reinstate even just for me
@@ -112,29 +134,29 @@ public class SongActionsMenuFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.backupButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0));
+        myView.backupButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_backup_string,0));
         myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> actionAllowed(R.id.editsong_graph));
         myView.duplicate.setOnClickListener(v -> {
             if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"songActionsMenuFragment",
-                        getString(R.string.duplicate),getString(R.string.filename),
-                        getString(R.string.duplicate) + ": " +
-                                mainActivityInterface.getSong().getFilename() + "\n" + getString(R.string.song_new_name),
+                        duplicate_string,filename_string,
+                        duplicate_string + ": " +
+                                mainActivityInterface.getSong().getFilename() + "\n" + song_new_name_string,
                         null,null,true);
                 textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+                mainActivityInterface.getShowToast().doIt(not_allowed_string);
             }
         });
         myView.delete.setOnClickListener(v -> {
             if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 mainActivityInterface.displayAreYouSure("deleteSong",
-                        getString(R.string.delete_song_warning), null,
+                        delete_song_warning_string, null,
                         "SongActionsMenuFragment", this,
                         mainActivityInterface.getSong());
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+                mainActivityInterface.getShowToast().doIt(not_allowed_string);
             }
         });
         myView.share.setOnClickListener(v -> {
@@ -152,6 +174,15 @@ public class SongActionsMenuFragment extends Fragment {
         });
         myView.stickyNotes.setOnClickListener(v -> actionAllowed(R.id.stickyNotesFragment));
         myView.highlighter.setOnClickListener(v -> actionAllowed(R.id.highlighterFragment));
+        myView.linksView.setOnClickListener(v -> {
+            if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
+                LinksViewBottomSheet linksViewBottomSheet = new LinksViewBottomSheet();
+                linksViewBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "LinksViewBottomSheet");
+                mainActivityInterface.navHome();
+            } else {
+                mainActivityInterface.getShowToast().doIt(not_allowed_string);
+            }
+        });
         myView.links.setOnClickListener(v -> actionAllowed(R.id.linksFragment));
         myView.chords.setOnClickListener(v -> actionAllowed(R.id.chords_graph));
         myView.notation.setOnClickListener(v -> actionAllowed(R.id.musicScoreFragment));
@@ -166,7 +197,7 @@ public class SongActionsMenuFragment extends Fragment {
                 }
                 mainActivityInterface.getShowToast().doIt(search_index_wait_string+progressText);
             } else {
-                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_tags), 0);
+                mainActivityInterface.navigateToFragment(deeplink_tags_string, 0);
             }
         });
         myView.midi.setOnClickListener(v -> {
@@ -175,12 +206,10 @@ public class SongActionsMenuFragment extends Fragment {
                 MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
                 midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "midiSongBottomSheet");
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+                mainActivityInterface.getShowToast().doIt(not_allowed_string);
             }
         });
 
-        // Currently hidden in the view
-        //myView.drummer.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_drummer),0));
         myView.youTube.setOnClickListener(v -> searchSong("YouTube"));
         myView.youTubeMusic.setOnClickListener(v -> searchSong("YouTubeMusic"));
         myView.spotify.setOnClickListener(v -> searchSong("Spotify"));
@@ -213,7 +242,7 @@ public class SongActionsMenuFragment extends Fragment {
         if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             mainActivityInterface.navigateToFragment(null, id);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+            mainActivityInterface.getShowToast().doIt(not_allowed_string);
         }
     }
 
@@ -227,7 +256,7 @@ public class SongActionsMenuFragment extends Fragment {
         // Only proceed if the song doesn't exist already
         if (mainActivityInterface.getStorageAccess().uriExists(duplicateSongUri)) {
             // Warn the user and stop
-            mainActivityInterface.getShowToast().doIt(getString(R.string.song_name_already_taken));
+            mainActivityInterface.getShowToast().doIt(song_name_already_taken_string);
         } else {
             // Because we want to create a new copy, but change the title as well, we create the XML
             mainActivityInterface.getSong().setTitle(newName);
@@ -250,7 +279,7 @@ public class SongActionsMenuFragment extends Fragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from Songs/"+folder+"/"+oldName+" to Songs/"+folder+"/"+newName);
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
                     // Success.  Add to the non-opensong database
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(success_string);
                     mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder,newName);
                     mainActivityInterface.getSong().setFilename(newName);
                     mainActivityInterface.getSong().setTitle(newName);
@@ -258,7 +287,7 @@ public class SongActionsMenuFragment extends Fragment {
                     // Set the new filename to load and navHome (also trigger the menu rebuild)
                     loadNewSong();
                 } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
+                    mainActivityInterface.getShowToast().doIt(error_song_not_saved_string);
                     mainActivityInterface.getSong().setTitle(oldTitle);
                     mainActivityInterface.getSong().setFilename(oldName);
                 }
@@ -268,7 +297,7 @@ public class SongActionsMenuFragment extends Fragment {
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         "Songs", mainActivityInterface.getSong().getFolder(),
                         newName, content, false)) {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(success_string);
                     mainActivityInterface.getSong().setFilename(newName);
 
                     // Add the new song to the database too
@@ -281,7 +310,7 @@ public class SongActionsMenuFragment extends Fragment {
                 } else {
                     mainActivityInterface.getSong().setTitle(oldTitle);
                     mainActivityInterface.getSong().setFilename(oldName);
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
+                    mainActivityInterface.getShowToast().doIt(error_song_not_saved_string);
                 }
             }
         }

@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.links.LinksViewBottomSheet;
 import com.garethevans.church.opensongtablet.midi.MidiBoardBottomSheet;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
@@ -282,7 +283,11 @@ public class PerformanceGestures {
 
             // Song information
             case "link":
-                openLinks();
+                if (isLongPress) {
+                    editLinks();
+                } else {
+                    showLinks();
+                }
                 break;
             case "stickynotes":
                 if (isLongPress) {
@@ -1286,7 +1291,12 @@ public class PerformanceGestures {
     }
 
     // Open links
-    public void openLinks() {
+    public void showLinks() {
+        LinksViewBottomSheet linksViewBottomSheet = new LinksViewBottomSheet();
+        linksViewBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"LinksViewBottomSheet");
+
+    }
+    public void editLinks() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_links),0);
     }
 

@@ -45,7 +45,11 @@ public class LinksBottomSheet extends BottomSheetCommon {
         // Just close the bottom sheet
         fragName = "";
         callingFragment = null;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     LinksBottomSheet(String fragName, Fragment callingFragment) {
@@ -62,6 +66,8 @@ public class LinksBottomSheet extends BottomSheetCommon {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetLinksBinding.inflate(inflater, container, false);
+
+        myView.dialogHeading.setClose(this);
 
         prepareStrings();
 

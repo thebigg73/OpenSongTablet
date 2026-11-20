@@ -137,6 +137,17 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/linksView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/link_view_media"
+                android:hint="@string/link_view_media_info"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/links"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
