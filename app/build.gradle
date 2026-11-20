@@ -38,7 +38,6 @@ android {
         versionName = '7.0.4' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-
         // 1. Fetch the value.
         // 2. Wrap it in escaped double-quotes so it is a valid Java String in BuildConfig.java
         def gKey = localProps.getProperty('GOOGLE_FONTS_API_KEY') ?: ""
@@ -50,7 +49,6 @@ android {
                 cppFlags ''
             }
         }*/
-
     }
 
     buildTypes {
