@@ -383,6 +383,12 @@
         <item name="android:background">@drawable/popup_bg</item>
     </style>
 
+    <!-- Overflow settings menu -->
+    <style name="DynamicPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:popupBackground">@drawable/dynamic_popup_bg</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
     <!-- Exposed dropdowns -->
     <style name="ExposedDropDown" parent="Widget.AppCompat.AutoCompleteTextView">
         <!-- The basic properties -->
