@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsSetListItem;
@@ -1556,7 +1557,9 @@ public class SetActions {
 
         Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setFilename);
         setObject = new SetObject();
-        setObject.setSetName(setFilename);if (mainActivityInterface.getStorageAccess().uriExists(setUri) && mainActivityInterface.getStorageAccess().getFileSizeFromUri(setUri)>0) {
+        setObject.setSetName(setFilename);
+        if (mainActivityInterface.getStorageAccess().uriExists(setUri) && mainActivityInterface.getStorageAccess().getFileSizeFromUri(setUri)>0) {
+            Log.d(TAG,"The set file exists and isn't empty");
             try {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
@@ -1595,6 +1598,9 @@ public class SetActions {
                                                 setSlideGroupObject.setType(xpp.getAttributeValue(null, "type"));
                                                 pullXMLIntoCustomSlideGroupObject(xpp, setSlideGroupObject);
                                                 break;
+                                            case "notes":
+                                                Log.d(TAG,"found these notes (not dealt with):"+xpp.nextText());
+                                                break;
                                         }
                                         // Add this item to the setObject
                                         if (setObject.getSlideGroups()==null) {
@@ -1625,6 +1631,12 @@ public class SetActions {
         if (setObject.getLastModified()==null || setObject.getLastModified().isEmpty()) {
             // First try to get the file metadata
             setObject.setLastModified(mainActivityInterface.getTimeTools().getIsoTimeFromFileMetadata("Sets","",setFilename));
+        }
+        if (setObject.getSetName().equals("OpenChords__test")) {
+            String set = MainActivity.gson.toJson(setObject);
+            Log.d(TAG,"setObject:"+set);
+            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Settings", "", "tempset.json", true);
+            mainActivityInterface.getStorageAccess().writeFileFromString("Settings", "", "tempset.json", set, false);
         }
         return setObject;
     }

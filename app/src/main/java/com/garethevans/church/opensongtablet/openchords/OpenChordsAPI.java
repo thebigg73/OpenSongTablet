@@ -9,12 +9,12 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -28,6 +28,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -1060,9 +1061,15 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 OpenChordsSetListSongItem openChordsSetListSongItem = serverSetListItem.getSongItem();
 
                 String itemType = serverSetListItem.getType();
-                //String itemCustomData = serverSetListItem.getCustomData();
-                //String itemLastUpdated = serverSetListItem.getLastUpdated();
+                String itemCustomData = serverSetListItem.getCustomData();
+                String itemLastUpdated = serverSetListItem.getLastUpdated();
                 String itemNotes = serverSetListItem.getNotes();
+
+                // If itemNotes and itemCustomDate isn't empty and itemType==slide, then it is a variation
+                if (itemType!=null && itemCustomData!=null && itemNotes!=null &&
+                        itemType.equals("slide") && !itemCustomData.isEmpty() && !itemNotes.isEmpty()) {
+                    itemType = "variation";
+                }
 
                 // Get the filename from the id
                 boolean found = false;
@@ -1130,6 +1137,41 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 } else if (itemType != null && itemType.equals("divider")) {
                     localSet.addItemToSet("/", mainActivityInterface.getSetActions().getDividerIdentifier(),
                             mainActivityInterface.getSetActions().getDividerIdentifier(), null, "", false);
+
+                } else if (itemTitle!=null && itemType!=null && itemType.equals("variation")) {
+                    itemTitle = itemTitle.replace("# " + c.getString(R.string.variation) + " # - ","");
+                    itemTitle = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(itemTitle);
+                    byte[] decodedString = Base64.decode(itemCustomData, Base64.DEFAULT);
+                    String extracted = "";
+                    try {
+                        extracted = new String(decodedString, StandardCharsets.UTF_8);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Save this file as a Variation song
+                    mainActivityInterface.getStorageAccess().writeFileFromString("Variations","",itemTitle,extracted,false);
+
+                    // We simply need the reference to this song
+                    Song tempSong = mainActivityInterface.getProcessSong().initialiseSong("**Variation", itemTitle);
+                    tempSong.setFilename(itemTitle);
+                    tempSong.setTitle(itemTitle);
+                    tempSong.setUuid(itemId);
+                    tempSong.setLastModified(itemLastUpdated);
+                    tempSong.setFolder("**Variation");
+                    // Look for a key in the xml content
+                    if (extracted.contains("<key>") && extracted.contains("</key>")) {
+                        try {
+                            String keyString = extracted.substring(extracted.indexOf("<key>")+5,extracted.indexOf("</key>"));
+                            if (keyString!=null && !keyString.isEmpty()) {
+                                keyString = keyString.replace("<","").replace(">","").trim();
+                                tempSong.setKey(keyString);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    localSet.addItemToSet(tempSong);
 
                 } else if (itemType != null && itemType.equals("slide") && itemTitle != null) {
                     itemTitle = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(itemTitle);
