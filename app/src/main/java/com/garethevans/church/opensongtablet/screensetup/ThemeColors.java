@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -1075,4 +1076,16 @@ public class ThemeColors {
         myMaterialTextView.setPadding(padding,padding,padding,padding);
 
     }
+
+    public void tintPopup(View view, int color) {
+        Drawable drawable = AppCompatResources.getDrawable(c, R.drawable.popup_bg);
+        if (drawable!=null) {
+            DrawableCompat.setTint(drawable,color);
+        }
+        view.setBackground(drawable);
+        int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+        view.setPadding(padding,padding,padding,padding);
+
+    }
+
 }
