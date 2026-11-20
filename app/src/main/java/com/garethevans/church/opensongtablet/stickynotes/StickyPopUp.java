@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.MediaFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -96,7 +95,6 @@ public class StickyPopUp {
     public boolean isShowing() {
         return popupWindow!=null && popupWindow.isShowing();
     }
-
 
     private void setupViews() {
         // The popup
@@ -263,6 +261,7 @@ public class StickyPopUp {
     }
 
     public void closeSticky() {
+        Log.d(TAG,"closeSticky() called");
         if (handler!=null) {
             handler.removeCallbacks(autoCloseStickyRunnable);
         }

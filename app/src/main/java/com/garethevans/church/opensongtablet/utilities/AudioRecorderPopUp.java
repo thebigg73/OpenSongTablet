@@ -7,9 +7,12 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
@@ -21,7 +24,9 @@ import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,22 +41,28 @@ public class AudioRecorderPopUp {
     private final MainActivityInterface mainActivityInterface;
     private final int posX, posY, colorInactive, colorActive;
     private final Drawable recordStart, recordStop;
-    private final float pageButtonAlpha, recordingAlpha;
+    private final float recordingAlpha;
     private final MediaPlayer mediaPlayer = new MediaPlayer();
     private PopupWindow popupWindow;
-    private MyFloatingActionButton closeButton, previewButton, deleteButton, saveButton;
+    private MyFloatingActionButton closeButton, previewButton, deleteButton, saveButton, linkButton;
     private LinearLayout dealWithAudioLayout;
+    private FrameLayout linkButtonLayout;
     private MyExtendedFloatingActionButton recordButton;
     private FloatWindow floatWindow;
     private MediaRecorder mediaRecorder;
     private boolean isRecording = false, isPlaying = false, mediaPlayerIsPrepared = false;
     private File tempFilename;
     private MyMaterialEditText audioFilename;
+    private MyMaterialSimpleTextView floatMessage;
     private final String fileExtension = ".m4a";
-    final int bitDepth = 16;
-    final int samplingRate = 44100;
-    final int encodingBitrate = samplingRate * bitDepth;
-
+    private final int bitDepth = 16;
+    private final int samplingRate = 44100;
+    private final int encodingBitrate = samplingRate * bitDepth;
+    private final String audio_link_string, overwrite_exisiting_string,
+            success_string, error_string;
+    private Handler messageHandler;
+    private Runnable showMessageRunnable;
+    String alertMessage = "";
 
     // Initialise the popup class
     public AudioRecorderPopUp(Context c) {
@@ -63,8 +74,12 @@ public class AudioRecorderPopUp {
         recordStop = ContextCompat.getDrawable(c, R.drawable.stop);
         colorInactive = mainActivityInterface.getPalette().secondaryVariant;
         colorActive = mainActivityInterface.getPalette().errorColor;
-        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
-        recordingAlpha = Math.min(pageButtonAlpha, 0.7f);
+        float pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
+        recordingAlpha = Math.max(pageButtonAlpha, 0.7f);
+        audio_link_string = c.getString(R.string.link_audio);
+        overwrite_exisiting_string = c.getString(R.string.overwrite);
+        success_string = c.getString(R.string.success);
+        error_string = c.getString(R.string.error);
         mediaPlayerOnPrepared();
     }
 
@@ -91,6 +106,7 @@ public class AudioRecorderPopUp {
     private void setupViews() {
         // The popup
         popupWindow = new PopupWindow(c);
+
         popupWindow.setBackgroundDrawable(null);
 
         // FIX: Make the popup window focusable so child EditText views can receive focus and show the keyboard
@@ -101,9 +117,11 @@ public class AudioRecorderPopUp {
         popupWindow.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setOutsideTouchable(false);
 
+        popupWindow.setOnDismissListener(this::destroyPopup);
+
         // The main layout (FloatWindow is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);
-        floatWindow.setAlpha(pageButtonAlpha);
+        floatWindow.setAlpha(1f);
 
         View myView = View.inflate(c, R.layout.view_audio_recorder_popup, null);
 
@@ -130,6 +148,23 @@ public class AudioRecorderPopUp {
         previewButton = myView.findViewById(R.id.previewButton);
         deleteButton = myView.findViewById(R.id.deleteButton);
         saveButton = myView.findViewById(R.id.saveButton);
+        linkButtonLayout = myView.findViewById(R.id.linkButtonLayout);
+        linkButton = myView.findViewById(R.id.linkButton);
+        // Hide the link button until we have saved the file
+        linkButtonLayout.setVisibility(View.GONE);
+        floatMessage = myView.findViewById(R.id.floatMessage);
+        mainActivityInterface.getMyThemeColors().tintPopup(floatMessage,mainActivityInterface.getPalette().secondaryVariant);
+        floatMessage.setVisibility(View.GONE);
+        messageHandler = mainActivityInterface.getMainHandler();
+        showMessageRunnable = () -> {
+            floatMessage.setText(alertMessage);
+            floatMessage.setVisibility(View.VISIBLE);
+            floatMessage.postDelayed(() -> {
+                alertMessage = "";
+                floatMessage.setText("");
+                floatMessage.setVisibility(View.GONE);
+            },2000);
+        };
         dealWithAudioLayout = myView.findViewById(R.id.dealWithAudioLayout);
 
         dealWithAudioLayout.setVisibility(View.GONE);
@@ -198,6 +233,7 @@ public class AudioRecorderPopUp {
             mediaPlayerIsPrepared = false;
         });
         saveButton.setOnClickListener(view -> doSaveRecording());
+        linkButton.setOnClickListener(view -> addAsLink());
     }
 
     // The mediaRecorder (to start and stop the recording properly)
@@ -221,7 +257,7 @@ public class AudioRecorderPopUp {
                 new int[][]{new int[0]},
                 new int[]{colorInactive}
         ));
-        floatWindow.setAlpha(pageButtonAlpha);
+        floatWindow.setAlpha(1f);
 
         recordButton.setVisibility(View.GONE);
         dealWithAudioLayout.setVisibility(View.VISIBLE);
@@ -287,9 +323,27 @@ public class AudioRecorderPopUp {
                 success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
             }
             if (success) {
-                mainActivityInterface.getShowToast().success();
+                showMessage(success_string);
+                // Now show the link button
+                linkButtonLayout.setVisibility(View.VISIBLE);
             } else {
-                mainActivityInterface.getShowToast().error();
+                showMessage(error_string);
+            }
+        }
+    }
+    private void addAsLink() {
+        // Proceed only if we have a filename
+        if (mainActivityInterface!=null && audioFilename!=null && audioFilename.getText()!=null) {
+
+            // If we already have a link audio, show the prompt to confirm replacing it
+            if (mainActivityInterface.getSong().getLinkaudio() != null && !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
+                String message = audio_link_string + ": " + overwrite_exisiting_string +" (" +
+                        mainActivityInterface.getSong().getLinkaudio() + " -> " + "../OpenSong/Media/"+audioFilename.getText().toString() + ")";
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("linkaudiorecorder",message, null, "AudioRecorderPopup", null, null);
+                areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
+
+            } else {
+                doSaveLinkAudio();
             }
         }
     }
@@ -362,8 +416,25 @@ public class AudioRecorderPopUp {
         }
     }
 
+    public void doSaveLinkAudio() {
+        // We have received permission to overwrite the existing song link audio
+        // Write a localised version of the filename to the song and save it
+        if (audioFilename!=null && audioFilename.getText()!=null) {
+            String localiseFilename = "../OpenSong/Media/" + audioFilename.getText().toString();
+            mainActivityInterface.getSong().setLinkaudio(localiseFilename);
+            boolean success = mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+            if (success) {
+                showMessage(success_string);
+            } else {
+                showMessage(error_string);
+            }
+        } else {
+            showMessage(error_string);
+        }
+    }
     // Close down the popup and completely stop and release all resources
     public void destroyPopup() {
+        Log.d(TAG,"destroyPopup() called");
         try {
             stopMediaRecorder();
             releaseMediaRecorder();
@@ -381,4 +452,8 @@ public class AudioRecorderPopUp {
         }
     }
 
+    private void showMessage(String message) {
+        this.alertMessage = message;
+        messageHandler.post(showMessageRunnable);
+    }
 }
