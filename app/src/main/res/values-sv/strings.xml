@@ -12,6 +12,8 @@
     <string name="abc_not_available">ABC-notationsvy är inte tillåten här</string>
     <string name="abc_popup_width">Popup bredd</string>
     <string name="abc_popup_width_info">Bredden på popup-fönstret i procent av skärmens bredd</string>
+    <string name="abc_show_transport">Popup-transportkontroller</string>
+    <string name="abc_show_transport_info">Inkludera MIDI-uppspelningskontroller i ABC-popupfönstret</string>
     <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
     <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="about">Handla om</string>
@@ -103,8 +105,11 @@
     <string name="background">Bakgrund</string>
     <string name="backing">Stöd</string>
     <string name="backup">Säkerhetskopiering</string>
+    <string name="backup_complete">Säkerhetskopiering klar</string>
+    <string name="backup_error">säkerhetskopian är OFULLSTÄNDIG (se kraschloggen).</string>
     <string name="backup_highlighter">Inkludera anteckningar med överstrykningspenna</string>
     <string name="backup_import">Importera OpenSongApp-säkerhetskopiering</string>
+    <string name="backup_incomplete">Säkerhetskopieringen är klar, men vissa objekt kunde inte läggas till</string>
     <string name="backup_info">OpenSongApp Backup-fil</string>
     <string name="backup_now">Skapa en säkerhetskopia nu</string>
     <string name="backup_osb">Skapa en säkerhetskopia av OpenSongApp-låtar (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Välj ett dokument på din enhet. Om du vill tillåta synkronisering mellan enheter bör den här filen sparas någonstans i din OpenSong-mapp.</string>
     <string name="link_search_web">Sök efter den här låten på internet. Om du hittar en lämplig webbsida, kopiera webbadressen till urklipp, återvänd sedan hit och klistra in den i rutan ovan.</string>
     <string name="link_search_youtube">Försök att hitta den här låten på YouTube. Om du hittar rätt objekt, välj alternativet \'Dela\' och kopiera sedan länken till urklipp. Du kan sedan återvända hit och klistra in länken ovan.</string>
+    <string name="link_view_media">Länkmedia öppen</string>
+    <string name="link_view_media_info">Öppna länkade filer för den här låten snabbt</string>
     <string name="link_web">Online länk</string>
     <string name="link_youtube">YouTube-länk</string>
     <string name="listen">Lyssna</string>
@@ -706,6 +713,7 @@
     <string name="logs">Loggar</string>
     <string name="long_press">Långt tryck / håll intryckt</string>
     <string name="long_press_action">Välj lång pressåtgärd</string>
+    <string name="long_press_to_edit">Långt tryck för att redigera</string>
     <string name="loop">Slinga</string>
     <string name="loop_slide_pages">Loop sidor i anpassade bildrutor</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Nästa</string>
     <string name="no_previous_found">Inga tidigare installationer hittades.</string>
     <string name="no_suitable_application">Ingen applikation är tillgänglig eller installerad som kan öppna detta objekt.</string>
+    <string name="not_added">Inte tillagd</string>
     <string name="not_allowed">Den här funktionen är inte tillåten för det här objektet</string>
     <string name="not_available">Inte tillgänglig</string>
     <string name="not_found">Inte hittad</string>

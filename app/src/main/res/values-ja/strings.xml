@@ -12,6 +12,8 @@
     <string name="abc_not_available">ここでは ABC 表記の表示は許可されていません</string>
     <string name="abc_popup_width">ポップアップの幅</string>
     <string name="abc_popup_width_info">画面幅に対するポップアップ ウィンドウの幅のパーセンテージ</string>
+    <string name="abc_show_transport">ポップアップ式輸送コントロール</string>
+    <string name="abc_show_transport_info">ABCポップアップウィンドウにMIDI再生コントロールを追加する</string>
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
     <string name="abc_transpose_to_song_info">曲とabc記譜の両方にキーが設定されている場合、アプリはabc記譜の出力を調整して曲の調に合わせて調整しようとします。</string>
     <string name="about">約</string>
@@ -103,8 +105,11 @@
     <string name="background">プレゼンテーションの背景</string>
     <string name="backing">バッキング</string>
     <string name="backup">バックアップ</string>
+    <string name="backup_complete">バックアップ完了</string>
+    <string name="backup_error">バックアップが不完全です（クラッシュログを参照してください）。</string>
     <string name="backup_highlighter">蛍光ペンのメモを含める</string>
     <string name="backup_import">インポートOpenSongAppバックアップ</string>
+    <string name="backup_incomplete">バックアップは完了しましたが、一部の項目を追加できませんでした。</string>
     <string name="backup_info">OpenSongAppバックアップファイル</string>
     <string name="backup_now">今すぐバックアップを作成する</string>
     <string name="backup_osb">OpenSongAppの曲のバックアップを作成する（* .osb）</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">デバイス上のドキュメントを選択します。 デバイス間での同期を許可する場合は、このファイルをOpenSongフォルダー内のどこかに保存する必要があります。</string>
     <string name="link_search_web">インターネットでこの曲を検索してください。 適切なWebページを見つけたら、Webアドレスをクリップボードにコピーしてから、ここに戻って上のボックスに貼り付けます。</string>
     <string name="link_search_youtube">YouTubeでこの曲を見つけてみてください。 正しいアイテムが見つかったら、[共有]オプションを選択して、リンクをクリップボードにコピーします。 その後、ここに戻って上のリンクを貼り付けることができます。</string>
+    <string name="link_view_media">リンクメディアを開く</string>
+    <string name="link_view_media_info">この曲のリンクされたファイルをすばやく開く</string>
     <string name="link_web">オンラインリンク</string>
     <string name="link_youtube">YouTubeのリンク</string>
     <string name="listen">聞く</string>
@@ -706,6 +713,7 @@
     <string name="logs">ログ</string>
     <string name="long_press">長押し/長押し</string>
     <string name="long_press_action">長押しアクションを選択</string>
+    <string name="long_press_to_edit">長押しして編集</string>
     <string name="loop">ループ</string>
     <string name="loop_slide_pages">カスタムスライドのループページ</string>
     <string name="looper">ルーパー</string>
@@ -872,6 +880,7 @@
     <string name="next">次</string>
     <string name="no_previous_found">以前のインストールは見つかりませんでした。</string>
     <string name="no_suitable_application">このアイテムを開くことができるアプリケーションは利用できないか、インストールされていません。</string>
+    <string name="not_added">追加されていません</string>
     <string name="not_allowed">この関数は、この項目のため許可されていません</string>
     <string name="not_available">利用不可</string>
     <string name="not_found">見つかりません</string>

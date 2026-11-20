@@ -12,6 +12,8 @@
     <string name="abc_not_available">Zobrazení notace ABC zde není povoleno</string>
     <string name="abc_popup_width">Šířka vyskakovacího okna</string>
     <string name="abc_popup_width_info">Šířka vyskakovacího okna v procentech šířky obrazovky</string>
+    <string name="abc_show_transport">Ovládací prvky pro vyskakovací transport</string>
+    <string name="abc_show_transport_info">Zahrnout ovládací prvky přehrávání MIDI do vyskakovacího okna ABC</string>
     <string name="abc_transpose_to_song">Automatická transpozice do tóniny písně</string>
     <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="about">Asi</string>
@@ -103,8 +105,11 @@
     <string name="background">Prezentace na pozadí</string>
     <string name="backing">Podpora</string>
     <string name="backup">Záloha</string>
+    <string name="backup_complete">Zálohování dokončeno</string>
+    <string name="backup_error">záloha je NEKOMPLETNÍ (viz protokol pádu).</string>
     <string name="backup_highlighter">Zahrňte poznámky ke zvýrazňovači</string>
     <string name="backup_import">Zálohování import OpenSongApp</string>
+    <string name="backup_incomplete">Zálohování dokončeno, ale některé položky se nepodařilo přidat.</string>
     <string name="backup_info">Soubor OpenSongApp Backup</string>
     <string name="backup_now">Vytvořte nyní zálohu</string>
     <string name="backup_osb">Vytvořte zálohu skladeb OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Vyberte dokument na svém zařízení. Pokud chcete povolit synchronizaci mezi zařízeními, měl by být tento soubor uložen někde ve složce OpenSong.</string>
     <string name="link_search_web">Vyhledejte tuto píseň na internetu. Pokud najdete vhodnou webovou stránku, zkopírujte webovou adresu do schránky, vraťte se sem a vložte ji do pole výše.</string>
     <string name="link_search_youtube">Zkuste najít tuto písničku na YouTube. Pokud najdete správnou položku, vyberte možnost \'Sdílet\' a poté zkopírujte odkaz do schránky. Poté se můžete vrátit sem a vložit odkaz výše.</string>
+    <string name="link_view_media">Otevření odkazu na média</string>
+    <string name="link_view_media_info">Rychle otevřít propojené soubory pro tuto skladbu</string>
     <string name="link_web">Online odkaz</string>
     <string name="link_youtube">Odkaz YouTube</string>
     <string name="listen">Poslouchat</string>
@@ -706,6 +713,7 @@
     <string name="logs">Protokoly</string>
     <string name="long_press">Dlouhým stisknutím / přidržením</string>
     <string name="long_press_action">Vyberte dlouhé stiskněte tlačítko Akce</string>
+    <string name="long_press_to_edit">Dlouhým stisknutím upravíte</string>
     <string name="loop">Upevnit smyčkou</string>
     <string name="loop_slide_pages">Loop stránky v vlastní prezentace</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Další</string>
     <string name="no_previous_found">Nebyly nalezeny žádné předchozí instalace.</string>
     <string name="no_suitable_application">Není k dispozici ani nainstalována žádná aplikace, která by tuto položku mohla otevřít.</string>
+    <string name="not_added">Nepřidáno</string>
     <string name="not_allowed">Tato funkce není povolena pro tuto položku</string>
     <string name="not_available">Není dostupný</string>
     <string name="not_found">Nenalezeno</string>

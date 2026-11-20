@@ -12,6 +12,8 @@
     <string name="abc_not_available">La visualizzazione della notazione ABC non è disponibile qui</string>
     <string name="abc_popup_width">Larghezza popup</string>
     <string name="abc_popup_width_info">Larghezza della finestra popup come percentuale della larghezza dello schermo</string>
+    <string name="abc_show_transport">Comandi di trasporto a scomparsa</string>
+    <string name="abc_show_transport_info">Includi i controlli di riproduzione MIDI nella finestra popup ABC</string>
     <string name="abc_transpose_to_song">Trasposizione automatica alla tonalità del brano</string>
     <string name="abc_transpose_to_song_info">Se una tonalità è impostata nel brano e nella notazione abc, l\'app proverà a modificare l\'output della notazione abc in modo che corrisponda alla tonalità del brano.</string>
     <string name="about">Informazioni ed altro</string>
@@ -103,8 +105,11 @@
     <string name="background">Sfondo</string>
     <string name="backing">Supporto</string>
     <string name="backup">Backup</string>
+    <string name="backup_complete">Backup completato</string>
+    <string name="backup_error">Il backup è INCOMPLETO (vedere il registro degli arresti anomali).</string>
     <string name="backup_highlighter">Includi le note evidenziate nel backup</string>
     <string name="backup_import">Importa un backup in OpenSongApp</string>
+    <string name="backup_incomplete">Backup completato, ma alcuni elementi non sono stati aggiunti</string>
     <string name="backup_info">File di backup OpenSongApp</string>
     <string name="backup_now">Crea un backup ora</string>
     <string name="backup_osb">Crea un backup dei brani di OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Seleziona un documento sul tuo dispositivo. Se vuoi consentire la sincronizzazione tra dispositivi, questo file dovrebbe essere salvato da qualche parte all\'interno della tua cartella OpenSong.</string>
     <string name="link_search_web">Cerca questo brano su Internet. Se trovi una versione che ti soddisfa, copia l\'indirizzo web della pagina negli appunti, quindi torna qui e incollalo nella casella sopra.</string>
     <string name="link_search_youtube">Cerca questo brano su YouTube. Se trovi una video che ti soddisfa, seleziona l\'opzione \'Condividi\' e poi copia il link negli appunti, quindi torna qui e incollalo nella casella sopra.</string>
+    <string name="link_view_media">Collegamento multimediale aperto</string>
+    <string name="link_view_media_info">Apri rapidamente i file collegati a questa canzone</string>
     <string name="link_web">Pagina web</string>
     <string name="link_youtube">Video YouTube</string>
     <string name="listen">Ascolta</string>
@@ -706,6 +713,7 @@
     <string name="logs">Registri</string>
     <string name="long_press">Pressione lunga</string>
     <string name="long_press_action">Selezionare l\'azione che si avvierà premendo a lungo</string>
+    <string name="long_press_to_edit">Tieni premuto a lungo per modificare</string>
     <string name="loop">Ciclo continuo</string>
     <string name="loop_slide_pages">Pagine di diapositive in presentazioni a ciclo continuo</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Successivo</string>
     <string name="no_previous_found">Non è stata rilevata nessuna installazione precedente.</string>
     <string name="no_suitable_application">Nessuna applicazione disponibile o installata in grado di aprire questo elemento.</string>
+    <string name="not_added">Non aggiunto</string>
     <string name="not_allowed">Questa funzione non è consentita</string>
     <string name="not_available">Non disponibile</string>
     <string name="not_found">Non trovato</string>

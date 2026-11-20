@@ -12,6 +12,8 @@
     <string name="abc_not_available">Widok notacji ABC jest tutaj niedozwolony</string>
     <string name="abc_popup_width">Szerokość wyskakującego okienka</string>
     <string name="abc_popup_width_info">Szerokość wyskakującego okna jako procent szerokości ekranu</string>
+    <string name="abc_show_transport">Sterowanie transportem pop-up</string>
+    <string name="abc_show_transport_info">Dodaj elementy sterujące odtwarzaniem MIDI w oknie podręcznym ABC</string>
     <string name="abc_transpose_to_song">Automatyczna transpozycja do tonacji piosenki</string>
     <string name="abc_transpose_to_song_info">Jeśli tonacja jest ustawiona w piosence i w notacji abc, aplikacja spróbuje dostosować wyjście notacji abc, aby pasowało do tonacji piosenki.</string>
     <string name="about">O aplikacji</string>
@@ -103,8 +105,11 @@
     <string name="background">Tło</string>
     <string name="backing">Poparcie</string>
     <string name="backup">Kopia zapasowa</string>
+    <string name="backup_complete">Kopia zapasowa ukończona</string>
+    <string name="backup_error">kopia zapasowa jest NIEKOMPLETNA (zobacz dziennik awarii).</string>
     <string name="backup_highlighter">Dołącz notatki podkreślające</string>
     <string name="backup_import">Import kopii zapasowej OpenSongApp</string>
+    <string name="backup_incomplete">Kopia zapasowa została ukończona, ale niektórych elementów nie udało się dodać</string>
     <string name="backup_info">Plik kopii zapasowej OpenSongApp</string>
     <string name="backup_now">Utwórz kopię zapasową teraz</string>
     <string name="backup_osb">Utwórz kopię zapasową piosenek OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Wybierz dokument na swoim urządzeniu. Jeśli chcesz zezwolić na synchronizację między urządzeniami, plik ten powinien zostać zapisany gdzieś w folderze OpenSong.</string>
     <string name="link_search_web">Wyszukaj tę piosenkę w Internecie. Jeśli znajdziesz odpowiednią stronę internetową, skopiuj adres internetowy do schowka, a następnie wróć tutaj i wklej go w polu powyżej.</string>
     <string name="link_search_youtube">Spróbuj znaleźć tę piosenkę na YouTube. Jeśli znajdziesz właściwy element, wybierz opcję „Udostępnij”, a następnie skopiuj link do schowka. Możesz wtedy wrócić tutaj i wkleić link powyżej.</string>
+    <string name="link_view_media">Otwórz łącze multimedialne</string>
+    <string name="link_view_media_info">Szybko otwórz powiązane pliki dla tej piosenki</string>
     <string name="link_web">Link w Internecie</string>
     <string name="link_youtube">Link YouTube</string>
     <string name="listen">Słuchaj</string>
@@ -706,6 +713,7 @@
     <string name="logs">Dzienniki</string>
     <string name="long_press">Długie naciśnięcie/przytrzymanie</string>
     <string name="long_press_action">Wybierz akcję na długie naciśnięcie</string>
+    <string name="long_press_to_edit">Naciśnij i przytrzymaj, aby edytować</string>
     <string name="loop">Zapętl</string>
     <string name="loop_slide_pages">Zapętl strony na niestandardowym slajdzie</string>
     <string name="looper">Pętla</string>
@@ -872,6 +880,7 @@
     <string name="next">Następny</string>
     <string name="no_previous_found">Nie znaleziono żadnych poprzednich instalacji.</string>
     <string name="no_suitable_application">Nie jest dostępna ani zainstalowana żadna aplikacja, która może otworzyć ten element.</string>
+    <string name="not_added">Nie dodano</string>
     <string name="not_allowed">Ta funkcja nie jest dostępna dla tego elementu</string>
     <string name="not_available">Niedostępny</string>
     <string name="not_found">Nie znaleziono</string>

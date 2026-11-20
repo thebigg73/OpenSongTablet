@@ -12,6 +12,8 @@
     <string name="abc_not_available">ABC-notasie-aansig word nie hier toegelaat nie</string>
     <string name="abc_popup_width">Pop-up breedte</string>
     <string name="abc_popup_width_info">Die breedte van die opspringvenster as \'n persentasie van die skermwydte</string>
+    <string name="abc_show_transport">Opspringvervoerkontroles</string>
+    <string name="abc_show_transport_info">Sluit midi-terugspeelkontroles in die ABC-opspringvenster in</string>
     <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>
@@ -103,8 +105,11 @@
     <string name="background">Aanbieding agtergrond</string>
     <string name="backing">Rugsteun</string>
     <string name="backup">Ondersteuning</string>
+    <string name="backup_complete">Rugsteun voltooi</string>
+    <string name="backup_error">die rugsteun is ONVOLTOOID (sien die ongelukslog).</string>
     <string name="backup_highlighter">Sluit highlighter notas in</string>
     <string name="backup_import">Invoer OpenSongApp Friends</string>
+    <string name="backup_incomplete">Rugsteun voltooi, maar sommige items kon nie bygevoeg word nie</string>
     <string name="backup_info">OpenSongApp rugsteunlêer</string>
     <string name="backup_now">Skep nou \'n rugsteun</string>
     <string name="backup_osb">Skep \'n rugsteun van OpenSongApp-liedjies (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Kies \'n dokument op jou toestel. As jy sinchronisasie tussen toestelle wil toelaat, moet hierdie lêer iewers in jou OpenSong-lêergids gestoor word.</string>
     <string name="link_search_web">Soek vir hierdie liedjie op die internet. As jy \'n geskikte webblad kry, kopieer die webadres na die knipbord, keer dan terug hierheen en plak dit in die blokkie hierbo.</string>
     <string name="link_search_youtube">Probeer om hierdie liedjie op YouTube te vind. As jy die regte item kry, kies die \'Deel\'-opsie en kopieer dan die skakel na die knipbord. Jy kan dan hierheen terugkeer en die skakel hierbo plak.</string>
+    <string name="link_view_media">Skakelmedia oop</string>
+    <string name="link_view_media_info">Maak vinnig gekoppelde lêers vir hierdie liedjie oop</string>
     <string name="link_web">Online skakel</string>
     <string name="link_youtube">YouTube-skakel</string>
     <string name="listen">Luister</string>
@@ -706,6 +713,7 @@
     <string name="logs">Logs</string>
     <string name="long_press">Lang druk / hou</string>
     <string name="long_press_action">Kies \'n lang pers aksie</string>
+    <string name="long_press_to_edit">Langdruk om te wysig</string>
     <string name="loop">Lus</string>
     <string name="loop_slide_pages">Loop bladsye in persoonlike slide</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Volgende</string>
     <string name="no_previous_found">Geen vorige installasies gevind nie.</string>
     <string name="no_suitable_application">Geen toepassing is beskikbaar of geïnstalleer wat hierdie item kan oopmaak nie.</string>
+    <string name="not_added">Nie bygevoeg nie</string>
     <string name="not_allowed">Hierdie funksie is nie toegelaat om hierdie item</string>
     <string name="not_available">Nie beskikbaar nie</string>
     <string name="not_found">Nie gevind nie</string>

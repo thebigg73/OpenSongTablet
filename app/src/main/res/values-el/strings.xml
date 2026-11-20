@@ -12,6 +12,8 @@
     <string name="abc_not_available">Δεν επιτρέπεται η προβολή σημειογραφίας ABC εδώ</string>
     <string name="abc_popup_width">Πλάτος αναδυόμενου παραθύρου</string>
     <string name="abc_popup_width_info">Το πλάτος του αναδυόμενου παραθύρου ως ποσοστό του πλάτους της οθόνης</string>
+    <string name="abc_show_transport">Στοιχεία ελέγχου μεταφοράς με αναδυόμενα παράθυρα</string>
+    <string name="abc_show_transport_info">Συμπεριλάβετε στοιχεία ελέγχου αναπαραγωγής midi στο αναδυόμενο παράθυρο ABC</string>
     <string name="abc_transpose_to_song">Αυτόματη μεταφορά στο πλήκτρο τραγουδιού</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Σχετικά με</string>
@@ -103,8 +105,11 @@
     <string name="background">Φόντου</string>
     <string name="backing">Υποστήριξη</string>
     <string name="backup">Αντιγράφων ασφαλείας</string>
+    <string name="backup_complete">Η δημιουργία αντιγράφων ασφαλείας ολοκληρώθηκε</string>
+    <string name="backup_error">Το αντίγραφο ασφαλείας είναι ΕΛΛΙΠΕΣ (δείτε το αρχείο καταγραφής σφαλμάτων).</string>
     <string name="backup_highlighter">Συμπεριλάβετε σημειώσεις με highlighter</string>
     <string name="backup_import">Εισαγωγής OpenSongApp αντιγράφων ασφαλείας</string>
+    <string name="backup_incomplete">Η δημιουργία αντιγράφων ασφαλείας ολοκληρώθηκε, αλλά δεν ήταν δυνατή η προσθήκη ορισμένων στοιχείων</string>
     <string name="backup_info">αρχείο αντιγράφων ασφαλείας OpenSongApp</string>
     <string name="backup_now">Δημιουργήστε ένα αντίγραφο ασφαλείας τώρα</string>
     <string name="backup_osb">Δημιουργήστε ένα αντίγραφο ασφαλείας των τραγουδιών του OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Επιλέξτε ένα έγγραφο στη συσκευή σας. Εάν θέλετε να επιτρέψετε τον συγχρονισμό μεταξύ συσκευών, αυτό το αρχείο θα πρέπει να αποθηκευτεί κάπου μέσα στο φάκελο OpenSong.</string>
     <string name="link_search_web">Αναζητήστε αυτό το τραγούδι στο διαδίκτυο. Εάν βρείτε μια κατάλληλη ιστοσελίδα, αντιγράψτε τη διεύθυνση ιστού στο πρόχειρο και, στη συνέχεια, επιστρέψτε εδώ και επικολλήστε την στο παραπάνω πλαίσιο.</string>
     <string name="link_search_youtube">Προσπαθήστε να βρείτε αυτό το τραγούδι στο YouTube. Εάν βρείτε το σωστό στοιχείο, επιλέξτε την επιλογή «Κοινή χρήση» και, στη συνέχεια, αντιγράψτε τον σύνδεσμο στο πρόχειρο. Στη συνέχεια, μπορείτε να επιστρέψετε εδώ και να επικολλήσετε τον παραπάνω σύνδεσμο.</string>
+    <string name="link_view_media">Ο σύνδεσμος πολυμέσων είναι ανοιχτός</string>
+    <string name="link_view_media_info">Γρήγορο άνοιγμα συνδεδεμένων αρχείων για αυτό το τραγούδι</string>
     <string name="link_web">Online link</string>
     <string name="link_youtube">Σύνδεσμος YouTube</string>
     <string name="listen">Ακούω</string>
@@ -706,6 +713,7 @@
     <string name="logs">κούτσουρα</string>
     <string name="long_press">Πατήστε παρατεταμένα</string>
     <string name="long_press_action">Select long press action</string>
+    <string name="long_press_to_edit">Πατήστε παρατεταμένα για επεξεργασία</string>
     <string name="loop">Επανάληψη</string>
     <string name="loop_slide_pages">Loop pages in custom slide</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Επόμενο</string>
     <string name="no_previous_found">Δεν βρέθηκαν προηγούμενες εγκαταστάσεις.</string>
     <string name="no_suitable_application">Δεν υπάρχει διαθέσιμη ή εγκατεστημένη εφαρμογή που να μπορεί να ανοίξει αυτό το στοιχείο.</string>
+    <string name="not_added">Δεν προστέθηκε</string>
     <string name="not_allowed">Αυτή η λειτουργία δεν επιτρέπεται για αυτό το αντικείμενο</string>
     <string name="not_available">Μη διαθέσιμος</string>
     <string name="not_found">Δεν βρέθηκε</string>

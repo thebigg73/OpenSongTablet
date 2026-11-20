@@ -12,6 +12,8 @@
     <string name="abc_not_available">ABC අංකනය බැලීම මෙහි අවසර නැත</string>
     <string name="abc_popup_width">උත්පතන පළල</string>
     <string name="abc_popup_width_info">උත්පතන කවුළුවේ පළල තිරයේ පළලෙහි ප්‍රතිශතයක් ලෙස</string>
+    <string name="abc_show_transport">උත්පතන ප්‍රවාහන පාලන</string>
+    <string name="abc_show_transport_info">ABC උත්පතන කවුළුවේ midi නැවත ධාවනය පාලනයන් ඇතුළත් කරන්න.</string>
     <string name="abc_transpose_to_song">ගීත යතුරට ස්වයංක්‍රීයව මාරු කරන්න</string>
     <string name="abc_transpose_to_song_info">ගීතයේ සහ abc අංකනයේ යතුරක් සකසා ඇත්නම්, යෙදුම ගීත යතුරට ගැළපෙන පරිදි abc අංකනයේ ප්‍රතිදානය සකස් කිරීමට උත්සාහ කරයි.</string>
     <string name="about">ගැන</string>
@@ -103,8 +105,11 @@
     <string name="background">පසුබිම</string>
     <string name="backing">පිටුබලය දීම</string>
     <string name="backup">උපස්ථ</string>
+    <string name="backup_complete">උපස්ථ කිරීම සම්පූර්ණයි</string>
+    <string name="backup_error">උපස්ථය අසම්පූර්ණයි (බිඳවැටීම් ලොගය බලන්න).</string>
     <string name="backup_highlighter">උද්දීපන සටහන් ඇතුළත් කරන්න</string>
     <string name="backup_import">OpenSongApp උපස්ථය ආයාත කරන්න</string>
+    <string name="backup_incomplete">උපස්ථ කිරීම අවසන් විය, නමුත් සමහර අයිතම එක් කළ නොහැකි විය.</string>
     <string name="backup_info">OpenSongApp උපස්ථ ගොනුව</string>
     <string name="backup_now">දැන් උපස්ථයක් සාදන්න</string>
     <string name="backup_osb">OpenSongApp ගීතවල උපස්ථයක් සාදන්න (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">ඔබගේ උපාංගයේ ලේඛනයක් තෝරන්න. ඔබට උපාංග හරහා සමමුහුර්ත කිරීමට ඉඩ දීමට අවශ්‍ය නම්, මෙම ගොනුව ඔබගේ OpenSong ෆෝල්ඩරය තුළ කොතැනක හෝ සුරැකිය යුතුය.</string>
     <string name="link_search_web">මෙම ගීතය අන්තර්ජාලයේ සොයන්න. ඔබ සුදුසු වෙබ් පිටුවක් සොයා ගන්නේ නම්, වෙබ් ලිපිනය පසුරු පුවරුවට පිටපත් කර, මෙතැනට ආපසු ගොස් ඉහත කොටුවේ අලවන්න.</string>
     <string name="link_search_youtube">YouTube හි මෙම ගීතය සොයා ගැනීමට උත්සාහ කරන්න. ඔබ නිවැරදි අයිතමය සොයා ගන්නේ නම්, \'Share\' විකල්පය තෝරා ඉන්පසු සබැඳිය පසුරු පුවරුවට පිටපත් කරන්න. එවිට ඔබට මෙහි ආපසු ගොස් ඉහත සබැඳිය ඇලවිය හැක.</string>
+    <string name="link_view_media">සබැඳි මාධ්‍ය විවෘතයි</string>
+    <string name="link_view_media_info">මෙම ගීතය සඳහා සබැඳි ගොනු ඉක්මනින් විවෘත කරන්න</string>
     <string name="link_web">සබැඳි සබැඳිය</string>
     <string name="link_youtube">YouTube සබැඳිය</string>
     <string name="listen">සවන් දෙන්න</string>
@@ -706,6 +713,7 @@
     <string name="logs">ලඝු-සටහන්</string>
     <string name="long_press">දිගු ඔබන්න / රඳවා තබා ගන්න</string>
     <string name="long_press_action">දිගු පීඩන ක්‍රියාව තෝරන්න</string>
+    <string name="long_press_to_edit">සංස්කරණය කිරීමට දිගු ඔබන්න</string>
     <string name="loop">ලූප්</string>
     <string name="loop_slide_pages">අභිරුචි විනිවිදකයේ පිටු ලූප් කරන්න</string>
     <string name="looper">ලූපර්</string>
@@ -872,6 +880,7 @@
     <string name="next">ඊළඟ</string>
     <string name="no_previous_found">පෙර ස්ථාපනයන් හමු නොවීය.</string>
     <string name="no_suitable_application">මෙම අයිතමය විවෘත කළ හැකි කිසිදු යෙදුමක් නොමැත.</string>
+    <string name="not_added">එකතු කර නැත</string>
     <string name="not_allowed">මෙම අයිතමය සඳහා මෙම කාර්යයට ඉඩ නොදේ</string>
     <string name="not_available">ලද නොහැක</string>
     <string name="not_found">හමු වුණේ නැහැ</string>

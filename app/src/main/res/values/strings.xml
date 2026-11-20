@@ -148,7 +148,6 @@
     <string name="beats">Beats</string>
     <string name="before">Before</string>
     <string name="bible">Bible</string>
-    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Browse/search bible</string>
     <string name="bible_browse_offline">Use offline/downloaded bible</string>
     <string name="bible_download_for_offline">Download a bible translation for offline use</string>
@@ -158,6 +157,7 @@
     <string name="bible_translation">Bible version code (e.g. NIV, MSG)</string>
     <string name="bible_verse">Bible verse</string>
     <string name="bible_verse_numbers">Include verse numbers</string>
+    <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bigger">Bigger</string>
     <string name="black_screen">Black screen</string>
     <string name="black_screen_info">Fade in/out all views (except logo)</string>
@@ -774,41 +774,41 @@
     <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
     <string name="key">Key</string>
     <array name="key_choice" translatable="false">
-        <item/>
-        <item>A</item>
+    <item/>
         <item>A#</item>
-        <item>Bb</item>
-        <item>B</item>
-        <item>C</item>
-        <item>C#</item>
-        <item>Db</item>
-        <item>D</item>
-        <item>D#</item>
-        <item>Eb</item>
-        <item>E</item>
-        <item>F</item>
-        <item>F#</item>
-        <item>Gb</item>
-        <item>G</item>
-        <item>G#</item>
-        <item>Ab</item>
-        <item>Am</item>
         <item>A#m</item>
+        <item>A</item>
+        <item>Ab</item>
+        <item>Abm</item>
+        <item>Am</item>
+        <item>B</item>
+        <item>Bb</item>
         <item>Bbm</item>
         <item>Bm</item>
-        <item>Cm</item>
+        <item>C#</item>
         <item>C#m</item>
+        <item>C</item>
+        <item>Cm</item>
+        <item>D#</item>
+        <item>D#m</item>
+        <item>D</item>
+        <item>Db</item>
         <item>Dbm</item>
         <item>Dm</item>
-        <item>D#m</item>
+        <item>E</item>
+        <item>Eb</item>
         <item>Ebm</item>
         <item>Em</item>
-        <item>Fm</item>
+        <item>F#</item>
         <item>F#m</item>
+        <item>F</item>
+        <item>Fm</item>
+        <item>G#</item>
+        <item>G#m</item>
+        <item>G</item>
+        <item>Gb</item>
         <item>Gbm</item>
         <item>Gm</item>
-        <item>G#m</item>
-        <item>Abm</item>
     </array>
     <string name="key_original">Original key</string>
     <string name="key_original_transpose">Transpose the song back to the original key</string>
@@ -1680,12 +1680,12 @@
     <string name="user_3">User 3</string>
     <string name="user_guide">User guide</string>
     <string name="user_guide_lyrics" translatable="false">"[Intro]
- Welcome to OpenSongApp!
- This page shows you some of the features of the app.
  OpenSongApp has three operating modes:
+ This page shows you some of the features of the app.
+ Welcome to OpenSongApp!
  • Performance Mode – behave like a traditional song book
- • Stage Mode – control stage display monitors/projector
  • Presenter Mode – full control of a projector
+ • Stage Mode – control stage display monitors/projector
 
 [Menus]
  Song and set menus are accessed using the hamburger icon
@@ -1696,28 +1696,28 @@
  https://www.opensongapp.com
 
 [Adding songs]
- You can manually create any song you like.
  The app does not come with any songs due to copyright.
+ Use the + button in the songs menu to see your options
+ You can manually create any song you like.
  You can start a song by import from other services:
- • Desktop OpenSong – I recommend syncing using Dropbox
  • ChordPro files
+ • Desktop OpenSong – I recommend syncing using Dropbox
  • Online sources (Ultimate Guitar, Chordie, SongSelect, etc)
  • some iOS app song files
- Use the + button in the songs menu to see your options
 
  Songs are stored in OpenSong format (xml files)
  These are stored in the /OpenSong/Songs folder.
 
 [Edit the song]
- By default, double tap on the screen to edit a song.
  Alternatively, click on the song title.
+ By default, double tap on the screen to edit a song.
 
 [Chords at work]
  This song has been set as having a key of G.
 .G     D      Em           C      G         G7
  Chord lines (above) start with a full stop/period (.)
- You can set capo display and transpose the chords easily,
  Multiple chord formats are understood.
+ You can set capo display and transpose the chords easily,
 
 [Scaling]
  By default OpenSongApp scales to song width.
@@ -1725,25 +1725,25 @@
 
 ;HERE IS AN EXAMPLE OF A SONG
 
-[Intro]
-.||: G  | D/F#  | Em7  | D  :||
-[V1]
 .G2                D/F#
+.||: G  | D/F#  | Em7  | D  :||
+[Intro]
+[V1]
  Love everlasting, love without measure
 .Em7                 D
  Full of compassion, righteous and pure
 .C     G/B             Am7   C/D      D
  Is my Saviour\'s love, is my Father\'s heart
-[V2]
 .G2                   D/F#
+[V2]
  Loved by the Father, saved by the Son
 .Em7                 D
  Born of His Spirit, washed in the blood
 .C          G/B             Am7        C/D       D
  This is my Saviour\'s love, this is my Father\'s heart
 
-[B]
 .Em            Cmaj7  Em                Cmaj7
+[B]
  Your love for me, ___it reaches to the heavens
 .Em              Cmaj7                Bm7
  Let my love for You __just grow and grow!
@@ -1751,17 +1751,37 @@
  Your love for me, ___it reaches to the heavens
 .Em              Cmaj7               D  D/F#
  Let my love for You __just grow and grow!
-[V3]
 .G2                       D/F#
+[V3]
  Love sent from heaven, received in our hearts
 .Em7                      D
  Loving each other, since Christ first loved us
 .C          G/B             Am7        C/D      D
  Sharing my Saviour\'s love, showing my Father\'s heart
 
-[Outro]
-;(Slow to end)
 .| G  |"</string>
+;(Slow to end)
+[Outro]
+    <string name="abc_show_transport">Popup transport controls</string>
+    <string name="abc_show_transport_info">Include MIDI playback controls on the ABC popup window</string>
+    <string name="backup_complete">Backup complete</string>
+    <string name="backup_error">the backup is INCOMPLETE (see the crash log).</string>
+    <string name="backup_incomplete">Backup finished, but some items could not be added</string>
+    <string name="find_and_replace">Find and replace</string>
+    <string name="find_next">Find Next</string>
+    <string name="find_what">Find what</string>
+    <string name="gp2abc_extract">Extract from file (.gp, .gpx, .xml, .mxl)</string>
+    <string name="link_view_media">Link media open</string>
+    <string name="link_view_media_info">Quickly open linked files for this song</string>
+    <string name="long_press_to_edit">Long press to edit</string>
+    <string name="match_case">Match case</string>
+    <string name="not_added">Not added</string>
+    <string name="not_found">Not found</string>
+    <string name="replace">Replace</string>
+    <string name="replace_all">Replace All</string>
+    <string name="replace_with">Replace with</string>
+    <string name="replacements_made">replacements made</string>
+    <string name="song_sticky_positions">Use song specific sticky positions</string>
     <string name="utilities">Utilities</string>
     <string name="utilities_info">Other tools for musicians</string>
     <string name="utility">Utility</string>
@@ -1928,15 +1948,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="song_sticky_positions">Use song specific sticky positions</string>
-    <string name="gp2abc_extract">Extract from file (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Find and replace</string>
-    <string name="match_case">Match case</string>
-    <string name="find_what">Find what</string>
-    <string name="replace_with">Replace with</string>
-    <string name="find_next">Find Next</string>
-    <string name="replace">Replace</string>
-    <string name="replace_all">Replace All</string>
-    <string name="replacements_made">replacements made</string>
-    <string name="not_found">Not found</string>
 </resources>

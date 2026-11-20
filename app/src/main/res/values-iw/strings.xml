@@ -12,6 +12,8 @@
     <string name="abc_not_available">תצוגת סימון ABC אינה מותרת כאן</string>
     <string name="abc_popup_width">רוחב חלון קופץ</string>
     <string name="abc_popup_width_info">רוחב החלון הקופץ כאחוז מרוחב המסך</string>
+    <string name="abc_show_transport">בקרות תעבורה קופצות</string>
+    <string name="abc_show_transport_info">כלול פקדי השמעת MIDI בחלון הקופץ ABC</string>
     <string name="abc_transpose_to_song">טרנספוזציה אוטומטית לסולם שיר</string>
     <string name="abc_transpose_to_song_info">אם מוגדר סולם בשיר ובסימון abc, האפליקציה תנסה להתאים את הפלט של סימון abc לסולם השיר.</string>
     <string name="about">אוֹדוֹת</string>
@@ -104,8 +106,11 @@
     <string name="background">רֶקַע</string>
     <string name="backing">גיבוי</string>
     <string name="backup">גיבוי</string>
+    <string name="backup_complete">הגיבוי הושלם</string>
+    <string name="backup_error">הגיבוי אינו שלם (ראה יומן הקריסות).</string>
     <string name="backup_highlighter">כלול הערות סימון</string>
     <string name="backup_import">ייבוא גיבוי של OpenSongApp</string>
+    <string name="backup_incomplete">הגיבוי הסתיים, אך לא ניתן היה להוסיף חלק מהפריטים</string>
     <string name="backup_info">קובץ גיבוי של OpenSongApp</string>
     <string name="backup_now">צור גיבוי עכשיו</string>
     <string name="backup_osb">צור גיבוי של שירי OpenSongApp (*.osb)</string>
@@ -692,6 +697,8 @@
     <string name="link_search_document">בחר מסמך במכשיר שלך. אם ברצונך לאפשר סנכרון בין מכשירים, יש לשמור קובץ זה איפשהו בתוך תיקיית OpenSong שלך.</string>
     <string name="link_search_web">חפשו את השיר הזה באינטרנט. אם מצאתם דף אינטרנט מתאים, העתיקו את כתובת האינטרנט ללוח, לאחר מכן חזרו לכאן והדביקו אותו בתיבה למעלה.</string>
     <string name="link_search_youtube">נסה למצוא את השיר הזה ביוטיוב. אם תמצא את הפריט הנכון, בחר באפשרות \\\'שתף\\\' ולאחר מכן העתק את הקישור ללוח. לאחר מכן תוכל לחזור לכאן ולהדביק את הקישור למעלה.</string>
+    <string name="link_view_media">קישור מדיה פתוח</string>
+    <string name="link_view_media_info">פתיחה מהירה של קבצים מקושרים לשיר הזה</string>
     <string name="link_web">קישור מקוון</string>
     <string name="link_youtube">קישור ליוטיוב</string>
     <string name="listen">לְהַקְשִׁיב</string>
@@ -707,6 +714,7 @@
     <string name="logs">יומני רישום</string>
     <string name="long_press">לחיצה ארוכה/לחיצה ממושכת</string>
     <string name="long_press_action">בחירת פעולת לחיצה ארוכה</string>
+    <string name="long_press_to_edit">לחיצה ארוכה כדי לערוך</string>
     <string name="loop">לוּלָאָה</string>
     <string name="loop_slide_pages">לולאה של עמודים בשקופית מותאמת אישית</string>
     <string name="looper">לופר</string>
@@ -873,6 +881,7 @@
     <string name="next">הַבָּא</string>
     <string name="no_previous_found">לא נמצאו התקנות קודמות.</string>
     <string name="no_suitable_application">אין יישום זמין או מותקן שיכול לפתוח פריט זה.</string>
+    <string name="not_added">לא נוסף</string>
     <string name="not_allowed">פונקציה זו אינה מותרת עבור פריט זה</string>
     <string name="not_available">לא זמין</string>
     <string name="not_found">לא נמצא</string>

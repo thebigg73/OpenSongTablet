@@ -12,6 +12,8 @@
     <string name="abc_not_available">ABC notacija pogled nije dozvoljen ovde</string>
     <string name="abc_popup_width">Širina iskačućeg prozora</string>
     <string name="abc_popup_width_info">Širina iskačućeg prozora kao procenat širine ekrana</string>
+    <string name="abc_show_transport">Skup kontrole transporta</string>
+    <string name="abc_show_transport_info">Uključi kontrole za reprodukciju MIDI na ABC iskačućem prozoru</string>
     <string name="abc_transpose_to_song">Automatsko transponovanje u taster pesme</string>
     <string name="abc_transpose_to_song_info">Ako je ključ podešen u pesmi i u abc notaciji, aplikacija će pokušati da prilagodi izlaz abc notacije tako da odgovara ključu pesme.</string>
     <string name="about">O tome</string>
@@ -103,8 +105,11 @@
     <string name="background">Pozadina</string>
     <string name="backing">Podršku</string>
     <string name="backup">Backup</string>
+    <string name="backup_complete">Bekap završen</string>
+    <string name="backup_error">rezerva NIJE POTPUNA (pogledajte zapisnik o kvaru).</string>
     <string name="backup_highlighter">Uključite beleške za isticanje</string>
     <string name="backup_import">Uvoz OpenSongApp rezervne kopije</string>
+    <string name="backup_incomplete">Bekap je završen, ali neki predmeti nisu mogli da budu dodati</string>
     <string name="backup_info">OpenSongApp rezervna kopija</string>
     <string name="backup_now">Odmah izradite sigurnosnu kopiju</string>
     <string name="backup_osb">Napravite rezervnu kopiju OpenSongApp pesama (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Izaberite dokument na svom uređaju. Ako želite da dozvolite sinhronizaciju na svim uređajima, ova datoteka treba da bude sačuvana negde u vašoj OpenSong fascikli.</string>
     <string name="link_search_web">Potražite ovu pesmu na internetu. Ako pronađete odgovarajuću veb stranicu, kopirajte veb adresu u međuspremnik, a zatim se vratite ovde i nalepite je u okvir iznad.</string>
     <string name="link_search_youtube">Pokušajte da pronađete ovu pesmu na Jutjubu. Ako pronađete ispravnu stavku, izaberite opciju \'Deli\', a zatim kopirajte vezu u međuspremnik. Zatim se možete vratiti ovde i nalepiti vezu iznad.</string>
+    <string name="link_view_media">Otvoriti link medija</string>
+    <string name="link_view_media_info">Brzo otvori povezane fajlove za ovu pesmu</string>
     <string name="link_web">Online veza</string>
     <string name="link_youtube">YouTube veza</string>
     <string name="listen">Sluљaj</string>
@@ -706,6 +713,7 @@
     <string name="logs">Evidencije</string>
     <string name="long_press">Dugi pritisak/Držanje</string>
     <string name="long_press_action">Odaberi akciju za dugi pritisak</string>
+    <string name="long_press_to_edit">Dug pritisak za izmenu</string>
     <string name="loop">Petlja</string>
     <string name="loop_slide_pages">Napravi petlju stranica u ručnom slajdu</string>
     <string name="looper">sadržina</string>
@@ -872,6 +880,7 @@
     <string name="next">Sledeće</string>
     <string name="no_previous_found">Nije pronađena prethodna instalacija</string>
     <string name="no_suitable_application">Nije dostupna niti instalirana aplikacija koja može da otvori ovu stavku.</string>
+    <string name="not_added">Nije dodato</string>
     <string name="not_allowed">Ta funkcija nije dozvoljena za ovu stavku</string>
     <string name="not_available">Nije dostupno</string>
     <string name="not_found">Nije pronađeno</string>

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="gp2abc_extract">Aus Datei extrahieren (.gp, .gpx, .xml, .mxl)</string>
-    <string name="find_and_replace">Suchen und ersetzen</string>
-    <string name="match_case">Streichholzgehäuse</string>
-    <string name="find_what">Finde heraus, was</string>
-    <string name="replace_with">Ersetzen durch</string>
-    <string name="find_next">Weiter</string>
-    <string name="replace">Ersetzen</string>
-    <string name="replace_all">Alle ersetzen</string>
-    <string name="replacements_made">Ersatzlieferungen wurden vorgenommen</string>
-    <string name="not_found">Nicht gefunden</string>
     <string name="abc_add_to_song">Kopiere die ABC-Notation in das Lied</string>
     <string name="abc_editor">ABC-Webredakteur</string>
     <string name="abc_include_tab">Fügen Sie Tabulatur hinzu</string>
@@ -22,6 +12,8 @@
     <string name="abc_not_available">Die ABC-Notationsansicht ist hier nicht zulässig</string>
     <string name="abc_popup_width">Popup-Breite</string>
     <string name="abc_popup_width_info">Die Breite des Popup-Fensters als Prozentsatz der Bildschirmbreite</string>
+    <string name="abc_show_transport">Popup-Transportsteuerungen</string>
+    <string name="abc_show_transport_info">Füge MIDI-Wiedergabesteuerungen zum ABC-Popup-Fenster hinzu.</string>
     <string name="abc_transpose_to_song">Automatische Transponierung in die Tonart des Songs</string>
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>
@@ -113,8 +105,11 @@
     <string name="background">Hintergrundbild</string>
     <string name="backing">Rückendeckung</string>
     <string name="backup">Sicherung</string>
+    <string name="backup_complete">Sicherung abgeschlossen</string>
+    <string name="backup_error">Die Datensicherung ist unvollständig (siehe Absturzprotokoll).</string>
     <string name="backup_highlighter">Fügen Sie Textmarker-Notizen hinzu</string>
     <string name="backup_import">OpenSongApp Sicherung importieren</string>
+    <string name="backup_incomplete">Die Datensicherung ist abgeschlossen, aber einige Elemente konnten nicht hinzugefügt werden.</string>
     <string name="backup_info">OpenSongApp Sicherungsdatei</string>
     <string name="backup_now">Erstellen Sie jetzt ein Backup</string>
     <string name="backup_osb">Erstellen Sie ein Backup von OpenSongApp-Songs (*.osb)</string>
@@ -153,7 +148,6 @@
     <string name="beats">Schläge</string>
     <string name="before">Vor</string>
     <string name="bible">Bibel</string>
-    <string name="bibleXML">OpenSong XML Bibel</string>
     <string name="bible_browse">Stöbere in der Bibel</string>
     <string name="bible_browse_offline">Offline-/heruntergeladene Bibel verwenden</string>
     <string name="bible_download_for_offline">Laden Sie eine Bibelübersetzung zur Offline-Nutzung herunter</string>
@@ -163,6 +157,7 @@
     <string name="bible_translation">Bibel Übersetzungscode \n(zum Beispiel HOF, NGU-DE)</string>
     <string name="bible_verse">Bibel Vers</string>
     <string name="bible_verse_numbers">Fügen Sie Versnummern hinzu</string>
+    <string name="bibleXML">OpenSong XML Bibel</string>
     <string name="bigger">Größer</string>
     <string name="black_screen">Schwarzer Bildschirm</string>
     <string name="black_screen_info">Alle Ansichten ein-/ausblenden (außer Logo)</string>
@@ -507,7 +502,10 @@
     <string name="filter_songs">Filtern Sie die Liste der angezeigten Songs</string>
     <string name="filtering">Filtern</string>
     <string name="filters">Filter</string>
+    <string name="find_and_replace">Suchen und ersetzen</string>
     <string name="find_existing">Nach früheren Installationsorten für OpenSong-Dateien suchen</string>
+    <string name="find_next">Weiter</string>
+    <string name="find_what">Finde heraus, was</string>
     <string name="finger">Finger</string>
     <string name="fingering">Fingersatz</string>
     <string name="first_run">Entweder führen Sie die App zum ersten Mal aus, oder es hat sich etwas geändert. Aufgrund von Android-Berechtigungen müssen Sie Ihren gewünschten Speicherort für die App zum Speichern ihrer Dateien festlegen.</string>
@@ -548,6 +546,7 @@
     <string name="get">Erhalten</string>
     <string name="github_description">Beteiligen Sie sich an der App-Entwicklung</string>
     <string name="global">Global</string>
+    <string name="gp2abc_extract">Aus Datei extrahieren (.gp, .gpx, .xml, .mxl)</string>
     <string name="grace_time">Song-Kulanzzeit zulassen</string>
     <string name="grace_time_info">Auf diese Weise können Sie Songs schnell durchsuchen und erst nach einer Kulanzzeit von 2 Sekunden Informationen an andere angeschlossene Geräte senden.</string>
     <string name="green">Grün</string>
@@ -644,6 +643,8 @@
     <string name="inline">Im Einklang</string>
     <string name="inline_midi">Inline-MIDI-Befehle</string>
     <string name="inline_midi_info">MIDI-Befehle, die durch Klicken auf einen Songabschnitt ausgelöst werden können</string>
+    <string name="inline_search">Inline-Suche</string>
+    <string name="inline_search_info">Suchen und Inhalte direkt in der App extrahieren</string>
     <string name="inline_set_move_to_next">Spielt das Lied zum nächsten Element im Set ein.</string>
     <string name="inline_set_scroll_to_item">Zum aktuellen Eintrag scrollen</string>
     <string name="insert_guitar_tab">Gitarrentabulatur einfügen</string>
@@ -695,6 +696,8 @@
     <string name="link_search_document">Wählen Sie ein Dokument auf Ihrem Gerät aus. Wenn Sie die Synchronisierung zwischen Geräten zulassen möchten, sollte diese Datei irgendwo in Ihrem OpenSong-Ordner gespeichert werden.</string>
     <string name="link_search_web">Suchen Sie im Internet nach diesem Lied. Wenn Sie eine passende Webseite finden, kopieren Sie die Webadresse in die Zwischenablage, kehren Sie dann hierher zurück und fügen Sie sie in das obige Feld ein.</string>
     <string name="link_search_youtube">Versuchen Sie, dieses Lied auf YouTube zu finden. Wenn Sie das richtige Element finden, wählen Sie die Option „Teilen“ und kopieren Sie den Link in die Zwischenablage. Sie können dann hierher zurückkehren und den obigen Link einfügen.</string>
+    <string name="link_view_media">Link zu den Medien öffnen</string>
+    <string name="link_view_media_info">Schnell die verknüpften Dateien für diesen Song öffnen</string>
     <string name="link_web">Online Link</string>
     <string name="link_youtube">YouTube-Link</string>
     <string name="listen">Hör mal zu</string>
@@ -710,6 +713,7 @@
     <string name="logs">Protokolle</string>
     <string name="long_press">Lang drücken/halten</string>
     <string name="long_press_action">Aktion bei langem Drücken wählen</string>
+    <string name="long_press_to_edit">Zum Bearbeiten lange drücken</string>
     <string name="loop">Loop</string>
     <string name="loop_slide_pages">Seiten in benutzerdefinierter Folie wiederholen</string>
     <string name="looper">Looper</string>
@@ -728,6 +732,7 @@
     <string name="margins_system">Systemgrenzen</string>
     <string name="margins_system_info">Lassen Sie Platz für erkannte Gerätesteuerungen (untere Navigationsleiste und Seitenmenüs)</string>
     <string name="master">Master</string>
+    <string name="match_case">Streichholzgehäuse</string>
     <string name="max_font_size">Maximale Schriftgröße bei automatischer Skalierung</string>
     <string name="max_pdf_scale">Maximale Skalierungsgröße von PDF/Print</string>
     <string name="max_pdf_scale_info">Die maximal zu verwendende Skalierung.  Wählen Sie niedrigere Werte für kleineren Text.  Die Textgröße wird nicht über die Seitenbreite hinaus skaliert.  75 % sind für die meisten ein guter Ausgangspunkt.</string>
@@ -875,8 +880,10 @@
     <string name="next">nächster Song</string>
     <string name="no_previous_found">Keine vorherigen Installationen gefunden.</string>
     <string name="no_suitable_application">Es ist keine Anwendung verfügbar oder installiert, die dieses Element öffnen kann.</string>
+    <string name="not_added">Nicht hinzugefügt</string>
     <string name="not_allowed">Diese Funktion ist für diesen Titel nicht erlaubt</string>
     <string name="not_available">Nicht verfügbar</string>
+    <string name="not_found">Nicht gefunden</string>
     <string name="not_saved">Nicht gespeichert</string>
     <string name="not_saved_filename">Bitte geben Sie einen Dateinamen für Ihren Song ein</string>
     <string name="not_saved_folder">Bitte wählen Sie einen Ordner für Ihren Song aus</string>
@@ -1067,6 +1074,10 @@
     <string name="repeat_mode_count">Anzahl der Tastenbefehle, die als langes Drücken gelten (in der oben angegebenen Zeit)</string>
     <string name="repeat_mode_info">Bei Pedalen, die wiederholte Tastenbefehle nach unten und oben senden, kann dies eine lange Druckaktion simulieren</string>
     <string name="repeat_mode_time">Es ist an der Zeit, auf wiederholte Tasten- und Hochtastenbefehle zu achten</string>
+    <string name="replace">Ersetzen</string>
+    <string name="replace_all">Alle ersetzen</string>
+    <string name="replace_with">Ersetzen durch</string>
+    <string name="replacements_made">Ersatzlieferungen wurden vorgenommen</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">Diese Funktion erfordert einen Internetzugang</string>
     <string name="reset">Zurücksetzen</string>
@@ -1229,6 +1240,7 @@
     <string name="song_select_warning">Für diese Website ist ein gültiges Konto erforderlich.  Sie müssen die Download-Schaltfläche auf der SongSelect-Webseite verwenden, um den erforderlichen Download auszulösen.  Die Datei wird nach dem Herunterladen in Ihren OpenSong/Songs/-Ordner importiert.</string>
     <string name="song_select_warning_more">Aufgrund von SongSelect-Einschränkungen müssen Sie Ihre Songdatei nun manuell herunterladen und anschließend in die App importieren. Nach dem Download werden Sie auf diese Seite zurückgeleitet und können auf die Schaltfläche „Download importieren“ klicken, um die heruntergeladene Datei in OpenSongApp zu importieren.</string>
     <string name="song_specific">Songspezifisch</string>
+    <string name="song_sticky_positions">Verwenden Sie liedspezifische feste Positionen</string>
     <string name="song_swipe_toggle">Wischen zwischen Songs ein / aus</string>
     <string name="song_title">Songtitel</string>
     <string name="songs">Lieder</string>
@@ -1542,7 +1554,4 @@
     <string name="worship">Verehrung</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoomstufe</string>
-    <string name="inline_search">Inline-Suche</string>
-    <string name="inline_search_info">Suchen und Inhalte direkt in der App extrahieren</string>
-    <string name="song_sticky_positions">Verwenden Sie liedspezifische feste Positionen</string>
 </resources>

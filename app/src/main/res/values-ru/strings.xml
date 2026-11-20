@@ -12,6 +12,8 @@
     <string name="abc_not_available">Просмотр обозначений ABC здесь не разрешен.</string>
     <string name="abc_popup_width">Ширина всплывающего окна</string>
     <string name="abc_popup_width_info">Ширина всплывающего окна в процентах от ширины экрана.</string>
+    <string name="abc_show_transport">Всплывающие элементы управления транспортом</string>
+    <string name="abc_show_transport_info">Добавьте элементы управления воспроизведением MIDI во всплывающее окно ABC.</string>
     <string name="abc_transpose_to_song">Авто транспонирование в тональность</string>
     <string name="abc_transpose_to_song_info">Если тональность задана в песне и в нотации abc, приложение попытается настроить вывод нотации abc в соответствии с тональностью песни.</string>
     <string name="about">О программе</string>
@@ -103,8 +105,11 @@
     <string name="background">Фон</string>
     <string name="backing">Поддержка</string>
     <string name="backup">Резервная копия</string>
+    <string name="backup_complete">Резервное копирование завершено.</string>
+    <string name="backup_error">Резервное копирование НЕПОЛНОЕ (см. журнал сбоя).</string>
     <string name="backup_highlighter">Включить выделение маркером</string>
     <string name="backup_import">Импорт резервной копии OpenSongApp</string>
+    <string name="backup_incomplete">Резервное копирование завершено, но некоторые элементы добавить не удалось.</string>
     <string name="backup_info">Файл резервного копирования OpenSongApp</string>
     <string name="backup_now">Создать резервную копию</string>
     <string name="backup_osb">Создать резервную копию песен OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Выберите документ на своем устройстве. Если вы хотите, чтобы файл синхронизировался между устройствами, этот файл следует сохранить где-нибудь в папке OpenSong.</string>
     <string name="link_search_web">Найдите эту песню в интернете. Если вы найдете подходящую веб-страницу, скопируйте веб-адрес в буфер обмена, затем вернитесь сюда и вставьте его в поле выше.</string>
     <string name="link_search_youtube">Попробуйте найти эту песню на YouTube. Если вы найдете подходящий элемент, выберите опцию «Поделиться», а затем скопируйте ссылку в буфер обмена. Затем вы можете вернуться сюда и вставить ссылку выше.</string>
+    <string name="link_view_media">Ссылка на медиафайл открыта</string>
+    <string name="link_view_media_info">Быстро откройте связанные файлы для этой песни.</string>
     <string name="link_web">Интернет ссылка</string>
     <string name="link_youtube">YouTube ссылка</string>
     <string name="listen">Прослушивание</string>
@@ -706,6 +713,7 @@
     <string name="logs">Журналы</string>
     <string name="long_press">Долгое нажатие/удержание</string>
     <string name="long_press_action">Действие при долгом касании</string>
+    <string name="long_press_to_edit">Нажмите и удерживайте для редактирования</string>
     <string name="loop">Зациклить</string>
     <string name="loop_slide_pages">Зациклить страницы в пользовательском слайде</string>
     <string name="looper">Лупер</string>
@@ -872,6 +880,7 @@
     <string name="next">Cледующий</string>
     <string name="no_previous_found">Не найдено предыдущих установок.</string>
     <string name="no_suitable_application">Нет доступных или установленных приложений, которые могут открыть этот элемент.</string>
+    <string name="not_added">Не добавлено</string>
     <string name="not_allowed">Эта функция не доступна для текущего элемента</string>
     <string name="not_available">Недоступно</string>
     <string name="not_found">Не найдено</string>

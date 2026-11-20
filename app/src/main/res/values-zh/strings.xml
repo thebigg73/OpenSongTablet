@@ -12,6 +12,8 @@
     <string name="abc_not_available">此处不允许查看 ABC 表示法</string>
     <string name="abc_popup_width">弹出宽度</string>
     <string name="abc_popup_width_info">弹出窗口的宽度占屏幕宽度的百分比</string>
+    <string name="abc_show_transport">弹出式运输控制</string>
+    <string name="abc_show_transport_info">在ABC弹出窗口中添加MIDI播放控制按钮</string>
     <string name="abc_transpose_to_song">自动移调到乐曲键</string>
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>
@@ -103,8 +105,11 @@
     <string name="background">背景介绍</string>
     <string name="backing">后盾</string>
     <string name="backup">备份</string>
+    <string name="backup_complete">备份完成</string>
+    <string name="backup_error">备份不完整（请参阅崩溃日志）。</string>
     <string name="backup_highlighter">Sluit highlighter notas in</string>
     <string name="backup_import">进口OpenSongApp备份备份</string>
+    <string name="backup_incomplete">备份完成，但部分项目无法添加。</string>
     <string name="backup_info">OpenSongApp备份文件</string>
     <string name="backup_now">立即创建备份</string>
     <string name="backup_osb">创建 OpenSongApp 歌曲的备份 (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">在您的设备上选择一个文档。 如果你想允许跨设备同步，这个文件应该保存在你的 OpenSong 文件夹中的某个地方。</string>
     <string name="link_search_web">在网上搜索这首歌。 如果您找到合适的网页，请将网址复制到剪贴板，然后返回此处并将其粘贴到上面的框中。</string>
     <string name="link_search_youtube">尝试在 YouTube 上找到这首歌。 如果您找到正确的项目，请选择“共享”选项，然后将链接复制到剪贴板。 然后，您可以返回此处并粘贴上面的链接。</string>
+    <string name="link_view_media">链接媒体打开</string>
+    <string name="link_view_media_info">快速打开这首歌的链接文件</string>
     <string name="link_web">在线链接</string>
     <string name="link_youtube">YouTube链接</string>
     <string name="listen">听</string>
@@ -706,6 +713,7 @@
     <string name="logs">日志</string>
     <string name="long_press">长按/按住</string>
     <string name="long_press_action">选择长按行动</string>
+    <string name="long_press_to_edit">长按编辑</string>
     <string name="loop">循环</string>
     <string name="loop_slide_pages">在自定义幻灯片循环播放页面</string>
     <string name="looper">环形使者</string>
@@ -872,6 +880,7 @@
     <string name="next">下一个</string>
     <string name="no_previous_found">没有找到以前的安装。</string>
     <string name="no_suitable_application">没有可用或安装的应用程序可以打开此项目。</string>
+    <string name="not_added">未添加</string>
     <string name="not_allowed">此功能是不允许此项目</string>
     <string name="not_available">无法使用</string>
     <string name="not_found">未找到</string>

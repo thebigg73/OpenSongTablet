@@ -12,6 +12,8 @@
     <string name="abc_not_available">Az ABC jelölés nézet itt nem engedélyezett</string>
     <string name="abc_popup_width">Felugró ablak szélessége</string>
     <string name="abc_popup_width_info">A felugró ablak szélessége a képernyő szélességének százalékában</string>
+    <string name="abc_show_transport">Felugró átviteli vezérlők</string>
+    <string name="abc_show_transport_info">MIDI lejátszási vezérlők hozzáadása az ABC felugró ablakhoz</string>
     <string name="abc_transpose_to_song">Automatikus transzponálás a dal kulcsára</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Ról ről</string>
@@ -103,8 +105,11 @@
     <string name="background">Bemutatkozás háttér</string>
     <string name="backing">Háttér</string>
     <string name="backup">Biztonsági mentés</string>
+    <string name="backup_complete">A biztonsági mentés kész</string>
+    <string name="backup_error">a biztonsági mentés HIÁNYOS (lásd a hibanaplót).</string>
     <string name="backup_highlighter">Tartalmazzon kiemelő jegyzeteket</string>
     <string name="backup_import">Import OpenSongApp mentés</string>
+    <string name="backup_incomplete">A biztonsági mentés befejeződött, de néhány elemet nem sikerült hozzáadni</string>
     <string name="backup_info">OpenSongApp biztonsági másolata</string>
     <string name="backup_now">Készítsen biztonsági másolatot most</string>
     <string name="backup_osb">Készítsen biztonsági másolatot az OpenSongApp dalokról (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Válasszon ki egy dokumentumot a készülékén. Ha engedélyezni szeretné az eszközök közötti szinkronizálást, ezt a fájlt el kell mentenie valahova az OpenSong mappába.</string>
     <string name="link_search_web">Keresd ezt a dalt az interneten. Ha talál egy megfelelő weboldalt, másolja a webcímet a vágólapra, majd térjen vissza ide, és illessze be a fenti mezőbe.</string>
     <string name="link_search_youtube">Próbálja meg megtalálni ezt a dalt a YouTube-on. Ha megtalálta a megfelelő elemet, válassza a „Megosztás” lehetőséget, majd másolja a hivatkozást a vágólapra. Ezután visszatérhet ide, és beillesztheti a fenti linket.</string>
+    <string name="link_view_media">Médialink megnyitása</string>
+    <string name="link_view_media_info">Gyorsan megnyithatja a dalhoz kapcsolódó fájlokat</string>
     <string name="link_web">Online kapcsolat</string>
     <string name="link_youtube">YouTube linket</string>
     <string name="listen">Hallgat</string>
@@ -706,6 +713,7 @@
     <string name="logs">Naplók</string>
     <string name="long_press">Tartsa hosszan a gombot</string>
     <string name="long_press_action">Válassza ki a hosszú nyomja akció</string>
+    <string name="long_press_to_edit">Hosszan nyomva a szerkesztéshez</string>
     <string name="loop">Hurkol</string>
     <string name="loop_slide_pages">Hurok oldalak egyedi dia</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Következő</string>
     <string name="no_previous_found">Nincs korábbi telepítés.</string>
     <string name="no_suitable_application">Nem érhető el vagy nincs telepítve olyan alkalmazás, amely megnyitná ezt az elemet.</string>
+    <string name="not_added">Nincs hozzáadva</string>
     <string name="not_allowed">Ez a funkció nem engedélyezett ehhez a termékhez</string>
     <string name="not_available">Nem elérhető</string>
     <string name="not_found">Nem található</string>

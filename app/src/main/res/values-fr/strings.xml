@@ -12,6 +12,8 @@
     <string name="abc_not_available">L\'affichage en notation ABC n\'est pas autorisé ici</string>
     <string name="abc_popup_width">Largeur de la fenêtre contextuelle</string>
     <string name="abc_popup_width_info">La largeur de la fenêtre contextuelle en pourcentage de la largeur de l\'écran</string>
+    <string name="abc_show_transport">Commandes de transport contextuelles</string>
+    <string name="abc_show_transport_info">Inclure les commandes de lecture MIDI dans la fenêtre contextuelle ABC</string>
     <string name="abc_transpose_to_song">Transposition automatique à la clé de la chanson</string>
     <string name="abc_transpose_to_song_info">Si une clé est définie dans la chanson et dans la notation abc, l\'application essaiera d\'ajuster la sortie de la notation abc pour qu\'elle corresponde à la clé de la chanson.</string>
     <string name="about">À propos</string>
@@ -103,8 +105,11 @@
     <string name="background">Arriere plan de présentation</string>
     <string name="backing">Support</string>
     <string name="backup">Sauvegarde</string>
+    <string name="backup_complete">Sauvegarde terminée</string>
+    <string name="backup_error">La sauvegarde est INCOMPLÈTE (voir le journal des incidents).</string>
     <string name="backup_highlighter">Inclure des notes de surligneur</string>
     <string name="backup_import">Sauvegarde Importation OpenSongApp</string>
+    <string name="backup_incomplete">La sauvegarde est terminée, mais certains éléments n\'ont pas pu être ajoutés.</string>
     <string name="backup_info">Fichier OpenSongApp de sauvegarde</string>
     <string name="backup_now">Créer une sauvegarde maintenant</string>
     <string name="backup_osb">Créer une sauvegarde des chansons OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Sélectionnez un document sur votre appareil. Si vous souhaitez autoriser la synchronisation entre les appareils, ce fichier doit être enregistré quelque part dans votre dossier OpenSong.</string>
     <string name="link_search_web">Recherchez cette chanson sur Internet. Si vous trouvez une page Web appropriée, copiez l\'adresse Web dans le presse-papiers, puis revenez ici et collez-la dans la case ci-dessus.</string>
     <string name="link_search_youtube">Essayez de trouver cette chanson sur YouTube. Si vous trouvez le bon élément, sélectionnez l\'option \'Partager\', puis copiez le lien dans le presse-papiers. Vous pouvez ensuite revenir ici et coller le lien ci-dessus.</string>
+    <string name="link_view_media">Lien média ouvert</string>
+    <string name="link_view_media_info">Ouvrir rapidement les fichiers liés pour cette chanson</string>
     <string name="link_web">Lien en ligne</string>
     <string name="link_youtube">Lien YouTube</string>
     <string name="listen">Ecoutez</string>
@@ -706,6 +713,7 @@
     <string name="logs">Journaux</string>
     <string name="long_press">Appuyez longuement / maintenez</string>
     <string name="long_press_action">Sélectionnez l\'action de l\'appui long</string>
+    <string name="long_press_to_edit">Appuyez longuement pour modifier</string>
     <string name="loop">Boucle</string>
     <string name="loop_slide_pages">Pages de boucle de diaporamas personnalisés</string>
     <string name="looper">Boucleur</string>
@@ -872,6 +880,7 @@
     <string name="next">Suivant</string>
     <string name="no_previous_found">Aucune installation précédente trouvée.</string>
     <string name="no_suitable_application">Aucune application disponible ou installée ne peut ouvrir cet élément.</string>
+    <string name="not_added">Non ajouté</string>
     <string name="not_allowed">Cette fonction n\'est pas autorisée pour cet article</string>
     <string name="not_available">Indisponible</string>
     <string name="not_found">Introuvable</string>

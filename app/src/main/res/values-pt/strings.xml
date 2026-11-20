@@ -12,6 +12,8 @@
     <string name="abc_not_available">A visualização da notação ABC não é permitida aqui</string>
     <string name="abc_popup_width">Largura do pop-up</string>
     <string name="abc_popup_width_info">A largura da janela pop-up como uma porcentagem da largura da tela</string>
+    <string name="abc_show_transport">Controles de transporte pop-up</string>
+    <string name="abc_show_transport_info">Incluir controles de reprodução MIDI na janela pop-up do ABC.</string>
     <string name="abc_transpose_to_song">Transposição automática para a tecla da música</string>
     <string name="abc_transpose_to_song_info">Se uma tecla for definida na música e na notação abc, o aplicativo tentará ajustar a saída da notação abc para corresponder à tecla da música.</string>
     <string name="about">Cerca de</string>
@@ -103,8 +105,11 @@
     <string name="background">Apresentação de fundo</string>
     <string name="backing">Apoio</string>
     <string name="backup">Cópia de segurança</string>
+    <string name="backup_complete">Cópia de segurança concluída</string>
+    <string name="backup_error">O backup está INCOMPLETO (consulte o registro de falhas).</string>
     <string name="backup_highlighter">Incluir notas de marca-texto</string>
     <string name="backup_import">backup de importação OpenSongApp</string>
+    <string name="backup_incomplete">O backup foi concluído, mas alguns itens não puderam ser adicionados.</string>
     <string name="backup_info">O arquivo de backup OpenSongApp</string>
     <string name="backup_now">Crie um backup agora</string>
     <string name="backup_osb">Crie um backup das músicas do OpenSongApp (*.osb)</string>
@@ -691,6 +696,8 @@
     <string name="link_search_document">Selecione um documento no seu dispositivo. Se você deseja permitir a sincronização entre dispositivos, este arquivo deve ser salvo em algum lugar dentro de sua pasta OpenSong.</string>
     <string name="link_search_web">Procure essa música na internet. Se você encontrar uma página da Web adequada, copie o endereço da Web para a área de transferência, retorne aqui e cole-o na caixa acima.</string>
     <string name="link_search_youtube">Tente encontrar essa música no YouTube. Se você encontrar o item correto, selecione a opção \'Compartilhar\' e copie o link para a área de transferência. Você pode então retornar aqui e colar o link acima.</string>
+    <string name="link_view_media">Abrir mídia de link</string>
+    <string name="link_view_media_info">Abra rapidamente os arquivos vinculados para esta música.</string>
     <string name="link_web">Ligação on-line</string>
     <string name="link_youtube">Link do YouTube</string>
     <string name="listen">Ouço</string>
@@ -706,6 +713,7 @@
     <string name="logs">Registros</string>
     <string name="long_press">Pressione / mantenha pressionado prolongadamente</string>
     <string name="long_press_action">Selecione ação pressão longa</string>
+    <string name="long_press_to_edit">Pressione e segure para editar</string>
     <string name="loop">Dar laços</string>
     <string name="loop_slide_pages">Páginas de loop em slides personalizada</string>
     <string name="looper">Looper</string>
@@ -872,6 +880,7 @@
     <string name="next">Seguinte</string>
     <string name="no_previous_found">Não foram encontradas instalações anteriores.</string>
     <string name="no_suitable_application">Nenhum aplicativo disponível ou instalado que possa abrir este item.</string>
+    <string name="not_added">Não adicionado</string>
     <string name="not_allowed">Esta função não é permitido para este item</string>
     <string name="not_available">Não disponível</string>
     <string name="not_found">Não encontrado</string>
