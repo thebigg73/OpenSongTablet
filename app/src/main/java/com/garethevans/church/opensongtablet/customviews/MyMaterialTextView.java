@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -36,6 +37,7 @@ public class MyMaterialTextView extends LinearLayout {
     private FrameLayout checkBoxHolder;
     private MyFloatingActionButton endActionButton;
     private float xxlarge, xlarge, large, medium, small, xsmall;
+    private Palette palette;
 
     public MyMaterialTextView(Context context) {
         this(context, null);
@@ -108,6 +110,11 @@ public class MyMaterialTextView extends LinearLayout {
             hintView.setVisibility(View.GONE);
         }*/
 
+        // Keep palette setup guarded for layout preview safety
+        if (!isInEditMode()) {
+            setPalette(new Palette(context));
+        }
+
         if (attrs != null) {
             // Read standard Android attributes directly using obtainStyledAttributes
             int[] androidAttrs = new int[]{android.R.attr.text, android.R.attr.hint};
@@ -137,6 +144,11 @@ public class MyMaterialTextView extends LinearLayout {
 
             Drawable startIcon = ta.getDrawable(R.styleable.MyMaterialTextView_startIcon);
             if (startIcon != null) {
+                Drawable iconWrapped = DrawableCompat.wrap(startIcon);
+                if (!isInEditMode() && palette!=null) {
+                    DrawableCompat.setTint(iconWrapped, palette.textColor);
+                }
+                imageView.setImageDrawable(iconWrapped);
                 imageView.setImageDrawable(startIcon);
                 imageView.setVisibility(VISIBLE);
             }
@@ -154,10 +166,7 @@ public class MyMaterialTextView extends LinearLayout {
             hintView.setVisibility(View.GONE);
         }
 
-        // Keep palette setup guarded for layout preview safety
-        if (!isInEditMode()) {
-            setPalette(new Palette(context));
-        }
+
     }
 
     // Public setters
@@ -194,6 +203,9 @@ public class MyMaterialTextView extends LinearLayout {
 
     public void setStartIcon(Drawable icon) {
         if (icon != null) {
+            if (palette!=null) {
+                icon.setColorFilter(palette.textColor, PorterDuff.Mode.SRC_IN);
+            }
             imageView.setImageDrawable(icon);
             imageView.setVisibility(VISIBLE);
         } else {
@@ -291,10 +303,12 @@ public class MyMaterialTextView extends LinearLayout {
     }
 
     public void setPalette(Palette palette) {
+        this.palette = palette;
         if (palette != null) {
             textView.setTextColor(palette.textColor);
             hintView.setTextColor(palette.hintColor);
             checkMark.setColorFilter(palette.textColor);
+
 
             ColorStateList colorStateList = new ColorStateList(
                     new int[][]{
