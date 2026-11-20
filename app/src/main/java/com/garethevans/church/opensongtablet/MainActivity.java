@@ -110,6 +110,7 @@ import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.customviews.PopupMenuItem;
 import com.garethevans.church.opensongtablet.customviews.StopRecordingPopUp;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetAudioPlayerBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.drummer.DrumViewModel;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
@@ -2204,6 +2205,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void popupAudioPlayer(String mediaLink) {
+        if (mediaLink!=null) {
+            // Close existing audio player
+            if (audioPlayerPopUp != null) {
+                toggleAudioPlayerPopUp();
+            }
+
+            importUri = null;
+            if (mediaLink.startsWith("../OpenSong/")) {
+                // If localised, unlocalise it
+                mediaLink = mediaLink.replace("../OpenSong/", "");
+                // This should take care of subfolders, etc.
+                importUri = getStorageAccess().getUriForItem("", "", mediaLink);
+            } else {
+                importUri = Uri.parse(mediaLink);
+            }
+            if (importUri != null) {
+                toggleAudioPlayerPopUp();
+            }
+        }
+    }
+
+    @Override
     public MultiTrackPlayer getMultiTrackPlayer() {
         if (multiTrackPlayer == null) {
             multiTrackPlayer = new MultiTrackPlayer(this);
@@ -3339,6 +3363,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
+        Log.d(TAG,"showSticky(forceshow:"+forceshow+",hide:"+hide);
         if (performanceValid()) {
             try {
                 performanceFragment.toggleStickyPopUps(forceshow,hide);
@@ -4041,6 +4066,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
 
             switch (what) {
+                case "linkaudiorecorder":
+                    // We have recorded and saved audio from the audio recorder
+                    // We want to replace the existing link audio with this file
+                    if (fragName == "AudioRecorderPopup" && audioRecorderPopUp!=null) {
+                        audioRecorderPopUp.doSaveLinkAudio();
+                    }
+                    allowToast = false;
+                    break;
                 case "chordDetectionStream":
                     // We have decided to record the audio stream for chord detection
                     isScreenRecordingMode = false;
@@ -5241,6 +5274,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "MidiActionBS":
                         ((MidiActionBottomSheet) fragment).updateMessage(value);
+                        break;
+                    case "HighlighterEditFragment":
+                        ((HighlighterEditFragment) fragment).insertText(value);
                         break;
                 }
             } catch (Exception e) {

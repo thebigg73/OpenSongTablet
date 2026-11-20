@@ -148,6 +148,7 @@ public interface MainActivityInterface {
     String getMainfoldername();
     StickyNoteUtils getStickyNoteUtils();
     MultiTrackPlayer getMultiTrackPlayer();
+    void popupAudioPlayer(String mediaLink);
 
     // Capo
     void dealWithCapo();
