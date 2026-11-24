@@ -320,14 +320,19 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 myView.filterButtons.searchButtonGroup.post(() -> {
                     //myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary)));
-                    myView.filterButtons.searchButtonGroup.setBackgroundTintList(new ColorStateList(
-                            new int[][]{new int[0]},
-                            new int[]{mainActivityInterface.getPalette().primary}
-                    ));
+                    if (myView!=null && mainActivityInterface!=null && mainActivityInterface.getPalette()!=null) {
+                        myView.filterButtons.searchButtonGroup.setBackgroundTintList(new ColorStateList(
+                                new int[][]{new int[0]},
+                                new int[]{mainActivityInterface.getPalette().primary}
+                        ));
+                    }
                 });
             } else {
-                myView.filterButtons.searchButtonGroup.post(() ->
-                        myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary));
+                myView.filterButtons.searchButtonGroup.post(() -> {
+                    if (myView!=null && mainActivityInterface!=null && mainActivityInterface.getPalette()!=null) {
+                        myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary);
+                    }
+                });
             }
         }
         prepareSearch();

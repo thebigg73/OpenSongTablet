@@ -270,11 +270,17 @@ public class ImportFileFragment extends Fragment {
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null, null, 0, 300, 300, "N", true);
 
                 myView.imageView.postDelayed(() -> {
-                    myView.imageView.setVisibility(View.VISIBLE);
-                    Glide.with(this)
-                            .load(bmp)
-                            .fitCenter()
-                            .into(myView.imageView);
+                    try {
+                        if (myView!=null) {
+                            myView.imageView.setVisibility(View.VISIBLE);
+                            Glide.with(this)
+                                    .load(bmp)
+                                    .fitCenter()
+                                    .into(myView.imageView);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }, 500);
                 newSong.setFiletype("PDF");

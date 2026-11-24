@@ -1417,7 +1417,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pedalsFragment.commonEventUp();
         } else if (pedalsFragment != null) {
             pedalsFragment.backgroundKeyUp(keyCode, keyEvent);
-        } else if (!settingsOpen) {
+        } else if (pedalActions!=null && !settingsOpen) {
             pedalActions.commonEventUp(keyCode, null);
         }
         return super.onKeyUp(keyCode, keyEvent);
