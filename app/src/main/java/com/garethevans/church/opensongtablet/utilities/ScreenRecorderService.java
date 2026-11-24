@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.utilities;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -51,32 +52,13 @@ public class ScreenRecorderService extends Service {
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.screen_recorder_started))
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .build();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34+
-            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION);
-        } else {
-            startForeground(NOTIFICATION_ID, notification);
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             projectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         }
     }
 
-    public static void setContext(Context c) {
-        mainActivityInterface = (MainActivityInterface) c;
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand() intent:" + intent + " flags:" + flags + " startId:" + startId);
-
         if (intent != null) {
             String mode = intent.getStringExtra(EXTRA_MODE);
 
@@ -86,23 +68,32 @@ public class ScreenRecorderService extends Service {
             }
 
             if (MODE_SCREEN_RECORD.equals(mode) && !isRecording) {
-                int resultCode = intent.getIntExtra("code", 0);
+                int resultCode = intent.getIntExtra("code", Activity.RESULT_CANCELED);
                 Intent data = intent.getParcelableExtra("data");
 
-                Log.d(TAG, "resultCode:" + resultCode + " data:" + data + " projectionManager:" + projectionManager);
-
-                // Ensure projectionManager is initialized (fall back to getting it via system service if needed)
-                if (projectionManager == null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        projectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-                    }
+                if (projectionManager == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    projectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
                 }
 
-                if (resultCode != 0 && data != null && projectionManager != null) {
+                if (resultCode == Activity.RESULT_OK && data != null && projectionManager != null) {
+                    Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(getString(R.string.screen_recorder_started))
+                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+                            .build();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        startForeground(
+                                NOTIFICATION_ID,
+                                notification,
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
+                        );
+                    } else {
+                        startForeground(NOTIFICATION_ID, notification);
+                    }
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         mediaProjection = projectionManager.getMediaProjection(resultCode, data);
-                        Log.d(TAG, "mediaProjection:" + mediaProjection);
-
                         if (mediaProjection != null) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                                 mediaProjection.registerCallback(new MediaProjection.Callback() {
@@ -113,13 +104,21 @@ public class ScreenRecorderService extends Service {
                                     }
                                 }, null);
                             }
-                            startRecording(); // 🔑 Now safely triggers recording without needing mainActivityInterface!
+                            startRecording();
+                        } else {
+                            stopSelf();
                         }
                     }
+                } else {
+                    stopSelf();
                 }
             }
         }
         return START_NOT_STICKY;
+    }
+
+    public static void setContext(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
     }
 
     private void startRecording() {
