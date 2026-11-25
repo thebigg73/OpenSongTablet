@@ -7,27 +7,35 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.text.Layout;
 import android.util.Log;
 import android.util.SparseLongArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.DialogHeader;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.mlkit.vision.text.Text;
 
 import java.util.ArrayList;
 
@@ -67,7 +75,6 @@ public class PreviewPopUp {
                     e.printStackTrace();
                 }
 
-                // If no sticky notes exist for the song, navigate to the edit sticky note fragment
             } else {
                 Log.d(TAG, "Try to show the preview");
                 // Set up the views
@@ -78,9 +85,10 @@ public class PreviewPopUp {
                 Log.d(TAG, "About to show popup");
                 long showStart = System.currentTimeMillis();
 
-// Post it to the next message queue turn
+                // Post it to the next message queue turn
                 viewHolder.post(() -> {
                     popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
+                    setPopupDim(true, 0.5f);
                     Log.d(TAG, "Popup shown in: " + (System.currentTimeMillis() - showStart) + "ms");
                 });
             }
@@ -91,80 +99,137 @@ public class PreviewPopUp {
     private void setupViews() {
         // The popup
         popupWindow = new PopupWindow(c);
+        popupWindow.setOnDismissListener(() -> setPopupDim( false, 0f));
+        getPositionAndSize();
+        popupWindow.setWidth(w);
+        popupWindow.setHeight(h);
 
         // The main layout
         floatWindow = new FloatWindow(c);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w + 16, h + 16);
-        floatWindow.setLayoutParams(layoutParams);
-        floatWindow.setOrientation(LinearLayout.VERTICAL);
+        floatWindow.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        View view = View.inflate(c,R.layout.view_import_song_preview,null);
+        FrameLayout frameLayout = view.findViewById(R.id.relativeLayout);
+        frameLayout.setClipChildren(false);
+        frameLayout.setClipToPadding(false);
 
-        GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.popup_bg, null);
-        if (drawable != null) {
-            drawable.setColor(0xFFFFFFFF);
+        Drawable rawDrawable = ResourcesCompat.getDrawable(c.getResources(), R.drawable.popup_bg, null);
+        if (rawDrawable != null) {
+            Drawable mutated = rawDrawable.mutate();
+            if (mutated instanceof GradientDrawable) {
+                ((GradientDrawable) mutated).setColor(0xFFFFFFFF);
+            }
+            frameLayout.setBackground(mutated);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                frameLayout.setClipToOutline(true);
+            }
         }
         popupWindow.setBackgroundDrawable(null);
-        floatWindow.setBackground(drawable);
-        floatWindow.setPadding(16, 16, 16, 16);
+
+        DialogHeader dialogHeader = view.findViewById(R.id.dialogHeader);
+        closeButton = dialogHeader.getCloseButton();
+        dialogHeader.getCloseButton().setOnClickListener(view1 -> destroyPopup());
+
+
+
+        //CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(w + 16, h + 16);
+        //floatWindow.setLayoutParams(layoutParams);
+        //LinearLayout pageLinearLayout = new LinearLayout(c);
+        //pageLinearLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        //pageLinearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w + 16, h + 16);
+        //floatWindow.setLayoutParams(layoutParams);
+        //floatWindow.setOrientation(LinearLayout.VERTICAL);
+
+        //floatWindow.setPadding(16, 16, 16, 16);
 
         // Add close button
-        closeButton = new MyFloatingActionButton(c);
-        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        buttonParams.gravity = Gravity.END;
-        closeButton.setLayoutParams(buttonParams);
-        closeButton.setSize(FloatingActionButton.SIZE_MINI);
+        //closeButton = new MyFloatingActionButton(c);
+        //LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+        //        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //buttonParams.gravity = Gravity.END;
+        //closeButton.setLayoutParams(buttonParams);
+        //closeButton.setSize(FloatingActionButton.SIZE_MINI);
 
-        Drawable closeIcon = ContextCompat.getDrawable(c, R.drawable.close);
-        if (closeIcon != null) {
-            closeIcon = DrawableCompat.wrap(closeIcon).mutate();
-            closeIcon.setColorFilter(0xFF000000, PorterDuff.Mode.SRC_IN);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            closeButton.makeFlat();
-        }
-        closeButton.setImageDrawable(closeIcon);
-        closeButton.setImageTintList(null);
-        closeButton.setBackgroundColor(Color.TRANSPARENT);
-        closeButton.setBackgroundTintList(new ColorStateList(
-                new int[][]{new int[0]},
-                new int[]{Color.TRANSPARENT}
-        ));
-        floatWindow.addView(closeButton);
+        //Drawable closeIcon = ContextCompat.getDrawable(c, R.drawable.close);
+        //if (closeIcon != null) {
+        //    closeIcon = DrawableCompat.wrap(closeIcon).mutate();
+        //    closeIcon.setColorFilter(0xFF000000, PorterDuff.Mode.SRC_IN);
+        //}
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //    closeButton.makeFlat();
+        //}
+        //closeButton.setImageDrawable(closeIcon);
+        //closeButton.setImageTintList(null);
+        //closeButton.setBackgroundColor(Color.TRANSPARENT);
+        //closeButton.setBackgroundTintList(new ColorStateList(
+        //        new int[][]{new int[0]},
+        //        new int[]{Color.TRANSPARENT}
+        //));
+        //pageLinearLayout.addView(closeButton);
+        //floatWindow.addView(closeButton);
 
         // Scroll containers
-        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(c);
-        horizontalScrollView.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+        //HorizontalScrollView horizontalScrollView = new HorizontalScrollView(c);
+        //horizontalScrollView.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+        //horizontalScrollView.setBackgroundColor(0xFFFFFF);
 
-        ScrollView scrollView = new ScrollView(c);
-        scrollView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        //ScrollView scrollView = new ScrollView(c);
+        //scrollView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        LinearLayout linearLayout = new LinearLayout(c);
-        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setClipChildren(false);
-        linearLayout.setClipToPadding(false);
+        //LinearLayout linearLayout = new LinearLayout(c);
+        //linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
+        //        ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+        //linearLayout.setWeightSum(1);
+        //linearLayout.setOrientation(LinearLayout.VERTICAL);
+        //linearLayout.setClipChildren(false);
+        //linearLayout.setClipToPadding(false);
+        //linearLayout.setBackgroundColor(0xFFFFFF);
 
-        long start = System.currentTimeMillis();
+        LinearLayout songLayout = view.findViewById(R.id.songContent);
+        //long start = System.currentTimeMillis();
         for (int x = 0; x < songViews.size(); x++) {
-            linearLayout.addView(songViews.get(x));
+            songLayout.addView(songViews.get(x));
         }
 
-        scrollView.addView(linearLayout);
+        MyMaterialButton continueButton = view.findViewById(R.id.continueButton);
+        continueButton.setOnClickListener((view2) -> {
+            if (onlineFragment!=null) {
+                destroyPopup();
+                onlineFragment.setupSaveLayout();
+            }
+        });
+
+
+
+        /*scrollView.addView(linearLayout);
         horizontalScrollView.addView(scrollView);
-        floatWindow.addView(horizontalScrollView);
+        //floatWindow.addView(horizontalScrollView);
+        pageLinearLayout.addView(horizontalScrollView);
+        //floatWindow.addView(pageLinearLayout);
 
         // Add 'Continue' button
         MyMaterialButton continueButton = new MyMaterialButton(c);
+        continueButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
         continueButton.setText(c.getString(R.string.continue_text));
-        floatWindow.addView(continueButton);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            continueButton.setElevation(128);
+        }
+        continueButton.setGravity(Gravity.END | Gravity.BOTTOM);
+        //floatWindow.addView(continueButton);
         continueButton.setOnClickListener((view) -> {
             if (onlineFragment!=null) {
                 destroyPopup();
                 onlineFragment.setupSaveLayout();
             }
         });
+*/
+
+        floatWindow.addView(view);
+        //floatWindow.addView(pageLinearLayout);
+        //floatWindow.addView(continueButton);
 
         popupWindow.setContentView(floatWindow);
     }
@@ -180,8 +245,32 @@ public class PreviewPopUp {
         h = Math.round((float)c.getResources().getDisplayMetrics().heightPixels*0.85f) - 16;
         posX = (screenWidth - w) / 2;
         posY = (screenHeight - h) / 2;
+
+        //w = screenWidth;
+        //h = screenHeight;
+        //posX = 0;
+        //posY = 0;
     }
 
+
+    private void setPopupDim(boolean dim, float dimAmount) {
+        if (popupWindow == null || popupWindow.getContentView() == null) return;
+
+        View container = popupWindow.getContentView().getRootView();
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null || !(container.getLayoutParams() instanceof WindowManager.LayoutParams)) return;
+
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) container.getLayoutParams();
+        if (dim) {
+            params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            params.dimAmount = dimAmount; // e.g., 0.5f
+        } else {
+            params.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            params.dimAmount = 0f;
+        }
+        wm.updateViewLayout(container, params);
+    }
 
     public void destroyPopup() {
         if (floatWindow != null && popupWindow != null) {

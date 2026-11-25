@@ -848,9 +848,6 @@ public class ImportOnlineFragment extends Fragment {
             webString = webString.replace("\r","\n");
             webString = webString.replace("</div></div>","</div>\n</div>");
 
-            // TODO remove this after testing
-            //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","webString.txt",webString,false);
-
             showSaveButton();
         }
     };
