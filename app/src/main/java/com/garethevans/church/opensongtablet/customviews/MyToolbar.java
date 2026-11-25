@@ -715,58 +715,57 @@ public class MyToolbar extends Toolbar {
     }
 
     public void showCustomOverflowPopup(View anchorView, List<PopupMenuItem> items, OnItemClickListener listener) {
-        if (c == null || mainActivityInterface == null) return;
+        if (c == null || mainActivityInterface == null || items == null || items.isEmpty() || anchorView == null) return;
+
+        float density = c.getResources().getDisplayMetrics().density;
+        float scaledDensity = c.getResources().getDisplayMetrics().scaledDensity;
+
+        // 100dp min width is much more natural for short menu labels on phones; adjust to taste
+        int minWidthPx = Math.round(100 * density);
+        int maxWidthPx = Math.round(260 * density);
+        int padHorizontalPx = Math.round(16 * density);
+        int padVerticalPx = Math.round(10 * density);
+        int edgeMarginPx = Math.round(8 * density);
+        float radiusPx = 8 * density;
+        float textSizeSp = 15.0f;
 
         android.widget.ListPopupWindow popupWindow = new android.widget.ListPopupWindow(c);
-
         popupWindow.setAnchorView(anchorView);
         popupWindow.setModal(true);
-
-        // Set width (e.g., 200dp converted to pixels)
-        int widthInPx = (int) (200 * getResources().getDisplayMetrics().density);
-        popupWindow.setWidth(widthInPx);
-
-        // Align to the top right
-        if (anchorView != null) {
-            int xOffset = anchorView.getWidth() - widthInPx;
-            popupWindow.setHorizontalOffset(xOffset);
-        }
-        popupWindow.setVerticalOffset(0);
+        popupWindow.setWidth(android.widget.ListPopupWindow.WRAP_CONTENT);
+        popupWindow.setVerticalOffset(Math.round(4 * density));
 
         int secondaryColor = mainActivityInterface.getPalette().secondary;
         int textColor = mainActivityInterface.getPalette().textColor;
 
-        // -----------------------------------------------------------------
-        // CREATE ROUNDED CORNER BACKGROUND PROGRAMMATICALLY
-        // -----------------------------------------------------------------
         android.graphics.drawable.GradientDrawable roundedBackground = new android.graphics.drawable.GradientDrawable();
         roundedBackground.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
         roundedBackground.setColor(secondaryColor);
-
-        // Set corner radius (e.g., 8dp converted to pixels)
-        float radiusInPx = 8 * getResources().getDisplayMetrics().density;
-        roundedBackground.setCornerRadius(radiusInPx);
-
+        roundedBackground.setCornerRadius(radiusPx);
         popupWindow.setBackgroundDrawable(roundedBackground);
-        // -----------------------------------------------------------------
 
         android.widget.ArrayAdapter<PopupMenuItem> adapter = new android.widget.ArrayAdapter<PopupMenuItem>(
                 c,
-                android.R.layout.simple_list_item_1,
+                0,
                 items
         ) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull android.view.ViewGroup parent) {
-                android.widget.TextView view = (android.widget.TextView) super.getView(position, convertView, parent);
+                android.widget.TextView view = (convertView instanceof android.widget.TextView)
+                        ? (android.widget.TextView) convertView
+                        : new android.widget.TextView(c);
 
                 PopupMenuItem item = getItem(position);
                 if (item != null) {
                     view.setText(item.title);
                 }
                 view.setTextColor(textColor);
-                view.setPadding(32, 24, 32, 24);
-                view.setTextSize(16.0f);
+                view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, textSizeSp);
+                view.setSingleLine(true);
+                view.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+                view.setPadding(padHorizontalPx, padVerticalPx, padHorizontalPx, padVerticalPx);
+                view.setMinWidth(minWidthPx);
 
                 return view;
             }
@@ -774,15 +773,70 @@ public class MyToolbar extends Toolbar {
 
         popupWindow.setAdapter(adapter);
 
+        int estimatedWidth = estimatePopupWidthPx(items, textSizeSp * scaledDensity, padHorizontalPx, minWidthPx, maxWidthPx);
+        popupWindow.setWidth(estimatedWidth);
+        popupWindow.setHorizontalOffset(computeRightAlignedOffset(anchorView, estimatedWidth, edgeMarginPx));
+
         popupWindow.setOnItemClickListener((parent, view, position, id) -> {
             PopupMenuItem clickedItem = items.get(position);
-            if (listener != null) {
+            if (listener != null && clickedItem != null) {
                 listener.onItemClick(clickedItem.id);
             }
             popupWindow.dismiss();
         });
 
         popupWindow.show();
+
+        if (popupWindow.getListView() != null) {
+            android.widget.ListView listView = popupWindow.getListView();
+            listView.post(() -> {
+                if (!popupWindow.isShowing() || popupWindow.getListView() == null) return;
+
+                int measuredWidth = popupWindow.getListView().getWidth();
+                int clampedWidth = Math.max(minWidthPx, Math.min(maxWidthPx, measuredWidth));
+
+                if (Math.abs(clampedWidth - estimatedWidth) > Math.round(2 * density)) {
+                    popupWindow.setWidth(clampedWidth);
+                }
+                popupWindow.setHorizontalOffset(computeRightAlignedOffset(anchorView, clampedWidth, edgeMarginPx));
+                popupWindow.show();
+            });
+        }
+    }
+
+    private int computeRightAlignedOffset(View anchorView, int popupWidthPx, int edgeMarginPx) {
+        int[] anchorLoc = new int[2];
+        anchorView.getLocationOnScreen(anchorLoc);
+
+        int screenWidth = anchorView.getResources().getDisplayMetrics().widthPixels;
+        // Desired left edge so the popup's right edge aligns with the anchor's right edge
+        int desiredLeft = (anchorLoc[0] + anchorView.getWidth()) - popupWidthPx;
+        // Clamp so it never clips past the right or left edge of the screen
+        int maxAllowedLeft = screenWidth - popupWidthPx - edgeMarginPx;
+        int clampedLeft = Math.max(edgeMarginPx, Math.min(desiredLeft, maxAllowedLeft));
+
+        return clampedLeft - anchorLoc[0];
+    }
+
+    private int estimatePopupWidthPx(List<PopupMenuItem> items, float textSizePx, int padHorizontalPx,
+                                     int minWidthPx, int maxWidthPx) {
+        android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        paint.setTextSize(textSizePx);
+
+        int maxTextWidth = 0;
+        for (PopupMenuItem item : items) {
+            if (item != null && item.title != null) {
+                int textWidth = (int) Math.ceil(paint.measureText(item.title));
+                if (textWidth > maxTextWidth) {
+                    maxTextWidth = textWidth;
+                }
+            }
+        }
+
+        // Small buffer (~8dp worth) for ListView / popup window internal insets
+        int insetBuffer = Math.round(padHorizontalPx * 0.5f);
+        int totalWidth = maxTextWidth + (padHorizontalPx * 2) + insetBuffer;
+        return Math.max(minWidthPx, Math.min(maxWidthPx, totalWidth));
     }
 
     public interface OnItemClickListener {
