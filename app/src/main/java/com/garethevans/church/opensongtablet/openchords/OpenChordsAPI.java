@@ -760,9 +760,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         // Lets get the server objects we have found!
                         updateProgress(c.getString(R.string.sync_reading_remote_folder) + "\n");
 
-                        // Uncomment to save a local copy for testing
-                        //String content = MainActivity.gson.toJson(serverFolder, OpenChordsFolderObject.class);
-                        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","ReceivedObject.json",content,false);
+                        doTestingFileWriteCheck(serverFolder,"ReceivedFolder.json");
 
                         // Decide if we are the folder owner
                         if (serverFolder.getIsOwner()!=null) {
@@ -1842,7 +1840,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setTags(tagsForUpload);
 
         // If we are testing, this method writes the object to a file
-        doTestingFileWriteCheck(uploadFolderObject);
+        doTestingFileWriteCheck(uploadFolderObject,"UploadFolder.json");
 
         updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
 
@@ -2305,7 +2303,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         updateConflictItem("lastForcePush");
 
         // If we are testing, this method writes the object to a file
-        doTestingFileWriteCheck(uploadFolderObject);
+        doTestingFileWriteCheck(uploadFolderObject,"UploadFolder.json");
 
         Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid, uploadFolderObject);
         call.enqueue(new Callback<ResponseBody>() {
@@ -2866,11 +2864,11 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         return lastModifiedLong;
     }
 
-    public void doTestingFileWriteCheck(OpenChordsFolderObject testObject) {
+    public void doTestingFileWriteCheck(OpenChordsFolderObject testObject, String filename) {
         // TODO Check if we're testing
         // If so, uncomment
         //String uploadObjectString = MainActivity.gson.toJson(testObject);
-        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",uploadObjectString,false);
+        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","",filename,uploadObjectString,false);
     }
 
     public void doTestingFolderDownload() {

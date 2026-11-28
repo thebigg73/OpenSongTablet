@@ -1632,12 +1632,6 @@ public class SetActions {
             // First try to get the file metadata
             setObject.setLastModified(mainActivityInterface.getTimeTools().getIsoTimeFromFileMetadata("Sets","",setFilename));
         }
-        if (setObject.getSetName().equals("OpenChords__test")) {
-            String set = MainActivity.gson.toJson(setObject);
-            Log.d(TAG,"setObject:"+set);
-            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Settings", "", "tempset.json", true);
-            mainActivityInterface.getStorageAccess().writeFileFromString("Settings", "", "tempset.json", set, false);
-        }
         return setObject;
     }
     public void createSetXMLFromSetObject(SetObject setObject, boolean updateLastModified) {

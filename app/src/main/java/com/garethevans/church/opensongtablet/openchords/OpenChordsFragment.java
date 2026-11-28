@@ -406,10 +406,6 @@ public class OpenChordsFragment extends Fragment {
                     boolean isReadOnly = mainActivityInterface.getOpenChordsAPI().getIsReadOnly();
                     boolean folderExists = mainActivityInterface.getOpenChordsAPI().getFolderExists();
 
-                    Log.d(TAG,"isOwner:"+isOwner+"  isReadOnly:"+isReadOnly+"  folderExists:"+folderExists);
-                    Log.d(TAG,"localFolderName:"+mainActivityInterface.getOpenChordsAPI().getLocalFolderName());
-                    Log.d(TAG,"songsNotOnServerString:"+mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerString());
-                    Log.d(TAG,"myView.folderToSync.getText().toString():"+myView.folderToSync.getText().toString());
                     for (OpenChordsCompareObject openChordsCompareObject:mainActivityInterface.getOpenChordsAPI().getLocalSongsCompareObjects()) {
                         Log.d(TAG,"localSong:"+openChordsCompareObject.getTitle() + "  "+ openChordsCompareObject.getLastModified());
                     }
@@ -540,7 +536,6 @@ public class OpenChordsFragment extends Fragment {
 
         String ownerInfo = mainActivityInterface.getOpenChordsAPI().getIsOwner() ? owner_string + "\n\n" : not_owner_string + "\n\n";
         String readOnlyInfo = mainActivityInterface.getOpenChordsAPI().getIsReadOnly() ? read_only_string + "\n\n" : "";
-        Log.d(TAG,"folderExists:"+mainActivityInterface.getOpenChordsAPI().getFolderExists());
 
         String folderInfo = "";
         if (!mainActivityInterface.getOpenChordsAPI().getFolderExists()) {
