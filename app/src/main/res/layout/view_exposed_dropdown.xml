@@ -22,6 +22,8 @@
             android:padding="16dp"
             android:inputType="none"
             android:textIsSelectable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             tools:text="text"
             android:importantForAutofill="no"/>
 

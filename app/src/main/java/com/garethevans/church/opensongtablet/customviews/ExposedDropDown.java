@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,7 +82,9 @@ public class ExposedDropDown extends FrameLayout {
         }
 
         autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_medium));
-        autoCompleteTextView.setOnTouchListener(new MyTouchListener());
+        //autoCompleteTextView.setOnTouchListener(new MyTouchListener());
+        autoCompleteTextView.setOnTouchListener(null); // also removes Material's ACTION_UP listener
+        autoCompleteTextView.setOnClickListener(v -> doClickAction());
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
         textInputLayout.setEndIconOnClickListener(v -> doClickAction());
 
@@ -341,4 +344,5 @@ public class ExposedDropDown extends FrameLayout {
             }
         }
     }
+
 }
