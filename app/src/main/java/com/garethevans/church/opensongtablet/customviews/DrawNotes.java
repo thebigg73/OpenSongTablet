@@ -94,6 +94,8 @@ public class DrawNotes extends View {
         text_string = context.getString(R.string.text);
         highlight_string = context.getString(R.string.highlight);
 
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
         selectionPaint.setColor(0xFF0088FF); // Blue selection box
         selectionPaint.setStyle(Paint.Style.STROKE);
         selectionPaint.setStrokeWidth(3f);
@@ -531,5 +533,11 @@ public class DrawNotes extends View {
             highlighterEditFragment.checkRedos();
         }
     }
+
+    public void clearSelection() {
+        selectedPathIndex = -1;
+        invalidate();
+    }
+
 
 }

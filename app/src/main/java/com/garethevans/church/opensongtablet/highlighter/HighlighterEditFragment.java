@@ -534,6 +534,7 @@ public class HighlighterEditFragment extends Fragment {
                         if (scaledWidth > 0 && scaledHeight > 0) {
                             highlighterBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
                             Canvas canvas = new Canvas(highlighterBitmap);
+                            mainActivityInterface.getDrawNotes().clearSelection();
                             mainActivityInterface.getDrawNotes().draw(canvas);
                         }
                     } catch (Exception e) {
