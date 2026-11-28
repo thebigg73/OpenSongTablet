@@ -84,6 +84,20 @@ public class CommonSQL {
         }
     }
 
+    public void clearSongsTable(SQLiteDatabase db) {
+        if (db == null || !db.isOpen()) return;
+        db.beginTransaction();
+        try {
+            db.delete(SQLite.TABLE_NAME, null, null);
+            db.delete("sqlite_sequence", "name = ?", new String[]{SQLite.TABLE_NAME});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        checkpointWal(db);
+    }
+
     // Song ID tasks and checks for values
     public String getAnySongId(String folder, String filename) {
         if (folder == null || folder.isEmpty()) {
@@ -250,6 +264,7 @@ public class CommonSQL {
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
+            Log.d(TAG, "updateSong: no row for songid " + thisSong.getSongid() + " - inserting new row");
             try {
                 db.insert(SQLite.TABLE_NAME, null, values);
             } catch (Exception e) {
@@ -257,87 +272,91 @@ public class CommonSQL {
             }
         }
     }
-    public void removeOldSongs(SQLiteDatabase db, ArrayList<String> songIds) {
-        // Remove entries in the database that aren't in the songIds
-        StringBuilder inQuery = new StringBuilder();
-        inQuery.append("(");
-        boolean first = true;
-        for (String item : songIds) {
-            if (first) {
-                first = false;
-                inQuery.append("'").append(escape(item)).append("'");
-            } else {
-                inQuery.append(", '").append(escape(item)).append("'");
-            }
+    public int removeOldSongs(SQLiteDatabase db, ArrayList<String> songIds) {
+        // Remove entries in the database that aren't in songIds
+        if (db == null || !db.isOpen() || songIds == null || songIds.isEmpty()) {
+            Log.d(TAG, "removeOldSongs: nothing to compare against - leaving database alone");
+            return 0;
         }
-        inQuery.append(")");
-        db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " NOT IN " + inQuery, null);
+        int removed = 0;
+        db.beginTransaction();
+        try {
+            db.execSQL("CREATE TEMP TABLE IF NOT EXISTS found_songids (songid TEXT PRIMARY KEY)");
+            db.execSQL("DELETE FROM found_songids");
+            try (SQLiteStatement st = db.compileStatement("INSERT OR IGNORE INTO found_songids (songid) VALUES (?)")) {
+                for (String id : songIds) {
+                    if (id == null || id.isEmpty() || id.endsWith("/")) continue;
+                    st.bindString(1, id);
+                    st.executeInsert();
+                    st.clearBindings();
+                }
+            }
+            removed = db.delete(SQLite.TABLE_NAME,
+                    SQLite.COLUMN_SONGID + " NOT IN (SELECT songid FROM found_songids)", null);
+            db.execSQL("DROP TABLE IF EXISTS found_songids");
+            db.setTransactionSuccessful();
+            Log.d(TAG, "removeOldSongs removed " + removed + " rows");
+        } finally {
+            db.endTransaction();
+        }
+        return removed;
     }
-    public void insertFast(SQLiteDatabase db) {
+    public boolean insertFast(SQLiteDatabase db) {
         if (db == null || !db.isOpen()) {
             Log.e(TAG, "Database is closed or null!");
-            return;
+            return false;
         }
 
         String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " (songid, filename, folder, title) VALUES (?, ?, ?, ?)";
+        boolean success = false;
 
-        // Wrap in try-with-resources if using newer Android/Java,
-        // otherwise keep manual close in finally
         mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("\nAbout to initialise the database with the songs found in the storage\n");
         try (SQLiteStatement stmt = db.compileStatement(sql)) {
-            db.beginTransactionNonExclusive(); // Better for concurrent access
+            db.beginTransactionNonExclusive();
             try {
                 ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
-                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Songs to process:"+songIds.size());
-                for (int i=0; i<songIds.size(); i++) {
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Songs to process:" + songIds.size());
+                int count = 0;
+                for (int i = 0; i < songIds.size(); i++) {
                     String s = songIds.get(i);
-                    String filename;
+                    // Skip blank lines and folder entries (end with /)
+                    if (s == null || s.isEmpty() || s.endsWith("/")) continue;
+
                     String foldername;
-                    // Only add song files, so if it ends with / this loop skips
-                    if (s.endsWith("/")) {
-                        filename = "";
-                        foldername = s.substring(0, s.lastIndexOf("/"));
-                    } else if (s.contains("/")) {
-                        filename = s.substring(s.lastIndexOf("/"));
-                        foldername = s.replace(filename, "");
+                    String filename;
+                    int slash = s.lastIndexOf("/");
+                    if (slash >= 0) {
+                        foldername = s.substring(0, slash);
+                        filename = s.substring(slash + 1);
                     } else {
-                        filename = s;
                         foldername = c.getString(R.string.mainfoldername);
+                        filename = s;
                     }
+                    if (filename.isEmpty()) continue;
 
-                    filename = filename.replace("/", "");
-
-                    if (!filename.isEmpty()) {
-                        stmt.bindString(1, s);
-                        stmt.bindString(2, filename);
-                        stmt.bindString(3, foldername);
-                        stmt.bindString(4, filename);
-                        stmt.executeInsert(); // Use executeInsert() for ID return
-                        stmt.clearBindings();
-                        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex((i+1)+". "+foldername+"/"+filename+" initialised in database");
-                    }
+                    stmt.bindString(1, getAnySongId(foldername, filename));
+                    stmt.bindString(2, filename);
+                    stmt.bindString(3, foldername);
+                    stmt.bindString(4, filename);
+                    stmt.executeInsert();
+                    stmt.clearBindings();
+                    count++;
+                    mainActivityInterface.getSongListBuildIndex().addStringToLogIndex((i + 1) + ". " + foldername + "/" + filename + " initialised in database");
                 }
                 db.setTransactionSuccessful();
+                success = true;
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Songs initialised:" + count);
             } catch (Exception e) {
-                // CRITICAL: Log the actual SQLite error
-                if (e.getMessage()!=null) {
-                    Log.e(TAG, "TRANSACTION FAILED:" + e, e);
-                    mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("TRANSACTION FAILED:"+e.getMessage());
-                } else {
-                    mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("TRANSACTION FAILED:"+e);
-                }
+                Log.e(TAG, "TRANSACTION FAILED:" + e, e);
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("TRANSACTION FAILED:" + e);
             } finally {
                 db.endTransaction();
             }
         } catch (Exception e) {
-            if (e.getMessage()!=null) {
-                Log.e(TAG, "Statement compilation failed: " + e.getMessage());
-                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Statement compilation failed:"+e.getMessage());
-            } else {
-                Log.e(TAG,"Statement compilation failed:" + e);
-                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Statement compilation failed:"+e);
-            }
+            Log.e(TAG, "Statement compilation failed:" + e, e);
+            mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Statement compilation failed:" + e);
         }
+        return success;
     }
     public String getValue(Cursor cursor, String index) {
         return cursor.getString(cursor.getColumnIndexOrThrow(index));
@@ -1093,8 +1112,6 @@ public class CommonSQL {
         String oldId = getAnySongId(oldFolder, oldName);
         String newId = getAnySongId(newFolder, newName);
 
-        // First change the folder/file againts the matching old songid
-        String[] whereClause = new String[]{oldId};
         ContentValues contentValues = new ContentValues();
         contentValues.put(SQLite.COLUMN_FOLDER, newFolder);
         contentValues.put(SQLite.COLUMN_FILENAME, newName);
@@ -1103,13 +1120,17 @@ public class CommonSQL {
         int val = 0;
         db.beginTransaction();
         try {
-            val = db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", whereClause);
+            // songid is UNIQUE, so if the destination already has a row (file overwritten), clear it first
+            if (!oldId.equals(newId)) {
+                db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + "=?", new String[]{newId});
+            }
+            val = db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{oldId});
+            db.setTransactionSuccessful();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error renaming song " + oldId + " to " + newId, e);
         } finally {
             db.endTransaction();
         }
-
         return val > 0;
     }
     public String[] getUuidFromFolderAndFile(SQLiteDatabase db, String folderAndFile) {
@@ -1488,4 +1509,14 @@ public class CommonSQL {
         return string;
     }
 
+    public void checkpointWal(SQLiteDatabase db) {
+        if (db == null || !db.isOpen()) return;
+        try (Cursor cur = db.rawQuery("PRAGMA wal_checkpoint(TRUNCATE)", null)) {
+            if (cur.moveToFirst()) {
+                Log.d(TAG, "wal_checkpoint(TRUNCATE) busy=" + cur.getInt(0) + " log=" + cur.getInt(1) + " ckpt=" + cur.getInt(2));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Checkpoint failed", e);
+        }
+    }
 }

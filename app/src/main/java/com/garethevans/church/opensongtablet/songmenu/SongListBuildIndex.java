@@ -102,21 +102,26 @@ public class SongListBuildIndex {
     // This is only called when we are full indexing
     public void buildBasicFromFiles() {
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.index_songs_start));
-        if (mainActivityInterface.getSongMenuFragment()==null) {
+        if (mainActivityInterface.getSongMenuFragment()!=null) {
             progressText = mainActivityInterface.getSongMenuFragment().getProgressText();
         }
 
         addStringToLogIndex("Building the list of songs and initialise database");
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
         addArrayToLogIndex(songIds);
-        mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+
+        boolean written = mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+        if (!written) {
+            addStringToLogIndex("Couldn't write song ID file - leaving existing database untouched");
+            return;   // don't rebuild from a stale SongIds.txt
+        }
 
         if (fullIndexRequired) {
             mainActivityInterface.getSQLiteHelper().resetDatabase();
-            mainActivityInterface.getSQLiteHelper().insertFast();
-        } else {
-            mainActivityInterface.getSQLiteHelper().insertFast();
         }
+        mainActivityInterface.getSQLiteHelper().insertFast();
+        mainActivityInterface.getSQLiteHelper().removeOldSongs(
+                mainActivityInterface.getStorageAccess().getSongIDsFromFile());
     }
 
     // This scans the files (quick and full).
@@ -150,24 +155,33 @@ public class SongListBuildIndex {
 
         StringBuilder returnString = new StringBuilder();
         SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();
+        Cursor cursor = null;
+        boolean completed = false;
+
         try {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the SQL table
             boolean needToSaveAgain = false;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("needToSaveAgain",false);
-            String folderMatch = "";
+            /*String folderMatch = "";
             if (specificFolder!=null) {
                 folderMatch = " WHERE " + SQLite.COLUMN_FOLDER + " = '"+specificFolder+"'";
-            }
+            }*/
 
-            String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
+            /*String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
                     " FROM " + SQLite.TABLE_NAME + folderMatch;
-
-            Cursor cursor;
+*/
+            String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
+                    " FROM " + SQLite.TABLE_NAME;
+            String[] altArgs = null;
+            if (specificFolder != null) {
+                altquery += " WHERE " + SQLite.COLUMN_FOLDER + " = ?";
+                altArgs = new String[]{specificFolder};
+            }
 
             // Start the transaction
             db.beginTransaction();
-            cursor = db.rawQuery(altquery, null);
+            cursor = db.rawQuery(altquery, altArgs);
 
             if (cursor.getCount()>0) {
                 // Get the total song number
@@ -306,6 +320,8 @@ public class SongListBuildIndex {
 
             }
             db.setTransactionSuccessful();
+            completed = !Thread.currentThread().isInterrupted();
+
             if (useableProgressText!=null) {
                 useableProgressText.post(() -> useableProgressText.setVisibility(View.GONE));
             }
@@ -339,10 +355,11 @@ public class SongListBuildIndex {
                     append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         } finally {
-            if (db!=null && db.isOpen() && db.inTransaction()) {
-                db.endTransaction();
-            }
+            if (cursor != null && !cursor.isClosed()) cursor.close();
+            if (db != null && db.isOpen() && db.inTransaction()) db.endTransaction();
         }
+        // Transaction ended and cursor closed, so the WAL can now be folded back in
+        mainActivityInterface.getCommonSQL().checkpointWal(db);
 
         // Make sure we hide the progress text
         if (useableProgressText!=null) {
@@ -359,7 +376,9 @@ public class SongListBuildIndex {
         currentlyIndexing = false;
 
         // Get a timestamp of this update into preferences
-        mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());
+        if (completed) {
+            mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());
+        }
 
         // If this was called from OpenChordsFragment, we need to tell it to query the server again
         if (mainActivityInterface.getWhattodo().equals("openChordsSyncWait")) {

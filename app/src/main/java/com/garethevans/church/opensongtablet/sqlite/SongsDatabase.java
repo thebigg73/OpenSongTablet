@@ -21,57 +21,36 @@ public class SongsDatabase extends SQLiteOpenHelper {
 
 
     public static SongsDatabase getInstance(Context context) {
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+        synchronized (SongsDatabase.class) {
+            MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
 
-        if (mainActivityInterface.getAlertChecks().appHasUpdated()) {
-            lock.lock();
-            try {
-                Log.d(TAG, "App has updated - resetting database");
-
-                // 1. Force close the existing connection if it exists
-                if (instance != null) {
-                    instance.getWritableDatabase().close();
-                    instance.close();
-                    instance = null;
-                }
-
-                // 2. Perform the physical file deletions (this database is no longer used)
-                File oldDbFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database", "", SQLite.DATABASE_NAME);
-                if (oldDbFile.exists()) {
-                    Log.d(TAG, "Old DB file removed: " + oldDbFile.delete());
-                }
-
-                // 3. Clear from system database directory as well
-                context.deleteDatabase(SQLite.DATABASE_NAME);
-
-            } catch (Exception e) {
-                Log.e(TAG, "Error during database reset", e);
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        // Now instantiate the new singleton safely
-        if (instance == null) {
-            synchronized (SongsDatabase.class) {
-                if (instance == null) {
-                    instance = new SongsDatabase(context.getApplicationContext());
-                }
-            }
-        }
-        return instance;
-    }
-
-    // Secondary getter that assumes the instance is already initialized
-    public static SongsDatabase getInstance() {
-        lock.lock();
-        try {
             if (instance == null) {
-                throw new IllegalStateException("SongsDatabase must be initialized with context and path first.");
+                // Only check for an app update when we're creating the database (i.e. at startup),
+                // never while it's in use
+                if (mainActivityInterface.getAlertChecks().appHasUpdated()) {
+                    Log.d(TAG, "App has updated - resetting database");
+                    try {
+                        File oldDbFile = mainActivityInterface.getStorageAccess()
+                                .getAppSpecificFile("Database", "", SQLite.DATABASE_NAME);
+                        if (oldDbFile.exists()) {
+                            Log.d(TAG, "Old DB file removed: " + oldDbFile.delete());
+                        }
+                        context.deleteDatabase(SQLite.DATABASE_NAME);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error during database reset", e);
+                    }
+                }
+                instance = new SongsDatabase(context.getApplicationContext());
             }
             return instance;
-        } finally {
-            lock.unlock();
+        }
+    }
+    public static SongsDatabase getInstance() {
+        synchronized (SongsDatabase.class) {
+            if (instance == null) {
+                throw new IllegalStateException("SongsDatabase must be initialized with context first.");
+            }
+            return instance;
         }
     }
 
@@ -87,7 +66,13 @@ public class SongsDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Handle migrations here if you ever change your table schema
+        db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
+        onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
     }
 
     @Override
@@ -97,7 +82,7 @@ public class SongsDatabase extends SQLiteOpenHelper {
         db.enableWriteAheadLogging();
     }
 
-    public synchronized void resetDatabase(Context context) {
+    /*public synchronized void resetDatabase(Context context) {
         Log.d(TAG, "resetDatabase() called");
 
         // 1. Get the current writable database connection and close it if open
@@ -111,5 +96,11 @@ public class SongsDatabase extends SQLiteOpenHelper {
 
         // 3. Reinitialize a fresh database file via the helper
         SQLiteDatabase freshDb = this.getWritableDatabase();
+    }*/
+    public synchronized void resetDatabase(Context context) {
+        Log.d(TAG, "resetDatabase() called");
+        close();                                  // closes the helper's connection pool
+        context.deleteDatabase(SQLite.DATABASE_NAME); // also removes -wal, -shm, -journal
+        getWritableDatabase();                    // recreate with onCreate()
     }
 }

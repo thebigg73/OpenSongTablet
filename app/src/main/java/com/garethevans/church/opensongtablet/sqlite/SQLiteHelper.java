@@ -46,9 +46,13 @@ public class SQLiteHelper {
         return songsDb.getReadableDatabase();
     }
 
-    public synchronized void resetDatabase() {
+    /*public synchronized void resetDatabase() {
         Log.d(TAG,"resetDatabase() called");
         songsDb.resetDatabase(c);
+    }*/
+    public synchronized void resetDatabase() {
+        Log.d(TAG, "resetDatabase() called");
+        mainActivityInterface.getCommonSQL().clearSongsTable(getWritableDatabase());
     }
 
     // Create, delete and update entries
@@ -59,8 +63,13 @@ public class SQLiteHelper {
             Log.e(TAG, "Error removing old songs", e);
         }
     }
-    public void insertFast() {
-        mainActivityInterface.getCommonSQL().insertFast(getWritableDatabase());
+    public boolean insertFast() {
+        try {
+            return mainActivityInterface.getCommonSQL().insertFast(getWritableDatabase());
+        } catch (OutOfMemoryError | Exception e) { // Keep both here
+            Log.e(TAG, "Error in insertFast", e);
+            return false;
+        }
     }
 
     public void createSong(String folder, String filename) {

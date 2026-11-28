@@ -791,6 +791,15 @@ public class StorageAccess {
         return uriString;
     }
 
+    private String folderRelativePath(String docId) {
+        // Same trimming as songFolderAndFileOnly, but without adding the MAIN prefix,
+        // because a folder isn't a file in the main folder
+        if (docId.contains("OpenSong/Songs/")) {
+            docId = docId.substring(docId.lastIndexOf("OpenSong/Songs/") + 15);
+        }
+        return docId.replace("//", "/");
+    }
+
     public String getPartOfUri(Uri uri) {
         // This gets the filename
         String path = uri.getPath();
@@ -2211,7 +2220,10 @@ public class StorageAccess {
 
                         if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
                             // It's a subdirectory; add it to queue for traversal
+                            Log.d(TAG, "docId:" + docId + "  displayName:" + displayName + "  mime:" + mime);
                             dirNodes.add(getChildren(currentDir, docId));
+                            songIds.add(folderRelativePath(docId) + "/");
+
                         } else if (displayName!=null && !displayName.startsWith(".")) {
                             // Ignore any hidden system files that start with a '.' such as .ttxfolder from DriveSync
                             // It's a file. Format relative path based on your hierarchy logic
@@ -2307,16 +2319,16 @@ public class StorageAccess {
     }
 
     // Dealing with indexing the songs on the device
-    public void writeSongIDFile(ArrayList<String> songIds) {
+    public boolean writeSongIDFile(ArrayList<String> songIds) {
         // This creates a file in the app storage with a list of song folders/filenames
         StringBuilder stringBuilder = new StringBuilder();
 
-        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("songIds size:"+songIds.size());
+        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("songIds size:" + songIds.size());
         // Remove songs that aren't valid filetypes for the song database
         ArrayList<String> newSongIds = new ArrayList<>();
-        for (int x=0; x<songIds.size(); x++) {
+        for (int x = 0; x < songIds.size(); x++) {
             String message = songIds.get(x);
-            if (validDatabaseFile(null,songIds.get(x))) {
+            if (validDatabaseFile(null, songIds.get(x))) {
                 newSongIds.add(songIds.get(x));
                 message = message + " - valid file";
             } else {
@@ -2324,7 +2336,13 @@ public class StorageAccess {
             }
             mainActivityInterface.getSongListBuildIndex().addStringToLogIndex(message);
         }
-        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("updated songIds size:"+newSongIds.size());
+        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("updated songIds size:" + newSongIds.size());
+
+        // Don't overwrite a good list with an empty one (listSongs() returns empty on any error)
+        if (newSongIds.isEmpty()) {
+            mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("No valid songs found - song ID file not updated");
+            return false;
+        }
 
         // Sort the array
         Collator collator;
@@ -2338,21 +2356,25 @@ public class StorageAccess {
         for (String songId : newSongIds) {
             stringBuilder.append(songId).append("\n");
         }
-        // Get the file reference
-        File songIDFile = getAppSpecificFile("Database","","SongsIds.txt");
-        //File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
-        // Let's delete this file and then create a new blank one
-        Log.d(TAG,"Deleting old songIDFile success="+songIDFile.delete());
-        songIDFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","","SongIds.txt");
-        //songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
+
+        // Remove the legacy file from older app versions
+        File legacyFile = getAppSpecificFile("Database", "", "SongsIds.txt");
+        if (legacyFile.exists()) {
+            Log.d(TAG, "Deleting legacy SongsIds.txt success=" + legacyFile.delete());
+        }
+
+        // Write the current file ("wt" in getOutputStream truncates any existing content)
+        File songIDFile = getAppSpecificFile("Database", "", "SongIds.txt");
         try {
-            Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
-            OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
-            if (outputStream != null) {
-                writeFileFromString(stringBuilder.toString(), outputStream);
+            if (!songIDFile.exists() && !songIDFile.createNewFile()) {
+                Log.e(TAG, "Couldn't create SongIds.txt");
+                return false;
             }
+            OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
+            return writeFileFromString(stringBuilder.toString(), outputStream); // false if stream is null
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error writing SongIds.txt", e);
+            return false;
         }
     }
     public ArrayList<String> getSongIDsFromFile() {
