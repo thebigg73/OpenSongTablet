@@ -93,11 +93,6 @@ public class EditSongFragmentMain extends Fragment  {
                     myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
                     myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
 
-                    // TODO remove once finished
-                    //myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-                    //mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
-                    //mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
-
                     myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
 
                     // Check for overrides

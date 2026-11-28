@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginBottom="16dp"
-            android:text="@string/new_something"
+            android:text="@string/sticky_note_add"
             app:icon="@drawable/plus" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
