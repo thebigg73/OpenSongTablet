@@ -30,13 +30,13 @@ import java.util.Collections;
 
 public class MoveContentFragment extends Fragment {
 
+    private final String TAG = "MoveContentsFragment";
     private MainActivityInterface mainActivityInterface;
     private StorageMoveBinding myView;
     private String subfolder, newFolder, folder_move_contents_string="", mainfoldername_string="",
             success_string="";
     private ArrayList<String> files, filesChosen;
     private ArrayList<Uri> uris;
-    private final String TAG = "MoveContentsFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -223,7 +223,8 @@ public class MoveContentFragment extends Fragment {
                             getActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
                         }
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove copyFile from "+uris.get(x)+" to Songs/" + newFolder+"/"+filesChosen.get(x));
-                        if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
+                        boolean copyFileSuccess = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+                        if (copyFileSuccess) {
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove deleteFile "+uris.get(x));
                             mainActivityInterface.getStorageAccess().deleteFile(uris.get(x));
                             // Check we weren't viewing this file - if so, update our preference
@@ -238,6 +239,7 @@ public class MoveContentFragment extends Fragment {
                         }
 
                         // Sort the databases.
+                        if (copyFileSuccess) {
                         mainActivityInterface.getSQLiteHelper().renameSong(subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
                         if (!mainActivityInterface.getStorageAccess().isTextFile(uris.get(x))) {
                             // Likely to be in the persistent nonOpenSong database too
@@ -290,6 +292,7 @@ public class MoveContentFragment extends Fragment {
 
                     // Update the song menu using the database
                     mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
