@@ -28,6 +28,7 @@ public class ABCNotation {
     private boolean abcIncludeTab;
     private boolean abcShowTransport;
     private boolean abcWebViewsDrawn = false;
+    private boolean popupPlayingMidi = false;
     private final MainActivityInterface mainActivityInterface;
     private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
     private int abcInlineWidth;
@@ -553,5 +554,12 @@ public class ABCNotation {
 
     public ExportFragment getExportFragment() {
         return exportFragment;
+    }
+
+    public void setPopupPlayingMidi(boolean popupPlayingMidi) {
+        this.popupPlayingMidi = popupPlayingMidi;
+    }
+    public boolean getPopupPlayingMidi() {
+        return popupPlayingMidi;
     }
 }

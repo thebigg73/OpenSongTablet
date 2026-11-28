@@ -142,21 +142,105 @@
         var audioContext = null;
         var lastAudioTune = null;
 
-        const SOUNDFONT_URL = "https://paulrosen.github.io/midi-js-soundfonts/FluidR3_GM/";
+        const LOCAL_SOUNDFONT_SCRIPT = "acoustic_grand_piano-mp3.min.js";
+        const REMOTE_SOUNDFONT_URL = "https://paulrosen.github.io/midi-js-soundfonts/FluidR3_GM/";
+
+        var activeSoundFontUrl = "";
+        var localSoundFontPromise = null;
+        var soundFontResolutionPromise = null;
+
+        function loadLocalSoundFontScript() {
+            if (localSoundFontPromise) return localSoundFontPromise;
+
+            localSoundFontPromise = new Promise(function(resolve, reject) {
+                var existing = document.querySelector('script[data-local-soundfont="true"]');
+                if (existing) {
+                    resolve();
+                    return;
+                }
+                var script = document.createElement("script");
+                script.src = LOCAL_SOUNDFONT_SCRIPT;
+                script.type = "text/javascript";
+                script.setAttribute("data-local-soundfont", "true");
+                script.onload = function() { resolve(); };
+                script.onerror = function(err) { reject(err); };
+                document.head.appendChild(script);
+            });
+
+            return localSoundFontPromise;
+        }
+
+        function checkRemoteReachable(url, timeoutMs) {
+            if (navigator.onLine === false) {
+                return Promise.resolve(false);
+            }
+            if (typeof fetch !== "function") {
+                return Promise.resolve(true);
+            }
+
+            var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+            var timer = setTimeout(function() {
+                if (controller) controller.abort();
+            }, timeoutMs || 2000);
+
+            // Probe a lightweight path on the host with no-cors so an opaque 200/304 confirms connectivity
+            var probeUrl = url + "acoustic_grand_piano-mp3.js";
+            return fetch(probeUrl, {
+                method: "HEAD",
+                mode: "no-cors",
+                cache: "no-store",
+                signal: controller ? controller.signal : undefined
+            }).then(function() {
+                clearTimeout(timer);
+                return true;
+            }).catch(function() {
+                clearTimeout(timer);
+                return false;
+            });
+        }
+
+        function resolveSoundFontSource(forceRefresh) {
+            if (soundFontResolutionPromise && !forceRefresh) {
+                return soundFontResolutionPromise;
+            }
+
+            soundFontResolutionPromise = checkRemoteReachable(REMOTE_SOUNDFONT_URL, 2000)
+                .then(function(isOnline) {
+                    if (isOnline) {
+                        activeSoundFontUrl = REMOTE_SOUNDFONT_URL;
+                        return activeSoundFontUrl;
+                    }
+                    activeSoundFontUrl = "";
+                    return loadLocalSoundFontScript().then(function() {
+                        return activeSoundFontUrl;
+                    }).catch(function(err) {
+                        console.warn("Failed to load local soundfont script:", err);
+                        return activeSoundFontUrl;
+                    });
+                });
+
+            return soundFontResolutionPromise;
+        }
+
+        function getSoundFontUrl() {
+            return activeSoundFontUrl;
+        }
 
         function preloadSoundFont() {
             if (!showTransport) return;
-            if (ABCJS.synth && ABCJS.synth.supportsAudio()) {
-                try {
-                    var createSynth = new ABCJS.synth.CreateSynth();
-                    createSynth.init({
-                        soundFontUrl: SOUNDFONT_URL,
-                        options: { soundFontVolumeMultiplier: 1.0 }
-                    });
-                } catch (e) {
-                    console.warn("SoundFont preload error:", e);
+            resolveSoundFontSource(false).then(function(sfUrl) {
+                if (ABCJS.synth && ABCJS.synth.supportsAudio()) {
+                    try {
+                        var createSynth = new ABCJS.synth.CreateSynth();
+                        createSynth.init({
+                            soundFontUrl: sfUrl,
+                            options: { soundFontVolumeMultiplier: 1.0 }
+                        });
+                    } catch (e) {
+                        console.warn("SoundFont preload error:", e);
+                    }
                 }
-            }
+            });
         }
 
         function clearPlayingHighlight() {
@@ -352,36 +436,38 @@
             // Remove the inline display:none so abcjs's own stylesheet (display:flex) takes over
             audioDiv.style.display = "";
 
-            try {
-                if (!audioContext) {
-                    var AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                    audioContext = new AudioContextClass();
-                }
+            resolveSoundFontSource(false).then(function(sfUrl) {
+                try {
+                    if (!audioContext) {
+                        var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        audioContext = new AudioContextClass();
+                    }
 
-                if (!synthControl) {
-                    synthControl = new ABCJS.synth.SynthController();
-                    synthControl.load("#audio", cursorControl, {
-                        displayRestart: true,
-                        displayPlay: true,
-                        displayProgress: true,
-                        displayLoop: false,
-                        displayWarp: false,
-                        displayClock: true
+                    if (!synthControl) {
+                        synthControl = new ABCJS.synth.SynthController();
+                        synthControl.load("#audio", cursorControl, {
+                            displayRestart: true,
+                            displayPlay: true,
+                            displayProgress: true,
+                            displayLoop: false,
+                            displayWarp: false,
+                            displayClock: true
+                        });
+                    }
+
+                    if (tune === lastAudioTune) return;
+                    lastAudioTune = tune;
+
+                    synthControl.setTune(tune, false, {
+                        audioContext: audioContext,
+                        soundFontUrl: sfUrl
+                    }).catch(function(error) {
+                        console.warn("Audio Synth Warning: ", error);
                     });
+                } catch (err) {
+                    console.warn("Failed to initialize audio synth: ", err);
                 }
-
-                if (tune === lastAudioTune) return;
-                lastAudioTune = tune;
-
-                synthControl.setTune(tune, false, {
-                    audioContext: audioContext,
-                    soundFontUrl: SOUNDFONT_URL
-                }).catch(function(error) {
-                    console.warn("Audio Synth Warning: ", error);
-                });
-            } catch (err) {
-                console.warn("Failed to initialize audio synth: ", err);
-            }
+            });
         }
 
         function initEditor() {
@@ -469,14 +555,16 @@
             // 1. Sound the tapped note(s), unless the tune is already playing
             if (!playing && info.midiPitches && info.midiPitches.length &&
                     ABCJS.synth && ABCJS.synth.supportsAudio()) {
-               try {
-                    // This build's signature: (pitches, graceNotes, millisecondsPerMeasure, soundFontUrl)
-                    var p = ABCJS.synth.playEvent(info.midiPitches, abcelem.midiGraceNotes,
-                            visualObj.millisecondsPerMeasure(), SOUNDFONT_URL);
-                    if (p && p.catch) p.catch(function(e) { console.warn("Note preview:", e); });
-                } catch (e) {
-                    console.warn("Note preview failed:", e);
-                }
+                resolveSoundFontSource(false).then(function(sfUrl) {
+                    try {
+                        // This build's signature: (pitches, graceNotes, millisecondsPerMeasure, soundFontUrl)
+                        var p = ABCJS.synth.playEvent(info.midiPitches, abcelem.midiGraceNotes,
+                                visualObj.millisecondsPerMeasure(), sfUrl);
+                        if (p && p.catch) p.catch(function(e) { console.warn("Note preview:", e); });
+                    } catch (e) {
+                        console.warn("Note preview failed:", e);
+                    }
+                });
             }
 
             // 2. Move the playback position (loads the player first if it has not been started yet)

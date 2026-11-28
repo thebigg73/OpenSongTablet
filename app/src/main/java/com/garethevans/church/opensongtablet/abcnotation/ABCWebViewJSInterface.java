@@ -18,6 +18,16 @@ public class ABCWebViewJSInterface {
     }
 
     @JavascriptInterface
+    public void isPlayingMidi(boolean isPlayingMidi) {
+        if (mainActivityInterface == null) return;
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (mainActivityInterface.getAbcNotation() != null) {
+                mainActivityInterface.getAbcNotation().setPopupPlayingMidi(isPlayingMidi);
+            }
+        });
+    }
+
+    @JavascriptInterface
     public void returnSize(int webViewItem, int width, int height, String abcSvgText, boolean isPopup) {
         boolean isfinished = true;
         if (isPopup) {

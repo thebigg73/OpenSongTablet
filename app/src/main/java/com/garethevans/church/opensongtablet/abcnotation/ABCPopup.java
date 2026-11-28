@@ -41,7 +41,14 @@ public class ABCPopup {
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "ABCPopup";
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final Runnable autoCloseScoreRunnable = this::closeScore;
+    private final Runnable autoCloseScoreRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!mainActivityInterface.getAbcNotation().getPopupPlayingMidi()) {
+                closeScore();
+            }
+        }
+    };
     private InlineAbcObject inlineAbcObject;
     private InlineAbcWebView inlineAbcWebView;
     private View viewHolder;
@@ -50,6 +57,7 @@ public class ABCPopup {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         mainActivityInterface.getAbcNotation().setAbcPopup(this);
+        mainActivityInterface.getAbcNotation().setPopupPlayingMidi(false);
     }
 
     public void floatABC(View viewHolder, boolean forceShow) {
@@ -220,10 +228,11 @@ public class ABCPopup {
     }
 
     public void closeScore() {
-        handler.removeCallbacks(autoCloseScoreRunnable);
-        if (floatWindow!=null && popupWindow!=null) {
-            floatWindow.post(() -> popupWindow.dismiss());
-        }
+            handler.removeCallbacks(autoCloseScoreRunnable);
+            mainActivityInterface.getAbcNotation().setPopupPlayingMidi(false);
+            if (floatWindow != null && popupWindow != null) {
+                floatWindow.post(() -> popupWindow.dismiss());
+            }
     }
 
     private void dealWithAutohide() {

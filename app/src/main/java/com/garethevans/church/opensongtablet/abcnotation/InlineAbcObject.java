@@ -286,4 +286,9 @@ public class InlineAbcObject {
 
         });
     }
+
+    public void stopMidiPlayback() {
+        inlineAbcWebView.post(() ->
+                inlineAbcWebView.evaluateJavascript("javascript:stopMidiPlayback();", null));
+    }
 }
